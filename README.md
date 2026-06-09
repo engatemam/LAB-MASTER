@@ -29,6 +29,8 @@ Welcome to the ultimate native-grade educational platform designed specifically 
 - **🍅 Pomodoro Focus Timer**: A built-in 25-minute productivity timer directly inside the dashboard to manage your deep-work sessions with visual and audio alerts.
 
 ### 🎨 State-of-the-Art Premium Design
+- **Cinematic Landing Gate**: A full-screen frosted glass entry gate that welcomes users with beautiful fade animations before entering the main dashboard.
+- **Mobile-First UX Engine**: Seamless responsive design where the configuration sidebar acts as the primary screen on mobile, transforming into a sleek off-canvas hamburger drawer once a study session begins.
 - **Solid & Clean Typography**: Direct, sharp, plain white headers and golden accents over a pitch-dark theme for an ultra-premium feel.
 - **Dark Glassmorphism UI**: A stunning, modern, frosted-glass interface that feels like a native desktop app.
 - **iOS Minimalist Toggles**: Smooth sliding toggles replacing traditional checkboxes, giving an expensive mobile-app vibe.
