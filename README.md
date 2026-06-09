@@ -26,4 +26,4 @@ It couldn't be easier to start learning.
 ---
 
 **Author & Credits**
-Developed by **Eng. Ahmed Tarek Emam**, pursuing a Bachelor of Electrical Engineering at Suez Canal University.
+Developed by **Eng. Ahmed Tarek Emam**, pursuing a Bachelor of Electronics & Communications Engineering at Suez Canal University.
