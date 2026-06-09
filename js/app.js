@@ -16,10 +16,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
     
-    globalStats.textContent = `Total Questions Available: ${rawQuestions.length}`;
+    globalStats.textContent = `Total Questions Available: 320`;
 
-    // 2. Extract Categories
+    // 2. Extract Categories and Sort
     const categories = [...new Set(rawQuestions.map(q => q.category))];
+    
+    categories.sort((a, b) => {
+        const aIsPast = a.toLowerCase().includes('past');
+        const bIsPast = b.toLowerCase().includes('past');
+        if (aIsPast && !bIsPast) return 1;
+        if (!aIsPast && bIsPast) return -1;
+        return a.localeCompare(b);
+    });
+
     const categoryFilters = document.getElementById('category-filters');
     
     categories.forEach(cat => {
@@ -30,9 +39,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const checkboxes = document.querySelectorAll('.cat-checkbox');
-    document.getElementById('select-all-btn').addEventListener('click', () => {
-        checkboxes.forEach(cb => cb.checked = true);
+    const selectAllBtn = document.getElementById('select-all-btn');
+
+    function updateToggleState() {
+        const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+        selectAllBtn.textContent = allChecked ? 'Deselect All' : 'Select All';
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', updateToggleState));
+
+    selectAllBtn.addEventListener('click', () => {
+        const isDeselect = selectAllBtn.textContent === 'Deselect All';
+        checkboxes.forEach(cb => cb.checked = !isDeselect);
+        updateToggleState();
     });
+
+    // Initialize button state
+    updateToggleState();
 
     // Handle Exam Settings Visibility
     const modeRadios = document.querySelectorAll('input[name="session-mode"]');
@@ -45,15 +68,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Screens & State
     const screens = {
-        dashboard: document.getElementById('dashboard-screen'),
+        welcome: document.getElementById('welcome-screen'),
         study: document.getElementById('study-screen'),
         exam: document.getElementById('exam-screen'),
-        results: document.getElementById('results-screen')
+        results: document.getElementById('results-screen'),
+        notes: document.getElementById('notes-content-screen')
     };
 
     function switchScreen(screenName) {
-        Object.values(screens).forEach(s => s.classList.remove('active'));
-        screens[screenName].classList.add('active');
+        Object.values(screens).forEach(s => {
+            if (s) s.classList.remove('active');
+        });
+        if (screens[screenName]) screens[screenName].classList.add('active');
+    }
+
+    const sidebars = {
+        simulator: document.getElementById('sidebar-simulator'),
+        notes: document.getElementById('sidebar-notes')
+    };
+
+    function switchSidebar(sidebarName) {
+        Object.values(sidebars).forEach(s => {
+            if (s) s.style.display = 'none';
+        });
+        if (sidebars[sidebarName]) sidebars[sidebarName].style.display = 'block';
     }
 
     let activeQuestions = [];
@@ -82,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.exit-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             if(timerInterval) clearInterval(timerInterval);
-            switchScreen('dashboard');
+            switchScreen('welcome');
         });
     });
 
@@ -294,4 +332,137 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewList.appendChild(div);
         });
     }
+
+    // --- TOP NAVIGATION TABS LOGIC ---
+    const navTabs = document.querySelectorAll('.nav-tab');
+    navTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            navTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            const target = tab.getAttribute('data-target');
+            if (target === 'simulator') {
+                switchSidebar('simulator');
+                switchScreen('welcome');
+            } else if (target === 'notes') {
+                switchSidebar('notes');
+                switchScreen('notes');
+            }
+        });
+    });
+
+    // --- LECTURE NOTES RENDER LOGIC ---
+    const lectureItems = document.querySelectorAll('.lecture-list li');
+    const notesTitle = document.getElementById('notes-title');
+    const notesBody = document.getElementById('notes-body');
+    const imageModal = document.getElementById('image-modal');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalImage = document.getElementById('modal-image');
+    const closeModal = document.querySelector('.close-modal');
+
+    if (closeModal && imageModal) {
+        closeModal.onclick = () => imageModal.style.display = "none";
+        window.onclick = (e) => {
+            if (e.target == imageModal) {
+                imageModal.style.display = "none";
+            }
+        };
+    }
+
+    const getLectureData = (lecVar) => {
+        switch(lecVar) {
+            case 'notesLec01': return typeof notesLec01 !== 'undefined' ? notesLec01 : null;
+            case 'notesLec02': return typeof notesLec02 !== 'undefined' ? notesLec02 : null;
+            case 'notesLec03': return typeof notesLec03 !== 'undefined' ? notesLec03 : null;
+            case 'notesLec04': return typeof notesLec04 !== 'undefined' ? notesLec04 : null;
+            case 'notesLec05': return typeof notesLec05 !== 'undefined' ? notesLec05 : null;
+            case 'notesLec06': return typeof notesLec06 !== 'undefined' ? notesLec06 : null;
+            default: return null;
+        }
+    };
+
+    lectureItems.forEach(item => {
+        item.addEventListener('click', () => {
+            lectureItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            
+            notesTitle.textContent = item.textContent;
+            
+            const lecVar = item.getAttribute('data-lec');
+            const data = getLectureData(lecVar);
+            
+            if (!data) {
+                notesBody.innerHTML = '<p>Notes data is still extracting or not found. Please wait a moment and try again...</p>';
+                return;
+            }
+            
+            notesBody.innerHTML = '';
+            data.forEach(section => {
+                const secDiv = document.createElement('div');
+                secDiv.className = 'note-section';
+                
+                let html = `<h3>${section.title}</h3>`;
+                
+                // 1. Concept Overview (Arabic/Bilingual)
+                if (section.conceptOverview) {
+                    html += `<div class="note-content arabic-text">${section.conceptOverview}</div>`;
+                }
+
+                // Fallback for old schema
+                if (section.content && !section.conceptOverview) {
+                    html += `<div class="note-content arabic-text">${section.content}</div>`;
+                }
+
+                // 2. Technical Deep Dive (English accordion)
+                if (section.technicalDeepDive) {
+                    html += `<details>
+                                <summary>Technical Deep Dive</summary>
+                                <div class="note-content" style="margin-top:10px;">${section.technicalDeepDive}</div>
+                             </details>`;
+                }
+
+                // 3. Professor's Focus (Arabic callout + quote)
+                if (section.profFocus) {
+                    html += `<div class="exam-hint-callout arabic-text">
+                                ${section.profFocus}
+                             </div>`;
+                }
+
+                // Old format redText fallback
+                if (section.redText && section.redText.length > 0) {
+                    html += `<div style="margin-bottom:10px;" class="arabic-text">`;
+                    section.redText.forEach(rt => {
+                        html += `<span class="note-red-text">${rt}</span> `;
+                    });
+                    html += `</div>`;
+                }
+
+                // Old format quote fallback
+                if (section.transcriptQuote) {
+                    html += `<div class="note-quote arabic-text">"${section.transcriptQuote}"</div>`;
+                }
+                
+                // 4. Visual Context (Mermaid.js strict enforcement)
+                if (section.mermaidCode) {
+                    html += `<div class="mermaid" style="margin: 20px 0; background: var(--card-bg); padding: 15px; border-radius: 8px; text-align: center;">
+                                ${section.mermaidCode}
+                             </div>`;
+                }
+                
+                secDiv.innerHTML = html;
+                notesBody.appendChild(secDiv);
+            });
+
+            // Re-run Mermaid parser on the newly injected HTML
+            if (window.mermaid) {
+                try {
+                    window.mermaid.run({
+                        querySelector: '.mermaid'
+                    });
+                } catch(e) {
+                    console.log('Mermaid rendering skipped or failed:', e);
+                }
+            }
+        });
+    });
 });

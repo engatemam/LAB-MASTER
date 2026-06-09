@@ -3,131 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAB MCQs - 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>LAB Course Mastering - 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; 
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+        window.mermaid = mermaid;
+    </script>
 </head>
 <body>
     <div class="app-container">
-        <!-- HEADER -->
-        <header class="glass-panel main-header">
-            <h1>LAB MCQs - 2026</h1>
-            <p id="global-stats">Loading dataset...</p>
-        </header>
+        <!-- LEFT SIDEBAR -->
+        <aside class="left-sidebar">
+            <header class="glass-panel main-header" style="margin-bottom: 20px;">
+                <h1>LAB Course Mastering - 2026</h1>
+                <h3 style="color: var(--text-primary); font-size: 1.1rem; margin-top: 5px; font-weight: 600;">Lecturer : Dr.Emad Badry</h3>
+                <h4 style="color: var(--accent-cyan); font-size: 0.95rem; margin-top: 2px; margin-bottom: 15px; font-weight: 400;">ECE & CCE - SCU - 2026</h4>
+                
+                <nav class="top-nav">
+                    <button class="nav-tab active" data-target="simulator">Simulator</button>
+                    <button class="nav-tab" data-target="notes">Explanations</button>
+                </nav>
+            </header>
 
-        <!-- DASHBOARD SCREEN -->
-        <main id="dashboard-screen" class="screen active glass-panel">
-            <h2>Configure Your Session</h2>
+            <!-- SIMULATOR SIDEBAR CONTROLS -->
+            <div id="sidebar-simulator" class="sidebar-section active glass-panel">
+                <h2 style="margin-bottom: 15px; font-size: 1.2rem;">Session Config</h2>
+                <p id="global-stats" style="color: var(--accent); font-weight: 600; margin-bottom: 20px; font-size: 0.9rem;">Loading dataset...</p>
+                
+                <div class="config-section">
+                    <h3>1. Categories</h3>
+                    <div id="category-filters" class="filter-grid" style="grid-template-columns: 1fr;">
+                        <!-- Checkboxes populated dynamically -->
+                    </div>
+                    <button id="select-all-btn" class="btn-small" style="margin-top: 10px; width: 100%;">Select All</button>
+                </div>
+
+                <div class="config-section">
+                    <h3>2. Choose Mode</h3>
+                    <div class="mode-selector" style="grid-template-columns: 1fr; gap: 10px;">
+                        <label class="mode-card">
+                            <input type="radio" name="session-mode" value="study" checked>
+                            <div class="mode-content" style="padding: 10px;">
+                                <h4 style="font-size: 0.95rem;">Study Mode</h4>
+                                <p style="font-size: 0.8rem;">Instant feedback & answers.</p>
+                            </div>
+                        </label>
+                        <label class="mode-card">
+                            <input type="radio" name="session-mode" value="exam">
+                            <div class="mode-content" style="padding: 10px;">
+                                <h4 style="font-size: 0.95rem;">Exam Mode</h4>
+                                <p style="font-size: 0.8rem;">Timed test. Review at end.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="config-section" id="exam-config" style="display: none;">
+                    <h3>3. Exam Settings</h3>
+                    <div class="settings-row" style="flex-direction: column; gap: 10px;">
+                        <label>
+                            Questions:
+                            <input type="number" id="exam-count" value="50" min="1" max="1000" style="width: 100%;">
+                        </label>
+                        <label>
+                            Time (Minutes):
+                            <input type="number" id="exam-time" value="30" min="1" max="180" style="width: 100%;">
+                        </label>
+                    </div>
+                </div>
+
+                <button id="start-btn" class="btn-primary" style="margin-top: 10px;">Start Session</button>
+            </div>
+
+            <!-- NOTES SIDEBAR CONTROLS -->
+            <div id="sidebar-notes" class="sidebar-section glass-panel" style="display: none;">
+                <h3 style="margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">Select Lecture</h3>
+                <ul id="lecture-list" class="lecture-list">
+                    <li data-lec="notesLec01">Lecture 01</li>
+                    <li data-lec="notesLec02">Lecture 02</li>
+                    <li data-lec="notesLec03">Lecture 03</li>
+                    <li data-lec="notesLec04">Lecture 04</li>
+                    <li data-lec="notesLec05">Lecture 05</li>
+                    <li data-lec="notesLec06">Lecture 06</li>
+                </ul>
+            </div>
             
-            <div class="config-section">
-                <h3>1. Select Categories</h3>
-                <div id="category-filters" class="filter-grid">
-                    <!-- Checkboxes populated dynamically -->
-                </div>
-                <button id="select-all-btn" class="btn-small">Select All</button>
-            </div>
+            <footer class="main-footer" style="background: none; border: none; margin-top: auto; padding-top: 20px;">
+                <p>Created by Eng. Ahmed Tarek Emam</p>
+            </footer>
+        </aside>
 
-            <div class="config-section">
-                <h3>2. Choose Mode</h3>
-                <div class="mode-selector">
-                    <label class="mode-card">
-                        <input type="radio" name="session-mode" value="study" checked>
-                        <div class="mode-content">
-                            <h4>Study Mode</h4>
-                            <p>Paginated view. See answers and explanations instantly.</p>
-                        </div>
-                    </label>
-                    <label class="mode-card">
-                        <input type="radio" name="session-mode" value="exam">
-                        <div class="mode-content">
-                            <h4>Exam Mode</h4>
-                            <p>Timed test. No immediate feedback. Review at the end.</p>
-                        </div>
-                    </label>
+        <!-- RIGHT MAIN CONTENT -->
+        <main class="right-content">
+            
+            <!-- WELCOME SCREEN -->
+            <div id="welcome-screen" class="screen active glass-panel" style="height: 100%; min-height: 80vh;">
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
+                    <h1 style="color: var(--accent); font-size: 2.5rem; margin-bottom: 15px;">Welcome to the Dashboard</h1>
+                    <p style="color: var(--text-secondary); max-width: 500px; line-height: 1.6;">Use the sidebar on the left to configure your Exam Simulator session or browse the deeply extracted Lecture Explanations.</p>
                 </div>
             </div>
 
-            <div class="config-section" id="exam-config" style="display: none;">
-                <h3>3. Exam Settings</h3>
-                <div class="settings-row">
-                    <label>
-                        Questions:
-                        <input type="number" id="exam-count" value="50" min="1" max="1000">
-                    </label>
-                    <label>
-                        Time (Minutes):
-                        <input type="number" id="exam-time" value="30" min="1" max="180">
-                    </label>
+            <!-- STUDY SCREEN -->
+            <div id="study-screen" class="screen glass-panel">
+                <div class="screen-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px;">
+                    <h2>Study Mode</h2>
+                    <button class="btn-secondary exit-btn">Exit to Welcome</button>
+                </div>
+                
+                <div id="study-grid" class="study-grid"></div>
+                
+                <div class="pagination">
+                    <button id="study-prev" class="btn-primary">Previous Page</button>
+                    <span id="study-page-info">Page 1 / 10</span>
+                    <button id="study-next" class="btn-primary">Next Page</button>
                 </div>
             </div>
 
-            <button id="start-btn" class="btn-primary">Start Session</button>
-        </main>
+            <!-- EXAM SCREEN -->
+            <div id="exam-screen" class="screen glass-panel">
+                <div class="exam-header">
+                    <div class="exam-progress">Question <span id="exam-current-q">1</span> of <span id="exam-total-q">50</span></div>
+                    <div class="exam-timer" id="timer-display">30:00</div>
+                    <button class="btn-danger finish-early-btn">Finish Early</button>
+                </div>
 
-        <!-- STUDY SCREEN -->
-        <main id="study-screen" class="screen glass-panel">
-            <div class="screen-header">
-                <h2>Study Mode</h2>
-                <button class="btn-secondary exit-btn">Exit to Dashboard</button>
+                <div class="question-container">
+                    <span id="exam-category-badge" class="category-badge">Category</span>
+                    <h3 id="exam-question-text">Question text...</h3>
+                    <div id="exam-options" class="options-grid"></div>
+                </div>
+
+                <div class="exam-footer">
+                    <button id="exam-next-btn" class="btn-primary">Next Question</button>
+                </div>
+            </div>
+
+            <!-- RESULTS SCREEN -->
+            <div id="results-screen" class="screen glass-panel">
+                <h2>Exam Results</h2>
+                <div class="score-display">
+                    <div class="score-circle">
+                        <span id="final-score">0%</span>
+                    </div>
+                    <p id="score-text">You answered X out of Y correctly.</p>
+                </div>
+
+                <h3>Review Incorrect Answers</h3>
+                <div id="review-list" class="review-list"></div>
+
+                <button class="btn-primary exit-btn" style="margin-top: 20px;">Return to Welcome</button>
+            </div>
+
+            <!-- NOTES SCREEN -->
+            <div id="notes-content-screen" class="screen glass-panel" style="min-height: 80vh;">
+                <div class="screen-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; margin-bottom: 25px;">
+                    <h2 id="notes-title" style="color: var(--accent-cyan); font-size: 1.8rem;">Select a lecture from the sidebar</h2>
+                </div>
+                <div id="notes-body" class="notes-body">
+                    <!-- Notes populated dynamically -->
+                </div>
             </div>
             
-            <div id="study-grid" class="study-grid">
-                <!-- Study cards populated here -->
-            </div>
-            
-            <div class="pagination">
-                <button id="study-prev" class="btn-primary">Previous Page</button>
-                <span id="study-page-info">Page 1 / 10</span>
-                <button id="study-next" class="btn-primary">Next Page</button>
-            </div>
         </main>
-
-        <!-- EXAM SCREEN -->
-        <main id="exam-screen" class="screen glass-panel">
-            <div class="exam-header">
-                <div class="exam-progress">Question <span id="exam-current-q">1</span> of <span id="exam-total-q">50</span></div>
-                <div class="exam-timer" id="timer-display">30:00</div>
-                <button class="btn-danger finish-early-btn">Finish Early</button>
-            </div>
-
-            <div class="question-container">
-                <span id="exam-category-badge" class="category-badge">Category</span>
-                <h3 id="exam-question-text">Question text...</h3>
-                <div id="exam-options" class="options-grid">
-                    <!-- Options populated here -->
-                </div>
-            </div>
-
-            <div class="exam-footer">
-                <button id="exam-next-btn" class="btn-primary">Next Question</button>
-            </div>
-        </main>
-
-        <!-- RESULTS SCREEN -->
-        <main id="results-screen" class="screen glass-panel">
-            <h2>Exam Results</h2>
-            <div class="score-display">
-                <div class="score-circle">
-                    <span id="final-score">0%</span>
-                </div>
-                <p id="score-text">You answered X out of Y correctly.</p>
-            </div>
-
-            <h3>Review Incorrect Answers</h3>
-            <div id="review-list" class="review-list">
-                <!-- Review items populated here -->
-            </div>
-
-            <button class="btn-primary exit-btn">Return to Dashboard</button>
-        </main>
-
-        <!-- FOOTER -->
-        <footer class="main-footer">
-            <p>Created by Eng. Ahmed Tarek Emam</p>
-        </footer>
     </div>
 
-    <!-- Load all data arrays -->
+    <!-- Data arrays -->
     <script src="data/questions_lec01.js"></script>
     <script src="data/questions_lec02.js"></script>
     <script src="data/questions_lec03.js"></script>
@@ -136,7 +179,23 @@
     <script src="data/questions_lec06.js"></script>
     <script src="data/past_exams.js"></script>
     
-    <!-- Main Application Logic -->
+    <script src="data/notes_lec01.js"></script>
+    <script src="data/notes_lec02.js"></script>
+    <script src="data/notes_lec03.js"></script>
+    <script src="data/notes_lec04.js"></script>
+    <script src="data/notes_lec05.js"></script>
+    <script src="data/notes_lec06.js"></script>
+
+    <!-- Main Logic -->
     <script src="js/app.js"></script>
+
+    <!-- Modal -->
+    <div id="image-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img id="modal-image" src="" alt="Lecture Diagram" style="max-width: 100%; height: auto; max-height: 70vh; border-radius: 8px; margin-bottom: 15px; display: none;">
+            <p id="modal-desc"></p>
+        </div>
+    </div>
 </body>
 </html>
