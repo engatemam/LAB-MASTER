@@ -32,8 +32,7 @@ Welcome to the ultimate native-grade educational platform designed specifically 
 - **Dynamic Physics & Interactives**: Interactive floating particles, magnetic cursor repulsion, 3D tilt effects, and glowing hover states across the entire application.
 - **Mermaid.js Integrations**: Beautiful code-generated block diagrams and flowcharts embedded directly into the explanations.
 
-### 🛡️ Security & Architecture
-- **Anti-Screenshot Protection**: Custom key-bind interceptors block and warn against screenshots to protect intellectual property.
+### 🛡️ Architecture
 - **100% Client-Side**: No backend required. Blazing fast, zero-latency execution running entirely via local browser execution.
 
 ---

@@ -799,31 +799,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePomoDisplay();
     });
 
-    // --- ANTI-SCREENSHOT LOGIC ---
-    document.addEventListener('keyup', (e) => {
-        if (e.key === 'PrintScreen') {
-            navigator.clipboard.writeText('Screenshots are disabled for this premium content.');
-        }
-    });
-    
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'PrintScreen' || (e.ctrlKey && e.shiftKey && (e.key === 's' || e.key === 'S')) || (e.metaKey && e.shiftKey && (e.key === 's' || e.key === 'S'))) {
-            navigator.clipboard.writeText('Screenshots are disabled for this premium content.');
-            const overlay = document.createElement('div');
-            overlay.style.position = 'fixed';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.width = '100vw';
-            overlay.style.height = '100vh';
-            overlay.style.background = '#000';
-            overlay.style.zIndex = '999999';
-            document.body.appendChild(overlay);
-            setTimeout(() => {
-                if (document.body.contains(overlay)) {
-                    document.body.removeChild(overlay);
-                }
-            }, 3000);
-        }
-    });
+
 
 });
