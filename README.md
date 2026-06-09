@@ -1,31 +1,42 @@
-# 🚀 Electronics & Microprocessors Exam Simulator
+# 🚀 LAB Course Mastering - 2026
 
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-![AI-Powered](https://img.shields.io/badge/AI--Powered-Advanced-purple?style=for-the-badge)
+![Premium Exam Simulator](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
+![Built for ECE & CCE](https://img.shields.io/badge/Major-ECE%20%26%20CCE-blue?style=for-the-badge)
 
-🌐 **Live Demo:** [https://engatemam.github.io/LAB-MASTER/](https://engatemam.github.io/LAB-MASTER/)
+Welcome to the ultimate native-grade educational platform designed specifically for the **LAB Course (ECE & CCE - SCU - 2026)**, taught by **Dr. Emad Badry**. This platform transforms heavily extracted curriculum and audio transcripts into a sleek, gamified, and hyper-interactive learning experience.
 
-## Overview
-Welcome to the ultimate, fully local **Electronics & Microprocessors Exam Simulator**. This advanced web application serves as an exhaustive, offline-ready study tool designed specifically for deep curriculum mastery. 
-
-The extensive question bank powering this simulator was meticulously reverse-engineered using Artificial Intelligence. By deeply analyzing curriculum lectures, audio transcripts, and rigorous past exams, hundreds of theoretical concepts, mathematical problems, and professor-specific notes were flawlessly extracted into an academic-grade interactive learning platform.
-
-## Key Features
-- **Modern Dark Mode UI:** A sleek, glassmorphic design featuring deep navy backgrounds and vibrant neon accents, specifically tailored to reduce eye strain during long, intense study sessions.
-- **Dynamic Dashboard:** Easily filter the massive question pool by specific categories (e.g., Lecture 1, Lecture 4, Past Exams) or mix them all for a comprehensive review.
-- **Study Mode:** A highly intuitive, paginated interface. Select your answers and receive immediate, detailed explanations for rapid learning and feedback.
-- **Exam Mode:** A strict simulation environment. Configure your desired number of questions and time limit. A countdown timer runs while you navigate the randomized test with zero feedback until you reach the final score review.
-- **CORS-Free Local Architecture:** No servers, no installations, no internet required. The data architecture has been engineered to run perfectly right off your hard drive.
-
-## Getting Started
-It couldn't be easier to start learning. 
-1. Just clone or download the repository to your computer.
-2. Navigate to the `web_app` folder.
-3. Double-click `index.html` to open it in your browser and start learning immediately!
+### 🌐 Live Application
+**Access the platform here:**  
+🔗 **[https://engatemam.github.io/LAB-MASTER/](https://engatemam.github.io/LAB-MASTER/)**
 
 ---
 
-**Author & Credits**
-Developed by **Eng. Ahmed Tarek Emam**, pursuing a Bachelor of Electrical Engineering at Suez Canal University.
+## ✨ Features
+
+### 🧠 Massive & Deep Curriculum Database
+- **320+ Curated Questions**: Exhaustively extracted questions covering every single slide, theory, math equation, and professor's verbal note from 6 lectures and Past Exams.
+- **Bilingual Explanations**: Deep-dive explanations written in clear academic Arabic and English, strictly preserving all technical terminology.
+
+### 🎓 3 Distinct Learning Modes
+- **📚 Study Mode**: Answer questions at your own pace. Receive immediate feedback and read detailed explanations for every incorrect answer.
+- **🗂️ Flashcard Mode**: The ultimate active recall tool. View the question, formulate your answer, and click to flip the 3D card to reveal the professor's notes.
+- **⏱️ Exam Simulator**: A highly configurable, strict timed simulation mode. Choose your question count and time limit, and test your knowledge under real pressure.
+
+### ⚡ Power-User Tools
+- **🔊 Text-to-Speech (TTS) Dictation**: Let the AI read complex engineering explanations aloud to you to improve focus and pronunciation.
+- **⌨️ Keyboard Shortcuts**: Navigate the entire platform without a mouse. Use `Left/Right Arrows` to navigate and `1-4` or `A-D` to instantly select options.
+- **🍅 Pomodoro Focus Timer**: A built-in 25-minute productivity timer directly inside the dashboard to manage your deep-work sessions with visual and audio alerts.
+
+### 🎨 State-of-the-Art Premium Design
+- **Dark Glassmorphism UI**: A stunning, modern, frosted-glass interface that feels like a native desktop app.
+- **Dynamic Physics & Interactives**: Interactive floating particles, magnetic cursor repulsion, 3D tilt effects, and glowing hover states across the entire application.
+- **Mermaid.js Integrations**: Beautiful code-generated block diagrams and flowcharts embedded directly into the explanations.
+
+### 🛡️ Security & Architecture
+- **Anti-Screenshot Protection**: Custom key-bind interceptors block and warn against screenshots to protect intellectual property.
+- **100% Client-Side**: No backend required. Blazing fast, zero-latency execution running entirely via local browser execution.
+
+---
+
+## 👨‍💻 Developer
+Created and engineered by **Eng. Ahmed Tarek Emam**.

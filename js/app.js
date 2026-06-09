@@ -46,23 +46,87 @@ document.addEventListener('DOMContentLoaded', () => {
         selectAllBtn.textContent = allChecked ? 'Deselect All' : 'Select All';
     }
 
-    checkboxes.forEach(cb => cb.addEventListener('change', updateToggleState));
+    // Auto-update Active Questions dynamically
+    function updateActiveQuestions() {
+        const selectedCats = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+        activeQuestions = rawQuestions.filter(q => selectedCats.includes(q.category));
+        
+        if (screens && screens.study && screens.study.classList.contains('active')) {
+            studyCurrentPage = 1;
+            renderStudyPage();
+        } else if (screens && screens.flashcard && screens.flashcard.classList.contains('active')) {
+            fcCurrentIndex = 0;
+            renderFlashcard();
+        }
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', () => {
+        updateToggleState();
+        updateActiveQuestions();
+    }));
 
     selectAllBtn.addEventListener('click', () => {
         const isDeselect = selectAllBtn.textContent === 'Deselect All';
         checkboxes.forEach(cb => cb.checked = !isDeselect);
         updateToggleState();
+        updateActiveQuestions();
     });
 
     // Initialize button state
     updateToggleState();
 
-    // Handle Exam Settings Visibility
-    const modeRadios = document.querySelectorAll('input[name="session-mode"]');
-    const examConfig = document.getElementById('exam-config');
+    // Handle Exam Settings Visibility & Auto-start Modes
+    const modeRadios = document.querySelectorAll('input[name="mode"]');
+    
     modeRadios.forEach(radio => {
         radio.addEventListener('change', (e) => {
-            examConfig.style.display = e.target.value === 'exam' ? 'block' : 'none';
+            const mode = e.target.value;
+            
+            // Auto start if categories are selected
+            const selectedCats = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+            if (selectedCats.length > 0) {
+                updateActiveQuestions();
+                if (mode === 'study') {
+                    switchScreen('study');
+                    studyCurrentPage = 1;
+                    renderStudyPage();
+                } else if (mode === 'flashcard') {
+                    switchScreen('flashcard');
+                    fcCurrentIndex = 0;
+                    renderFlashcard();
+                } else if (mode === 'exam') {
+                    switchScreen('examConfig');
+                }
+            } else {
+                if (mode === 'exam') {
+                    switchScreen('examConfig');
+                }
+            }
+        });
+    });
+
+    // --- CUSTOM NUMBER INPUT LOGIC ---
+    document.querySelectorAll('.num-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const targetId = e.target.getAttribute('data-target');
+            const step = parseInt(e.target.getAttribute('data-step')) || 1;
+            const input = document.getElementById(targetId);
+            if (!input) return;
+            
+            let val = parseInt(input.value) || 0;
+            const min = parseInt(input.getAttribute('min')) || 0;
+            const max = parseInt(input.getAttribute('max')) || 1000;
+            
+            if (e.target.classList.contains('plus')) {
+                val += step;
+            } else if (e.target.classList.contains('minus')) {
+                val -= step;
+            }
+            
+            if (val < min) val = min;
+            if (val > max) val = max;
+            
+            input.value = val;
         });
     });
 
@@ -70,7 +134,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const screens = {
         welcome: document.getElementById('welcome-screen'),
         study: document.getElementById('study-screen'),
+        examConfig: document.getElementById('exam-config-screen'),
         exam: document.getElementById('exam-screen'),
+        flashcard: document.getElementById('flashcard-screen'),
         results: document.getElementById('results-screen'),
         notes: document.getElementById('notes-content-screen')
     };
@@ -97,23 +163,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeQuestions = [];
 
     // --- DASHBOARD LOGIC ---
-    document.getElementById('start-btn').addEventListener('click', () => {
+    document.getElementById('exam-start-btn')?.addEventListener('click', () => {
         const selectedCats = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
         if (selectedCats.length === 0) {
-            alert('Please select at least one category.');
+            alert('Please select at least one category to start the exam.');
             return;
         }
 
         activeQuestions = rawQuestions.filter(q => selectedCats.includes(q.category));
-        const mode = document.querySelector('input[name="session-mode"]:checked').value;
 
-        if (mode === 'study') {
-            initStudyMode();
-            switchScreen('study');
-        } else {
-            initExamMode();
-            switchScreen('exam');
+        if (activeQuestions.length === 0) {
+            alert("No questions found for the selected categories.");
+            return;
         }
+
+        switchScreen('exam');
+        initExamMode();
     });
 
     // Utilities
@@ -126,6 +191,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function shuffle(array) {
         return array.sort(() => Math.random() - 0.5);
+    }
+
+    // --- TEXT TO SPEECH (TTS) ---
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            // Remove HTML tags for clean reading
+            const cleanText = text.replace(/<[^>]+>/g, '');
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+    
+    function stopSpeaking() {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     }
 
     // --- STUDY MODE LOGIC ---
@@ -163,13 +245,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="study-options">${optionsHtml}</div>
                 <div class="study-explanation">
                     <strong>Correct Answer:</strong> ${q.answer}<br>
-                    <strong>Explanation:</strong> ${q.explanation}
+                    <strong>Explanation:</strong> ${q.explanation}<br><br>
+                    <button class="tts-btn" style="background: var(--accent-cyan); color: white; padding: 6px 12px; font-size: 0.9rem; cursor: pointer;">
+                        🔊 Read Aloud
+                    </button>
                 </div>
             `;
 
             // Interaction
             const opts = card.querySelectorAll('.study-opt');
             const exp = card.querySelector('.study-explanation');
+            const ttsBtn = card.querySelector('.tts-btn');
+
+            ttsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                speakText(q.explanation);
+            });
+
             opts.forEach(optDiv => {
                 optDiv.addEventListener('click', () => {
                     const selected = optDiv.getAttribute('data-opt');
@@ -194,6 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('study-prev').addEventListener('click', () => {
         if (studyCurrentPage > 1) {
+            stopSpeaking();
             studyCurrentPage--;
             renderStudyPage();
             window.scrollTo(0, 0);
@@ -203,9 +296,65 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('study-next').addEventListener('click', () => {
         const totalPages = Math.ceil(activeQuestions.length / studyItemsPerPage);
         if (studyCurrentPage < totalPages) {
+            stopSpeaking();
             studyCurrentPage++;
             renderStudyPage();
             window.scrollTo(0, 0);
+        }
+    });
+
+    // --- FLASHCARD MODE LOGIC ---
+    let fcCurrentIndex = 0;
+    
+    function renderFlashcard() {
+        if (activeQuestions.length === 0) return;
+        
+        const q = activeQuestions[fcCurrentIndex];
+        document.getElementById('fc-current').textContent = fcCurrentIndex + 1;
+        document.getElementById('fc-total').textContent = activeQuestions.length;
+        
+        const front = document.getElementById('fc-front');
+        const back = document.getElementById('fc-back');
+        const card = document.getElementById('flashcard');
+        
+        card.classList.remove('flipped');
+        
+        front.innerHTML = `<h3 style="font-size: 1.4rem; text-align: center; line-height: 1.5;">${q.question}</h3>
+                           <p style="margin-top: 30px; color: var(--text-secondary);"><i class="fas fa-hand-pointer"></i> Click to flip</p>`;
+                           
+        back.innerHTML = `<h3>Correct Answer:</h3>
+                          <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fff;">${q.answer}</p>
+                          <h4 style="color: var(--text-secondary); margin-bottom: 5px;">Explanation:</h4>
+                          <p style="font-size: 0.95rem; line-height: 1.6;">${q.explanation}</p>
+                          <button class="tts-btn btn-small" style="background: var(--accent-cyan); color: white; margin-top: 20px;">🔊 Read Aloud</button>`;
+                          
+        back.querySelector('.tts-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            speakText(q.explanation);
+        });
+    }
+    
+    document.getElementById('flashcard')?.addEventListener('click', () => {
+        document.getElementById('flashcard').classList.toggle('flipped');
+    });
+    
+    document.getElementById('fc-flip-btn')?.addEventListener('click', () => {
+        document.getElementById('flashcard').classList.toggle('flipped');
+    });
+    
+    document.getElementById('fc-next')?.addEventListener('click', () => {
+        if (fcCurrentIndex < activeQuestions.length - 1) {
+            stopSpeaking();
+            fcCurrentIndex++;
+            renderFlashcard();
+        }
+    });
+    
+    document.getElementById('fc-prev')?.addEventListener('click', () => {
+        if (fcCurrentIndex > 0) {
+            stopSpeaking();
+            fcCurrentIndex--;
+            renderFlashcard();
         }
     });
 
@@ -308,8 +457,26 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(timerInterval);
         switchScreen('results');
         
-        const perc = Math.round((examScore / examQuestions.length) * 100);
-        document.getElementById('final-score').textContent = `${perc}%`;
+        // Animate the final score circle
+        const finalScoreEl = document.getElementById('final-score');
+        const targetScore = Math.round((examScore / examQuestions.length) * 100);
+        let currentScore = 0;
+        
+        finalScoreEl.textContent = '0%';
+        const scoreInterval = setInterval(() => {
+            if (currentScore >= targetScore) {
+                clearInterval(scoreInterval);
+                finalScoreEl.textContent = `${targetScore}%`;
+                if (targetScore === 100) {
+                    finalScoreEl.style.color = 'var(--accent)';
+                    finalScoreEl.style.textShadow = '0 0 15px var(--accent)';
+                }
+            } else {
+                currentScore++;
+                finalScoreEl.textContent = `${currentScore}%`;
+            }
+        }, 15); // Fast counter
+        
         document.getElementById('score-text').textContent = `You answered ${examScore} out of ${examQuestions.length} correctly.`;
         
         const reviewList = document.getElementById('review-list');
@@ -465,4 +632,198 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // --- GLOBAL RIPPLE EFFECT ---
+    document.addEventListener('click', function (e) {
+        const target = e.target.closest('.btn-primary, .btn-secondary, .btn-danger, .btn-small, .nav-tab, .study-opt, .cat-label, .lecture-list li');
+        if (!target) return;
+        
+        target.classList.add('ripple-btn');
+        
+        const circle = document.createElement('span');
+        const diameter = Math.max(target.clientWidth, target.clientHeight);
+        const radius = diameter / 2;
+        
+        const rect = target.getBoundingClientRect();
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - rect.left - radius}px`;
+        circle.style.top = `${e.clientY - rect.top - radius}px`;
+        circle.classList.add('ripple-circle');
+        
+        const existingRipple = target.querySelector('.ripple-circle');
+        if (existingRipple) {
+            existingRipple.remove();
+        }
+        
+        target.appendChild(circle);
+        
+        setTimeout(() => {
+            circle.remove();
+        }, 600);
+    });
+
+    // --- 3D TILT EFFECT ---
+    const tiltElements = document.querySelectorAll('.mode-card, .lecture-list li');
+    tiltElements.forEach(el => {
+        el.addEventListener('mousemove', e => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const tiltX = (y - centerY) / 6;
+            const tiltY = (centerX - x) / 6;
+            
+            el.style.setProperty('--mouse-x', `${x}px`);
+            el.style.setProperty('--mouse-y', `${y}px`);
+            
+            el.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.05, 1.05, 1.05)`;
+        });
+        el.addEventListener('mouseleave', () => {
+            el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            el.style.transition = 'transform 0.3s ease';
+        });
+        el.addEventListener('mouseenter', () => {
+            el.style.transition = 'none';
+        });
+    });
+
+    // --- ANTI-COPY & SECURITY MEASURES ---
+    // Prevent right-click menu
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    
+    // Prevent copy, cut, and dragging
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('cut', e => e.preventDefault());
+    document.addEventListener('dragstart', e => {
+        if (e.target.tagName.toLowerCase() !== 'input') {
+            e.preventDefault();
+        }
+    });
+    
+    // Prevent specific keyboard shortcuts
+    document.addEventListener('keydown', e => {
+        // Prevent F12 (DevTools)
+        if (e.key === 'F12') {
+            e.preventDefault();
+        }
+        // Prevent Ctrl+Shift+I/J/C (DevTools)
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+            e.preventDefault();
+        }
+        // Prevent Ctrl+U (View Source)
+        if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+            e.preventDefault();
+        }
+        // Prevent Ctrl+S (Save), Ctrl+P (Print), Ctrl+C (Copy), Ctrl+A (Select All)
+        if (e.ctrlKey && (e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P' || e.key === 'c' || e.key === 'C' || e.key === 'a' || e.key === 'A')) {
+            e.preventDefault();
+        }
+        
+        // --- NATIVE KEYBOARD SHORTCUTS ---
+        const studyScreen = document.getElementById('study-screen');
+        const examScreen = document.getElementById('exam-screen');
+        const flashcardScreen = document.getElementById('flashcard-screen'); // for future feature
+        
+        if (studyScreen.classList.contains('active')) {
+            if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('next-btn')?.click(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('prev-btn')?.click(); }
+            
+            const options = document.querySelectorAll('#study-options .study-opt');
+            if ((e.key === '1' || e.key === 'a' || e.key === 'A') && options[0]) options[0].click();
+            if ((e.key === '2' || e.key === 'b' || e.key === 'B') && options[1]) options[1].click();
+            if ((e.key === '3' || e.key === 'c' || e.key === 'C') && options[2]) options[2].click();
+            if ((e.key === '4' || e.key === 'd' || e.key === 'D') && options[3]) options[3].click();
+        }
+        
+        if (examScreen && examScreen.classList.contains('active')) {
+            if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('exam-next-btn')?.click(); }
+            
+            const options = document.querySelectorAll('#exam-options .study-opt');
+            if ((e.key === '1' || e.key === 'a' || e.key === 'A') && options[0]) options[0].click();
+            if ((e.key === '2' || e.key === 'b' || e.key === 'B') && options[1]) options[1].click();
+            if ((e.key === '3' || e.key === 'c' || e.key === 'C') && options[2]) options[2].click();
+            if ((e.key === '4' || e.key === 'd' || e.key === 'D') && options[3]) options[3].click();
+        }
+        
+        if (flashcardScreen && flashcardScreen.classList.contains('active')) {
+            if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('fc-next')?.click(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('fc-prev')?.click(); }
+            if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); document.getElementById('fc-flip-btn')?.click(); }
+        }
+    });
+
+    // --- POMODORO TIMER LOGIC ---
+    let pomoInterval;
+    let pomoTime = 25 * 60;
+    let pomoRunning = false;
+    const pomoDisplay = document.getElementById('pomodoro-time');
+    const pomoStartBtn = document.getElementById('pomo-start');
+    
+    function updatePomoDisplay() {
+        const m = Math.floor(pomoTime / 60).toString().padStart(2, '0');
+        const s = (pomoTime % 60).toString().padStart(2, '0');
+        if (pomoDisplay) pomoDisplay.textContent = `${m}:${s}`;
+    }
+    
+    document.getElementById('pomo-start')?.addEventListener('click', () => {
+        if (pomoRunning) {
+            clearInterval(pomoInterval);
+            pomoRunning = false;
+            pomoStartBtn.textContent = 'Start';
+        } else {
+            pomoRunning = true;
+            pomoStartBtn.textContent = 'Pause';
+            pomoInterval = setInterval(() => {
+                if (pomoTime > 0) {
+                    pomoTime--;
+                    updatePomoDisplay();
+                } else {
+                    clearInterval(pomoInterval);
+                    pomoRunning = false;
+                    pomoStartBtn.textContent = 'Start';
+                    speakText("Pomodoro session complete! Take a break."); // Voice alert!
+                    alert("Pomodoro session complete! Take a break.");
+                    pomoTime = 5 * 60;
+                    updatePomoDisplay();
+                }
+            }, 1000);
+        }
+    });
+    
+    document.getElementById('pomo-reset')?.addEventListener('click', () => {
+        clearInterval(pomoInterval);
+        pomoRunning = false;
+        pomoTime = 25 * 60;
+        pomoStartBtn.textContent = 'Start';
+        updatePomoDisplay();
+    });
+
+    // --- ANTI-SCREENSHOT LOGIC ---
+    document.addEventListener('keyup', (e) => {
+        if (e.key === 'PrintScreen') {
+            navigator.clipboard.writeText('Screenshots are disabled for this premium content.');
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'PrintScreen' || (e.ctrlKey && e.shiftKey && (e.key === 's' || e.key === 'S')) || (e.metaKey && e.shiftKey && (e.key === 's' || e.key === 'S'))) {
+            navigator.clipboard.writeText('Screenshots are disabled for this premium content.');
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100vw';
+            overlay.style.height = '100vh';
+            overlay.style.background = '#000';
+            overlay.style.zIndex = '999999';
+            document.body.appendChild(overlay);
+            setTimeout(() => {
+                if (document.body.contains(overlay)) {
+                    document.body.removeChild(overlay);
+                }
+            }, 3000);
+        }
+    });
+
 });

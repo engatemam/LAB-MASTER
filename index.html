@@ -13,19 +13,33 @@
     </script>
 </head>
 <body>
+    <!-- DYNAMIC BACKGROUND -->
+    <canvas id="tech-bg"></canvas>
+    <div class="bg-grid-overlay"></div>
+
     <div class="app-container">
         <!-- LEFT SIDEBAR -->
         <aside class="left-sidebar">
             <header class="glass-panel main-header" style="margin-bottom: 20px;">
                 <h1>LAB Course Mastering - 2026</h1>
-                <h3 style="color: var(--text-primary); font-size: 1.1rem; margin-top: 5px; font-weight: 600;">Lecturer : Dr.Emad Badry</h3>
-                <h4 style="color: var(--accent-cyan); font-size: 0.95rem; margin-top: 2px; margin-bottom: 15px; font-weight: 400;">ECE & CCE - SCU - 2026</h4>
+                <h3 style="color: var(--accent); font-size: 1.15rem; margin-top: 5px; font-weight: 700; letter-spacing: 0.5px;">Lecturer : Dr. Emad Badry</h3>
+                <h4 style="color: #94a3b8; font-size: 0.9rem; margin-top: 4px; margin-bottom: 15px; font-weight: 400; text-transform: uppercase; letter-spacing: 1px;">ECE & CCE - SCU - 2026</h4>
                 
                 <nav class="top-nav">
                     <button class="nav-tab active" data-target="simulator">Simulator</button>
                     <button class="nav-tab" data-target="notes">Explanations</button>
                 </nav>
             </header>
+
+            <!-- POMODORO TIMER -->
+            <div class="glass-panel" style="padding: 15px; text-align: center; margin-bottom: 20px;">
+                <h4 style="color: var(--text-secondary); margin-bottom: 5px; font-size: 0.85rem;">Focus Timer</h4>
+                <div id="pomodoro-time" style="font-size: 1.6rem; font-weight: bold; color: var(--accent); font-variant-numeric: tabular-nums;">25:00</div>
+                <div style="margin-top: 8px; display: flex; gap: 5px; justify-content: center;">
+                    <button id="pomo-start" class="btn-small" style="background: rgba(16, 185, 129, 0.2); border: 1px solid var(--success); color: var(--text-primary); padding: 5px 10px; font-size: 0.9rem;">Start</button>
+                    <button id="pomo-reset" class="btn-small" style="background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: var(--text-primary); padding: 5px 10px; font-size: 0.9rem;">Reset</button>
+                </div>
+            </div>
 
             <!-- SIMULATOR SIDEBAR CONTROLS -->
             <div id="sidebar-simulator" class="sidebar-section active glass-panel">
@@ -43,38 +57,29 @@
                 <div class="config-section">
                     <h3>2. Choose Mode</h3>
                     <div class="mode-selector" style="grid-template-columns: 1fr; gap: 10px;">
-                        <label class="mode-card">
-                            <input type="radio" name="session-mode" value="study" checked>
-                            <div class="mode-content" style="padding: 10px;">
-                                <h4 style="font-size: 0.95rem;">Study Mode</h4>
-                                <p style="font-size: 0.8rem;">Instant feedback & answers.</p>
+                        <label class="mode-card" style="margin-bottom: 5px;">
+                            <input type="radio" name="mode" value="study">
+                            <div class="mode-content" style="width: 100%;">
+                                <h4>📚 Study Mode</h4>
+                                <p>Learn with immediate feedback</p>
+                            </div>
+                        </label>
+                        <label class="mode-card" style="margin-bottom: 5px;">
+                            <input type="radio" name="mode" value="flashcard">
+                            <div class="mode-content" style="width: 100%;">
+                                <h4>🗂️ Flashcards</h4>
+                                <p>Flip cards for active recall</p>
                             </div>
                         </label>
                         <label class="mode-card">
-                            <input type="radio" name="session-mode" value="exam">
-                            <div class="mode-content" style="padding: 10px;">
-                                <h4 style="font-size: 0.95rem;">Exam Mode</h4>
-                                <p style="font-size: 0.8rem;">Timed test. Review at end.</p>
+                            <input type="radio" name="mode" value="exam">
+                            <div class="mode-content" style="width: 100%;">
+                                <h4>⏱️ Exam Mode</h4>
+                                <p>Timed simulation with strict grading</p>
                             </div>
                         </label>
                     </div>
                 </div>
-
-                <div class="config-section" id="exam-config" style="display: none;">
-                    <h3>3. Exam Settings</h3>
-                    <div class="settings-row" style="flex-direction: column; gap: 10px;">
-                        <label>
-                            Questions:
-                            <input type="number" id="exam-count" value="50" min="1" max="1000" style="width: 100%;">
-                        </label>
-                        <label>
-                            Time (Minutes):
-                            <input type="number" id="exam-time" value="30" min="1" max="180" style="width: 100%;">
-                        </label>
-                    </div>
-                </div>
-
-                <button id="start-btn" class="btn-primary" style="margin-top: 10px;">Start Session</button>
             </div>
 
             <!-- NOTES SIDEBAR CONTROLS -->
@@ -98,6 +103,35 @@
         <!-- RIGHT MAIN CONTENT -->
         <main class="right-content">
             
+            <!-- EXAM CONFIG SCREEN -->
+            <div id="exam-config-screen" class="screen glass-panel">
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 80vh; text-align: center;">
+                    <h2 style="color: var(--accent); font-size: 2.5rem; margin-bottom: 30px;">Configure Your Exam</h2>
+                
+                <div style="background: rgba(0,0,0,0.3); padding: 40px; border-radius: 16px; border: 1px solid var(--glass-border); width: 100%; max-width: 500px;">
+                    <div style="margin-bottom: 25px; text-align: left;">
+                        <label style="display: block; color: var(--text-secondary); margin-bottom: 10px; font-size: 1.1rem;">Number of Questions:</label>
+                        <div class="custom-number-input">
+                            <button class="num-btn minus" data-target="exam-count" data-step="5">-</button>
+                            <input type="number" id="exam-count" value="50" min="1" max="1000">
+                            <button class="num-btn plus" data-target="exam-count" data-step="5">+</button>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 35px; text-align: left;">
+                        <label style="display: block; color: var(--text-secondary); margin-bottom: 10px; font-size: 1.1rem;">Time Limit (Minutes):</label>
+                        <div class="custom-number-input">
+                            <button class="num-btn minus" data-target="exam-time" data-step="5">-</button>
+                            <input type="number" id="exam-time" value="30" min="1" max="180">
+                            <button class="num-btn plus" data-target="exam-time" data-step="5">+</button>
+                        </div>
+                    </div>
+                    
+                    <button id="exam-start-btn" class="btn-primary" style="width: 100%; padding: 15px; font-size: 1.3rem;">🚀 Start Exam Session</button>
+                </div>
+                </div>
+            </div>
+
             <!-- WELCOME SCREEN -->
             <div id="welcome-screen" class="screen active glass-panel" style="height: 100%; min-height: 80vh;">
                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
@@ -119,6 +153,35 @@
                     <button id="study-prev" class="btn-primary">Previous Page</button>
                     <span id="study-page-info">Page 1 / 10</span>
                     <button id="study-next" class="btn-primary">Next Page</button>
+                </div>
+            </div>
+
+            <!-- FLASHCARD SCREEN -->
+            <div id="flashcard-screen" class="screen glass-panel">
+                <div class="screen-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; margin-bottom: 30px;">
+                    <h2>Flashcard Mode</h2>
+                    <button class="btn-secondary exit-btn">Exit to Welcome</button>
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 10px; color: var(--text-secondary); font-size: 0.9rem;">
+                    Card <span id="fc-current">1</span> of <span id="fc-total">10</span>
+                </div>
+                
+                <div class="flashcard-container" id="flashcard-container">
+                    <div class="flashcard" id="flashcard">
+                        <div class="flashcard-front" id="fc-front">
+                            <!-- Question text -->
+                        </div>
+                        <div class="flashcard-back" id="fc-back">
+                            <!-- Answer & Explanation -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination" style="justify-content: center; gap: 20px; border-top: none; margin-top: 30px;">
+                    <button id="fc-prev" class="btn-primary" style="width: 120px;">Previous</button>
+                    <button id="fc-flip-btn" class="btn-secondary" style="background: var(--accent); color: #000; width: 120px;">Flip Card</button>
+                    <button id="fc-next" class="btn-primary" style="width: 120px;">Next</button>
                 </div>
             </div>
 
@@ -188,6 +251,7 @@
 
     <!-- Main Logic -->
     <script src="js/app.js"></script>
+    <script src="js/background.js"></script>
 
     <!-- Modal -->
     <div id="image-modal" class="modal-overlay">
