@@ -1223,6 +1223,178 @@ input[type=number] { -moz-appearance: textfield; }
     transform: translateX(8px);
 }
 /* Shine effect across the explanation on hover */
+.study-explanation:hover::before {
+    left: 100%;
+    transition: left 0.6s ease-in-out;
+}
+
+/* ========================================================= */
+/* 📱 MOBILE RESPONSIVENESS & MEDIA QUERIES */
+/* ========================================================= */
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+    background: rgba(13, 17, 23, 0.8);
+    border: 1px solid var(--glass-border);
+    color: var(--accent);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    z-index: 998;
+    backdrop-filter: blur(3px);
+}
+.mobile-overlay.show {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .mobile-menu-btn {
+        display: none;
+    }
+
+    body.mode-active .mobile-menu-btn {
+        display: block;
+    }
+
+    .app-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* By default on mobile, sidebar is the full screen */
+    .left-sidebar {
+        position: relative;
+        left: 0;
+        width: 100%;
+        max-width: none;
+        height: auto !important;
+        background: transparent;
+        z-index: 1;
+        transition: none;
+        padding: 0;
+        box-shadow: none;
+        overflow-y: visible;
+    }
+
+    /* When a mode starts, it becomes a hidden drawer */
+    body.mode-active .left-sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 320px;
+        max-width: 85vw;
+        height: 100vh !important;
+        background: rgba(13, 17, 23, 0.98);
+        z-index: 999;
+        transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1);
+        padding: 20px;
+        box-shadow: 5px 0 25px rgba(0,0,0,0.5);
+        overflow-y: auto; /* Scroller */
+    }
+
+    body.mode-active .left-sidebar.mobile-open {
+        left: 0;
+    }
+
+    /* Right content is hidden when sidebar is the screen */
+    body:not(.mode-active) .right-content {
+        display: none;
+    }
+
+    body.mode-active .right-content {
+        display: block;
+        height: auto;
+        overflow-y: visible;
+        padding: 20px;
+        padding-top: 70px; /* Space for hamburger */
+    }
+
+    .glass-panel {
+        padding: 20px; /* Reduce padding on mobile */
+    }
+
+    .main-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .main-header h3 {
+        font-size: 1rem !important;
+    }
+
+    .nav-tab {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+
+    /* Stack grid layouts */
+    .study-grid {
+        grid-template-columns: 1fr; /* Single column for study cards */
+    }
+
+    .options-grid {
+        grid-template-columns: 1fr; /* Single column for exam options */
+    }
+
+    .exam-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        text-align: center;
+    }
+
+    /* Adjust typography and spacing for mobile */
+    .screen {
+        min-height: auto !important;
+    }
+
+    .screen h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .custom-toggle-label {
+        padding: 10px 12px;
+    }
+
+    .cat-name {
+        font-size: 0.9rem;
+    }
+
+    .flashcard {
+        min-height: 400px;
+    }
+    
+    .pagination {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .pagination button {
+        width: 100%;
+    }
+}
 .study-explanation::before {
     content: '';
     position: absolute;
