@@ -610,8 +610,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function updateMobileModeState(screenName, isLectureSelected = false) {
-        if (window.innerWidth > 768) return;
-        
         if (screenName === 'welcome' || (screenName === 'notes' && !isLectureSelected)) {
             // Setup phase: Sidebar is the screen
             document.body.classList.remove('mode-active');
@@ -628,7 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close menu when a mode starts
     document.querySelectorAll('input[name="mode"]').forEach(r => {
         r.addEventListener('change', () => {
-            if (window.innerWidth <= 768) closeMobileMenu();
+            closeMobileMenu();
         });
     });
     
@@ -636,7 +634,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('click', () => {
             // Lecture selected, switch to mode-active to read it
             updateMobileModeState('notes', true);
-            if (window.innerWidth <= 768) closeMobileMenu();
+            closeMobileMenu();
             // Original logic continues
             lectureItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
