@@ -558,6 +558,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- TOP NAVIGATION TABS LOGIC ---
     const navTabs = document.querySelectorAll('.nav-tab');
+    // --- ENTRY GATE LOGIC ---
+    const entryGate = document.getElementById('entry-gate');
+    document.querySelectorAll('.entry-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-target');
+            if (entryGate) entryGate.classList.add('hidden');
+            
+            // Programmatically click the corresponding nav tab
+            const tab = Array.from(navTabs).find(t => t.getAttribute('data-target') === target);
+            if (tab) tab.click();
+        });
+    });
+
     navTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             navTabs.forEach(t => t.classList.remove('active'));

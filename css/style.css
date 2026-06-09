@@ -1229,8 +1229,99 @@ input[type=number] { -moz-appearance: textfield; }
 }
 
 /* ========================================================= */
+/* 🚪 ENTRY GATE */
+/* ========================================================= */
+.entry-gate {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background: rgba(13, 17, 23, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 1;
+    transition: opacity 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.entry-gate.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.05);
+}
+
+.entry-card {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+    padding: 50px 30px;
+    animation: slideDownFade 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.entry-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.entry-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 30px 20px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.entry-btn:hover {
+    background: rgba(204, 163, 0, 0.1);
+    border-color: var(--accent);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.entry-btn .icon {
+    font-size: 3rem;
+}
+
+.entry-btn .title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.entry-btn .desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* ========================================================= */
 /* 📱 MOBILE RESPONSIVENESS & MEDIA QUERIES */
 /* ========================================================= */
+@media (max-width: 768px) {
+    .entry-options {
+        grid-template-columns: 1fr;
+    }
+    .entry-card {
+        padding: 30px 20px;
+    }
+    .entry-card h1 {
+        font-size: 2rem !important;
+    }
+}
 /* Mobile Menu Button */
 .mobile-menu-btn {
     display: none;
