@@ -1,0 +1,644 @@
+[
+    {
+        "id": 1,
+        "category": "Lab Tools",
+        "question": "Which device displays graphical signals in a format on a pair of axes, generally with Y as voltage and X as time?",
+        "options": [
+            "Multimeter",
+            "Oscilloscope",
+            "Power Supply",
+            "Function Generator"
+        ],
+        "answer": "Oscilloscope",
+        "explanation": "An oscilloscope is the primary measurement tool used to observe the shape of voltage signals over time."
+    },
+    {
+        "id": 2,
+        "category": "Lab Tools",
+        "question": "What is an Arbitrary Waveform Generator (AWG)?",
+        "options": [
+            "A programmable Multimeter",
+            "A programmable Oscilloscope",
+            "A device able to generate custom user-defined waveforms",
+            "A DC power supply"
+        ],
+        "answer": "A device able to generate custom user-defined waveforms",
+        "explanation": "AWG stands for Arbitrary Waveform Generator, which allows generating custom waveform shapes, unlike a standard function generator that provides common shapes (sine, square)."
+    },
+    {
+        "id": 3,
+        "category": "Lab Tools",
+        "question": "Which tool measures both AC and DC voltage and current as well as resistance?",
+        "options": [
+            "Multimeter",
+            "Power Supply",
+            "Oscilloscope",
+            "Logic Analyzer"
+        ],
+        "answer": "Multimeter",
+        "explanation": "A multimeter is an essential diagnostic tool used to measure voltage, current, and resistance."
+    },
+    {
+        "id": 4,
+        "category": "Lab Tools",
+        "question": "What is 'signal substitution' used for in troubleshooting?",
+        "options": [
+            "Tracking signals from output to input",
+            "Checking the presence of a signal at a halfway point",
+            "Testing when the system has been separated from its signal source",
+            "Replacing a damaged component with a new one"
+        ],
+        "answer": "Testing when the system has been separated from its signal source",
+        "explanation": "Signal substitution injects a known signal into a system that has been separated from its original source to test its functionality."
+    },
+    {
+        "id": 5,
+        "category": "PCB & SMT",
+        "question": "Which manufacturing step comes after the 'technology map' step in classical digital design flow?",
+        "options": [
+            "Functional design",
+            "Synthesis",
+            "Simulation",
+            "Place and route"
+        ],
+        "answer": "Place and route",
+        "explanation": "In standard ASIC/FPGA digital design flow, placement and routing is performed after technology mapping to assign logic elements to physical locations and connect them."
+    },
+    {
+        "id": 6,
+        "category": "PCB & SMT",
+        "question": "The most common type of through-hole package is the...",
+        "options": [
+            "PLCC",
+            "QFP",
+            "SSOP",
+            "DIP"
+        ],
+        "answer": "DIP",
+        "explanation": "DIP (Dual In-line Package) is the classic rectangular package with a row of pins on each side, designed for through-hole mounting."
+    },
+    {
+        "id": 7,
+        "category": "PCB & SMT",
+        "question": "At which stage are electrical solder connections formed between SMD components and the PCB by heating?",
+        "options": [
+            "SMC placement",
+            "Reflow soldering",
+            "Solder paste printing",
+            "Stencil preparation"
+        ],
+        "answer": "Reflow soldering",
+        "explanation": "Reflow soldering passes the PCB through an oven to melt the solder paste, permanently connecting the components."
+    },
+    {
+        "id": 8,
+        "category": "PCB & SMT",
+        "question": "An SMD resistor with the label '474' has a resistance of:",
+        "options": [
+            "4704 \u03a9",
+            "470 \u03a9",
+            "470 K\u03a9",
+            "47.4 \u03a9"
+        ],
+        "answer": "470 K\u03a9",
+        "explanation": "The first two digits (47) are the base, and the third (4) is the multiplier (10^4). 47 * 10,000 = 470,000 \u03a9 or 470 K\u03a9."
+    },
+    {
+        "id": 9,
+        "category": "PCB & SMT",
+        "question": "What does a stencil do in the SMT process?",
+        "options": [
+            "Protects outer layers from oxidation",
+            "Provides a fixed position for solder paste printing",
+            "Holds components during reflow",
+            "Connects different layers of the PCB"
+        ],
+        "answer": "Provides a fixed position for solder paste printing",
+        "explanation": "A stencil has precise cutouts allowing solder paste to be applied exactly where the component pads are located on the PCB."
+    },
+    {
+        "id": 10,
+        "category": "PCB & SMT",
+        "question": "An SMD resistor labeled 'R33' has a value of:",
+        "options": [
+            "33 \u03a9",
+            "3.3 \u03a9",
+            "330 \u03a9",
+            "0.33 \u03a9"
+        ],
+        "answer": "0.33 \u03a9",
+        "explanation": "The 'R' indicates a decimal point. 'R33' means 0.33 Ohms."
+    },
+    {
+        "id": 11,
+        "category": "PCB & SMT",
+        "question": "Which layer connects different layers in a PCB?",
+        "options": [
+            "Solder mask",
+            "Silkscreen",
+            "Via",
+            "Footprint"
+        ],
+        "answer": "Via",
+        "explanation": "Vias are plated-through holes used to establish electrical connections between different layers of a multi-layer PCB."
+    },
+    {
+        "id": 12,
+        "category": "FPGA & Verilog",
+        "question": "The capacities of FPGAs are primarily specified in a number of...",
+        "options": [
+            "LUTs (Look-Up Tables)",
+            "Capacitors",
+            "Buses",
+            "Inverters"
+        ],
+        "answer": "LUTs (Look-Up Tables)",
+        "explanation": "FPGAs consist of arrays of configurable logic blocks, commonly built around Look-Up Tables (LUTs)."
+    },
+    {
+        "id": 13,
+        "category": "FPGA & Verilog",
+        "question": "A 5-variable logic expression can be implemented using how many 4-input LUTs?",
+        "options": [
+            "One",
+            "Two",
+            "Three",
+            "Four"
+        ],
+        "answer": "Two",
+        "explanation": "A 5-input function requires a multiplexer to select between two 4-input LUTs, hence two 4-input LUTs are needed."
+    },
+    {
+        "id": 14,
+        "category": "FPGA & Verilog",
+        "question": "The programming file generated to configure an FPGA is called...",
+        "options": [
+            "Elf",
+            "NAND",
+            "Bitstream",
+            "Constraints"
+        ],
+        "answer": "Bitstream",
+        "explanation": "A bitstream is a binary file containing the configuration data that programs the LUTs, routing, and I/Os of an FPGA."
+    },
+    {
+        "id": 15,
+        "category": "FPGA & Verilog",
+        "question": "In Verilog, importing submodules inside the top module is called:",
+        "options": [
+            "Declaration",
+            "Modulation",
+            "Substitution",
+            "Instantiation"
+        ],
+        "answer": "Instantiation",
+        "explanation": "Module instantiation is the process of placing a defined module within another module to build a hierarchy."
+    },
+    {
+        "id": 16,
+        "category": "FPGA & Verilog",
+        "question": "Which assignment type is recommended for sequential circuits in Verilog?",
+        "options": [
+            "Continuous",
+            "Blocking",
+            "Non-blocking",
+            "Procedural"
+        ],
+        "answer": "Non-blocking",
+        "explanation": "Non-blocking assignments ('<=') execute concurrently, correctly modeling the parallel nature of flip-flops in sequential logic."
+    },
+    {
+        "id": 17,
+        "category": "FPGA & Verilog",
+        "question": "What is the syntax to end a module in Verilog?",
+        "options": [
+            "END",
+            "endmodule",
+            "endmodule;",
+            "End module"
+        ],
+        "answer": "endmodule",
+        "explanation": "The 'endmodule' keyword (without a semicolon) marks the end of a module definition in Verilog."
+    },
+    {
+        "id": 18,
+        "category": "FPGA & Verilog",
+        "question": "In the array declaration 'reg[5:0] mem[0:1023]', how do we select the 3rd bit of the 6th element?",
+        "options": [
+            "mem[2][5]",
+            "mem[6][3]",
+            "mem[5][2]",
+            "mem[3][6]"
+        ],
+        "answer": "mem[5][2]",
+        "explanation": "The array index comes first (6th element is index 5), then the bit index (3rd bit is index 2, assuming 0-indexed from LSB). Thus mem[5][2]."
+    },
+    {
+        "id": 19,
+        "category": "Microcontrollers",
+        "question": "The standard 8051 has how many bytes of RAM?",
+        "options": [
+            "4K",
+            "128",
+            "256",
+            "8K"
+        ],
+        "answer": "128",
+        "explanation": "The original standard 8051 microcontroller contains 128 bytes of internal RAM. The 8052 has 256 bytes."
+    },
+    {
+        "id": 20,
+        "category": "Microcontrollers",
+        "question": "In 8051, the EA (External Access) pin is used to:",
+        "options": [
+            "Allow or disallow the internal memory",
+            "Select between Timer 0 and Timer 1",
+            "Latch the address",
+            "Reset the microcontroller"
+        ],
+        "answer": "Allow or disallow the internal memory",
+        "explanation": "When EA is tied to ground, the 8051 executes instructions strictly from external ROM. When tied high, it executes from internal ROM first."
+    },
+    {
+        "id": 21,
+        "category": "Microcontrollers",
+        "question": "How many 16-bit timer/counters are available in the standard 8051 microcontroller?",
+        "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        "answer": "2",
+        "explanation": "The standard 8051 has two 16-bit timers: Timer 0 and Timer 1."
+    },
+    {
+        "id": 22,
+        "category": "Microcontrollers",
+        "question": "Which timer mode in the 8051 is known as the '8-bit auto-reload' mode?",
+        "options": [
+            "Mode 0",
+            "Mode 1",
+            "Mode 2",
+            "Mode 3"
+        ],
+        "answer": "Mode 2",
+        "explanation": "In Mode 2, the timer operates as an 8-bit timer with auto-reload, where TLx counts up and THx holds the reload value."
+    },
+    {
+        "id": 23,
+        "category": "Microcontrollers",
+        "question": "If TMOD is loaded with 0x01, which mode is selected for Timer 0?",
+        "options": [
+            "Mode 0",
+            "Mode 1",
+            "Mode 2",
+            "Mode 3"
+        ],
+        "answer": "Mode 1",
+        "explanation": "0x01 in binary is 0000 0001. The lower nibble controls Timer 0. M1=0, M0=1 selects Mode 1 (16-bit timer)."
+    },
+    {
+        "id": 24,
+        "category": "Microcontrollers",
+        "question": "What happens when an 8051 timer overflows?",
+        "options": [
+            "TMOD is cleared",
+            "TRx bit becomes 0",
+            "TFx flag becomes 1",
+            "The program stops"
+        ],
+        "answer": "TFx flag becomes 1",
+        "explanation": "When the timer rolls over from its maximum count to 0, the corresponding Timer Flag (TF0 or TF1) is set to 1."
+    },
+    {
+        "id": 25,
+        "category": "Microcontrollers",
+        "question": "The 8051 timers can count down only.",
+        "options": [
+            "True",
+            "False"
+        ],
+        "answer": "False",
+        "explanation": "The 8051 timers only count UP. They start from a loaded value and overflow upon reaching FFFFh (in 16-bit mode)."
+    },
+    {
+        "id": 26,
+        "category": "Microcontrollers",
+        "question": "Which register is used to select the operating mode of the 8051 timers?",
+        "options": [
+            "TCON",
+            "TMOD",
+            "SCON",
+            "PCON"
+        ],
+        "answer": "TMOD",
+        "explanation": "The Timer Mode register (TMOD) configures the operating modes for both Timer 0 and Timer 1."
+    },
+    {
+        "id": 27,
+        "category": "Microcontrollers",
+        "question": "What is the reset value of the SP (Stack Pointer) register in the 8051?",
+        "options": [
+            "06",
+            "07",
+            "08",
+            "09"
+        ],
+        "answer": "07",
+        "explanation": "Upon reset, the Stack Pointer is initialized to 07H. The first item pushed onto the stack will be stored at address 08H."
+    },
+    {
+        "id": 28,
+        "category": "Computer Architecture",
+        "question": "During the _____ phase, an instruction is read from memory and decoded by the instruction decoder.",
+        "options": [
+            "execute",
+            "halting",
+            "fetch",
+            "store"
+        ],
+        "answer": "fetch",
+        "explanation": "The fetch phase retrieves the instruction from memory before it is decoded and executed."
+    },
+    {
+        "id": 29,
+        "category": "Computer Architecture",
+        "question": "This part of the processor contains the logic to perform arithmetic and logic operations:",
+        "options": [
+            "CU (Control Unit)",
+            "DMA",
+            "ALU",
+            "Registers"
+        ],
+        "answer": "ALU",
+        "explanation": "The Arithmetic Logic Unit (ALU) is responsible for all mathematical and logical computations."
+    },
+    {
+        "id": 30,
+        "category": "Computer Architecture",
+        "question": "Which architecture shares a single common bus for fetching both instructions and data?",
+        "options": [
+            "Harvard",
+            "Von-Neumann",
+            "RISC",
+            "CISC"
+        ],
+        "answer": "Von-Neumann",
+        "explanation": "The Von-Neumann architecture uses a unified memory and a single bus structure for both instructions and data, creating a potential bottleneck."
+    },
+    {
+        "id": 31,
+        "category": "Computer Architecture",
+        "question": "Which bus in the ARM Cortex-M architecture is used for high-bandwidth communication?",
+        "options": [
+            "APB",
+            "AHB",
+            "I2C",
+            "UART"
+        ],
+        "answer": "AHB",
+        "explanation": "The Advanced High-performance Bus (AHB) handles high-bandwidth communications between core components like memory and high-speed peripherals."
+    },
+    {
+        "id": 32,
+        "category": "Computer Architecture",
+        "question": "The address space of ARM Cortex-M used for mapping is ____ GB.",
+        "options": [
+            "2",
+            "4",
+            "8",
+            "32"
+        ],
+        "answer": "4",
+        "explanation": "The ARM Cortex-M has a 32-bit address bus, which provides a 4 GB (2^32 bytes) address space."
+    },
+    {
+        "id": 33,
+        "category": "Computer Architecture",
+        "question": "What is the dedicated hardware unit inside Cortex-M microcontrollers responsible for exception and interrupt handling?",
+        "options": [
+            "DMA",
+            "EXTI",
+            "IRQ",
+            "NVIC"
+        ],
+        "answer": "NVIC",
+        "explanation": "The Nested Vectored Interrupt Controller (NVIC) manages all exceptions and interrupts in ARM Cortex-M processors."
+    },
+    {
+        "id": 34,
+        "category": "Computer Architecture",
+        "question": "Which of the following is considered the fastest memory in a computer system?",
+        "options": [
+            "L1 Cache",
+            "L2 Cache",
+            "Main Memory",
+            "Registers"
+        ],
+        "answer": "Registers",
+        "explanation": "Registers are located inside the CPU core itself and operate at the processor's native clock speed, making them the fastest memory element."
+    },
+    {
+        "id": 35,
+        "category": "Operating Systems & ESD",
+        "question": "Which technique allows multiple processes to be executed concurrently by dividing the processor's time into time slots?",
+        "options": [
+            "Interrupt driven",
+            "Polling",
+            "RTOS",
+            "None of the above"
+        ],
+        "answer": "RTOS",
+        "explanation": "A Real-Time Operating System (RTOS) uses a scheduler to allocate time slices to concurrent tasks."
+    },
+    {
+        "id": 36,
+        "category": "Operating Systems & ESD",
+        "question": "Which software component acts as the core of an operating system, handling task management and inter-task communication?",
+        "options": [
+            "Bootloader",
+            "Firmware",
+            "Kernel",
+            "Compiler"
+        ],
+        "answer": "Kernel",
+        "explanation": "The kernel is the core component of an OS (like an RTOS) that manages system resources and schedules tasks."
+    },
+    {
+        "id": 37,
+        "category": "Operating Systems & ESD",
+        "question": "Soft failures caused by ESD result in permanent damage to the system.",
+        "options": [
+            "True",
+            "False"
+        ],
+        "answer": "False",
+        "explanation": "Soft failures are temporary corruptions of data or state, which can usually be recovered via a reset. Hard failures cause permanent physical damage."
+    },
+    {
+        "id": 38,
+        "category": "Operating Systems & ESD",
+        "question": "Which item connects equipment directly to the ground to reduce the risk of ESD damage?",
+        "options": [
+            "Anti-static bags",
+            "ESD Grounding Clamps",
+            "Solder mask",
+            "Vias"
+        ],
+        "answer": "ESD Grounding Clamps",
+        "explanation": "ESD grounding clamps physically route static charges away from sensitive equipment and safely into the ground."
+    },
+    {
+        "id": 39,
+        "category": "Operating Systems & ESD",
+        "question": "Polling is more energy efficient than an interrupt-driven approach.",
+        "options": [
+            "True",
+            "False"
+        ],
+        "answer": "False",
+        "explanation": "Polling requires the CPU to continuously check a status flag, consuming power. Interrupt-driven systems allow the CPU to sleep until an event occurs, saving energy."
+    },
+    {
+        "id": 40,
+        "category": "Microcontrollers",
+        "question": "In the 8051, to make the RESET input effective, it must be held high for a minimum duration of:",
+        "options": [
+            "1 machine cycle",
+            "2 machine cycles",
+            "4 machine cycles",
+            "8 machine cycles"
+        ],
+        "answer": "2 machine cycles",
+        "explanation": "The 8051 requires the RESET pin to be held high for at least 2 complete machine cycles to reliably reset the processor."
+    },
+    {
+        "id": 41,
+        "category": "Microcontrollers",
+        "question": "The original 8051 divides the external crystal frequency by ____ to derive one machine cycle.",
+        "options": [
+            "1",
+            "4",
+            "8",
+            "12"
+        ],
+        "answer": "12",
+        "explanation": "In standard 8051 architecture, one machine cycle takes 12 clock oscillator periods."
+    },
+    {
+        "id": 42,
+        "category": "Microcontrollers",
+        "question": "In 8051, when the C/T bit in TMOD is set to 1, the timer operates as a:",
+        "options": [
+            "Timer",
+            "Baud Rate Generator",
+            "Counter",
+            "Watchdog"
+        ],
+        "answer": "Counter",
+        "explanation": "C/T stands for Counter/Timer. When C/T=1, it counts external pulses on the Tx pin (Counter mode). When C/T=0, it counts internal clock cycles (Timer mode)."
+    },
+    {
+        "id": 43,
+        "category": "PCB & SMT",
+        "question": "What is the primary function of a solder mask on a PCB?",
+        "options": [
+            "To connect layers",
+            "To label components",
+            "To protect copper traces from oxidation and prevent solder bridges",
+            "To hold components during printing"
+        ],
+        "answer": "To protect copper traces from oxidation and prevent solder bridges",
+        "explanation": "The solder mask (usually green) acts as an insulating layer that prevents accidental short-circuits (bridges) during soldering and protects the copper from corrosion."
+    },
+    {
+        "id": 44,
+        "category": "FPGA & Verilog",
+        "question": "Which keyword is used in Verilog for the sensitivity list of an always block to infer combinational logic automatically?",
+        "options": [
+            "*",
+            "posedge",
+            "negedge",
+            "always_comb"
+        ],
+        "answer": "*",
+        "explanation": "Using always @(*) automatically includes all variables read in the block in the sensitivity list, which is ideal for modeling combinational logic."
+    },
+    {
+        "id": 45,
+        "category": "Computer Architecture",
+        "question": "Which of the following is considered system software rather than application software?",
+        "options": [
+            "Web browser",
+            "Microsoft Word",
+            "Linux Operating System",
+            "Video game"
+        ],
+        "answer": "Linux Operating System",
+        "explanation": "System software, like Linux or Windows, serves as an interface between the hardware and user applications."
+    },
+    {
+        "id": 46,
+        "category": "Microcontrollers",
+        "question": "In 8051, the Data Pointer (DPTR) is a ____-bit register.",
+        "options": [
+            "8",
+            "16",
+            "32",
+            "64"
+        ],
+        "answer": "16",
+        "explanation": "DPTR is one of the few 16-bit registers in the 8051, used primarily to address external memory."
+    },
+    {
+        "id": 47,
+        "category": "FPGA & Verilog",
+        "question": "The RHS (Right Hand Side) of a Verilog always block assignment must be assigned to a 'wire' data type.",
+        "options": [
+            "True",
+            "False"
+        ],
+        "answer": "False",
+        "explanation": "Assignments made inside a procedural block (always or initial) must drive variables of type 'reg', not 'wire'."
+    },
+    {
+        "id": 48,
+        "category": "Computer Architecture",
+        "question": "Which debugging protocol uses only two pins and is common in ARM Cortex-M architectures?",
+        "options": [
+            "JTAG",
+            "SWD",
+            "UART",
+            "SPI"
+        ],
+        "answer": "SWD",
+        "explanation": "Serial Wire Debug (SWD) is an ARM-specific alternative to JTAG that uses only two pins (SWDIO and SWCLK)."
+    },
+    {
+        "id": 49,
+        "category": "Lab Tools",
+        "question": "Signal tracing involves:",
+        "options": [
+            "Tracking signals as they progress from input to output",
+            "Tracking signals from output to input",
+            "Replacing the signal generator",
+            "Measuring heat dissipation"
+        ],
+        "answer": "Tracking signals as they progress from input to output",
+        "explanation": "Signal tracing starts from the input and follows the signal through successive stages to find where it is lost or distorted."
+    },
+    {
+        "id": 50,
+        "category": "PCB & SMT",
+        "question": "A PLCC (Plastic Leaded Chip Carrier) has leads that are:",
+        "options": [
+            "Turned outward in a gull-wing shape",
+            "Turned under the package in a J-type shape",
+            "Solder balls on the bottom",
+            "Pins that go through the board"
+        ],
+        "answer": "Turned under the package in a J-type shape",
+        "explanation": "PLCC packages feature \"J-leads\" that curl under the chip, protecting the pins and saving space."
+    }
+]
