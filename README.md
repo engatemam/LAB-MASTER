@@ -5,6 +5,8 @@
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![AI-Powered](https://img.shields.io/badge/AI--Powered-Advanced-purple?style=for-the-badge)
 
+🌐 **Live Demo:** [https://engatemam.github.io/LAB-MCQs/](https://engatemam.github.io/LAB-MCQs/)
+
 ## Overview
 Welcome to the ultimate, fully local **Electronics & Microprocessors Exam Simulator**. This advanced web application serves as an exhaustive, offline-ready study tool designed specifically for deep curriculum mastery. 
 
@@ -26,4 +28,4 @@ It couldn't be easier to start learning.
 ---
 
 **Author & Credits**
-Developed by **Eng. Ahmed Tarek Emam**, pursuing a Bachelor of Electronics & Communications Engineering at Suez Canal University.
+Developed by **Eng. Ahmed Tarek Emam**, pursuing a Bachelor of Electrical Engineering at Suez Canal University.
