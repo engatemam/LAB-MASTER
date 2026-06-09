@@ -266,8 +266,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderStudyPage() {
         studyGrid.innerHTML = '';
-        const totalPages = Math.ceil(activeQuestions.length / studyItemsPerPage);
+        const totalPages = Math.ceil(activeQuestions.length / studyItemsPerPage) || 1;
         studyPageInfo.textContent = `Page ${studyCurrentPage} of ${totalPages}`;
+
+        const prevBtn = document.getElementById('study-prev');
+        const nextBtn = document.getElementById('study-next');
+        if (prevBtn) {
+            prevBtn.disabled = studyCurrentPage === 1;
+            prevBtn.style.opacity = studyCurrentPage === 1 ? '0.4' : '1';
+            prevBtn.style.cursor = studyCurrentPage === 1 ? 'not-allowed' : 'pointer';
+        }
+        if (nextBtn) {
+            nextBtn.disabled = studyCurrentPage >= totalPages;
+            nextBtn.style.opacity = studyCurrentPage >= totalPages ? '0.4' : '1';
+            nextBtn.style.cursor = studyCurrentPage >= totalPages ? 'not-allowed' : 'pointer';
+        }
 
         const start = (studyCurrentPage - 1) * studyItemsPerPage;
         const end = start + studyItemsPerPage;

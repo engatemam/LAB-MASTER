@@ -1374,6 +1374,16 @@ input[type=number] { -moz-appearance: textfield; }
         font-size: 1.5rem !important;
     }
 
+    .study-q, #exam-question-text, #fc-front {
+        font-size: 1.05rem !important;
+        line-height: 1.4;
+    }
+
+    .study-opt, .options-grid div {
+        font-size: 0.95rem;
+        padding: 12px;
+    }
+
     .custom-toggle-label {
         padding: 10px 12px;
     }
