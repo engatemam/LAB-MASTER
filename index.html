@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAB MCQs - 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="glass-panel main-header">
+            <h1>LAB MCQs - 2026</h1>
+            <p id="global-stats">Loading dataset...</p>
+        </header>
+
+        <!-- DASHBOARD SCREEN -->
+        <main id="dashboard-screen" class="screen active glass-panel">
+            <h2>Configure Your Session</h2>
+            
+            <div class="config-section">
+                <h3>1. Select Categories</h3>
+                <div id="category-filters" class="filter-grid">
+                    <!-- Checkboxes populated dynamically -->
+                </div>
+                <button id="select-all-btn" class="btn-small">Select All</button>
+            </div>
+
+            <div class="config-section">
+                <h3>2. Choose Mode</h3>
+                <div class="mode-selector">
+                    <label class="mode-card">
+                        <input type="radio" name="session-mode" value="study" checked>
+                        <div class="mode-content">
+                            <h4>Study Mode</h4>
+                            <p>Paginated view. See answers and explanations instantly.</p>
+                        </div>
+                    </label>
+                    <label class="mode-card">
+                        <input type="radio" name="session-mode" value="exam">
+                        <div class="mode-content">
+                            <h4>Exam Mode</h4>
+                            <p>Timed test. No immediate feedback. Review at the end.</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="config-section" id="exam-config" style="display: none;">
+                <h3>3. Exam Settings</h3>
+                <div class="settings-row">
+                    <label>
+                        Questions:
+                        <input type="number" id="exam-count" value="50" min="1" max="1000">
+                    </label>
+                    <label>
+                        Time (Minutes):
+                        <input type="number" id="exam-time" value="30" min="1" max="180">
+                    </label>
+                </div>
+            </div>
+
+            <button id="start-btn" class="btn-primary">Start Session</button>
+        </main>
+
+        <!-- STUDY SCREEN -->
+        <main id="study-screen" class="screen glass-panel">
+            <div class="screen-header">
+                <h2>Study Mode</h2>
+                <button class="btn-secondary exit-btn">Exit to Dashboard</button>
+            </div>
+            
+            <div id="study-grid" class="study-grid">
+                <!-- Study cards populated here -->
+            </div>
+            
+            <div class="pagination">
+                <button id="study-prev" class="btn-primary">Previous Page</button>
+                <span id="study-page-info">Page 1 / 10</span>
+                <button id="study-next" class="btn-primary">Next Page</button>
+            </div>
+        </main>
+
+        <!-- EXAM SCREEN -->
+        <main id="exam-screen" class="screen glass-panel">
+            <div class="exam-header">
+                <div class="exam-progress">Question <span id="exam-current-q">1</span> of <span id="exam-total-q">50</span></div>
+                <div class="exam-timer" id="timer-display">30:00</div>
+                <button class="btn-danger finish-early-btn">Finish Early</button>
+            </div>
+
+            <div class="question-container">
+                <span id="exam-category-badge" class="category-badge">Category</span>
+                <h3 id="exam-question-text">Question text...</h3>
+                <div id="exam-options" class="options-grid">
+                    <!-- Options populated here -->
+                </div>
+            </div>
+
+            <div class="exam-footer">
+                <button id="exam-next-btn" class="btn-primary">Next Question</button>
+            </div>
+        </main>
+
+        <!-- RESULTS SCREEN -->
+        <main id="results-screen" class="screen glass-panel">
+            <h2>Exam Results</h2>
+            <div class="score-display">
+                <div class="score-circle">
+                    <span id="final-score">0%</span>
+                </div>
+                <p id="score-text">You answered X out of Y correctly.</p>
+            </div>
+
+            <h3>Review Incorrect Answers</h3>
+            <div id="review-list" class="review-list">
+                <!-- Review items populated here -->
+            </div>
+
+            <button class="btn-primary exit-btn">Return to Dashboard</button>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="main-footer">
+            <p>Created by Eng. Ahmed Tarek Emam</p>
+        </footer>
+    </div>
+
+    <!-- Load all data arrays -->
+    <script src="data/questions_lec01.js"></script>
+    <script src="data/questions_lec02.js"></script>
+    <script src="data/questions_lec03.js"></script>
+    <script src="data/questions_lec04.js"></script>
+    <script src="data/questions_lec05.js"></script>
+    <script src="data/questions_lec06.js"></script>
+    <script src="data/past_exams.js"></script>
+    
+    <!-- Main Application Logic -->
+    <script src="js/app.js"></script>
+</body>
+</html>
