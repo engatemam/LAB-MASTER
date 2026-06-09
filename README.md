@@ -5,7 +5,7 @@
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![AI-Powered](https://img.shields.io/badge/AI--Powered-Advanced-purple?style=for-the-badge)
 
-🌐 **Live Demo:** [https://engatemam.github.io/LAB-MCQs/](https://engatemam.github.io/LAB-MCQs/)
+🌐 **Live Demo:** [https://engatemam.github.io/LAB-MASTER/](https://engatemam.github.io/LAB-MASTER/)
 
 ## Overview
 Welcome to the ultimate, fully local **Electronics & Microprocessors Exam Simulator**. This advanced web application serves as an exhaustive, offline-ready study tool designed specifically for deep curriculum mastery. 
