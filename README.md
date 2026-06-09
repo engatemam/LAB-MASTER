@@ -18,6 +18,7 @@ Welcome to the ultimate native-grade educational platform designed specifically 
 - **Bilingual Explanations**: Deep-dive explanations written in clear academic Arabic and English, strictly preserving all technical terminology.
 
 ### 🎓 3 Distinct Learning Modes
+- **🔒 Smart Lock System**: Modes remain securely disabled and visually dimmed until you select at least one lecture, preventing empty test runs.
 - **📚 Study Mode**: Answer questions at your own pace. Receive immediate feedback and read detailed explanations for every incorrect answer.
 - **🗂️ Flashcard Mode**: The ultimate active recall tool. View the question, formulate your answer, and click to flip the 3D card to reveal the professor's notes.
 - **⏱️ Exam Simulator**: A highly configurable, strict timed simulation mode. Choose your question count and time limit, and test your knowledge under real pressure.
@@ -28,7 +29,9 @@ Welcome to the ultimate native-grade educational platform designed specifically 
 - **🍅 Pomodoro Focus Timer**: A built-in 25-minute productivity timer directly inside the dashboard to manage your deep-work sessions with visual and audio alerts.
 
 ### 🎨 State-of-the-Art Premium Design
+- **Solid & Clean Typography**: Direct, sharp, plain white headers and golden accents over a pitch-dark theme for an ultra-premium feel.
 - **Dark Glassmorphism UI**: A stunning, modern, frosted-glass interface that feels like a native desktop app.
+- **iOS Minimalist Toggles**: Smooth sliding toggles replacing traditional checkboxes, giving an expensive mobile-app vibe.
 - **Dynamic Physics & Interactives**: Interactive floating particles, magnetic cursor repulsion, 3D tilt effects, and glowing hover states across the entire application.
 - **Mermaid.js Integrations**: Beautiful code-generated block diagrams and flowcharts embedded directly into the explanations.
 

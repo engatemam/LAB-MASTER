@@ -48,14 +48,17 @@
                 
                 <div class="config-section">
                     <h3>1. Categories</h3>
-                    <div id="category-filters" class="filter-grid" style="grid-template-columns: 1fr;">
+                    <div id="category-filters" class="filter-grid" style="grid-template-columns: 1fr; gap: 8px;">
                         <!-- Checkboxes populated dynamically -->
                     </div>
-                    <button id="select-all-btn" class="btn-small" style="margin-top: 10px; width: 100%;">Select All</button>
+                    <button id="select-all-btn" class="btn-secondary" style="margin-top: 15px; width: 100%; border-radius: 12px; font-weight: 600; transition: all 0.3s ease;">Deselect All</button>
                 </div>
 
                 <div class="config-section">
                     <h3>2. Choose Mode</h3>
+                    <div id="mode-warning" style="color: var(--danger); font-size: 0.85rem; margin-bottom: 15px; font-weight: 600; background: rgba(239, 68, 68, 0.1); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.2); display: flex; align-items: center; gap: 8px;">
+                        ⚠️ You must select at least one category to unlock modes.
+                    </div>
                     <div class="mode-selector" style="grid-template-columns: 1fr; gap: 10px;">
                         <label class="mode-card" style="margin-bottom: 5px;">
                             <input type="radio" name="mode" value="study">

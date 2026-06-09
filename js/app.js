@@ -33,8 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     categories.forEach(cat => {
         const label = document.createElement('label');
-        label.className = 'filter-label';
-        label.innerHTML = `<input type="checkbox" value="${cat}" class="cat-checkbox" checked> ${cat}`;
+        label.className = 'custom-toggle-label';
+        label.innerHTML = `
+            <input type="checkbox" value="${cat}" class="cat-checkbox">
+            <div class="toggle-glass">
+                <span class="cat-name">${cat}</span>
+                <div class="ios-switch"></div>
+            </div>
+        `;
         categoryFilters.appendChild(label);
     });
 
@@ -42,8 +48,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectAllBtn = document.getElementById('select-all-btn');
 
     function updateToggleState() {
+        const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
         const allChecked = Array.from(checkboxes).every(cb => cb.checked);
         selectAllBtn.textContent = allChecked ? 'Deselect All' : 'Select All';
+        
+        const modeWarning = document.getElementById('mode-warning');
+        if (modeWarning) {
+            modeWarning.style.display = anyChecked ? 'none' : 'flex';
+        }
+
+        document.querySelectorAll('.mode-card').forEach(card => {
+            if (!anyChecked) {
+                card.classList.add('disabled-mode');
+            } else {
+                card.classList.remove('disabled-mode');
+            }
+        });
+        
+        if (!anyChecked) {
+            document.querySelectorAll('input[name="mode"]').forEach(r => r.checked = false);
+            // Fallback to welcome screen without relying on uninitialized 'screens' object
+            const welcome = document.getElementById('welcome-screen');
+            if (welcome && !welcome.classList.contains('active')) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                welcome.classList.add('active');
+            }
+        }
     }
 
     // Auto-update Active Questions dynamically
@@ -76,31 +106,39 @@ document.addEventListener('DOMContentLoaded', () => {
     updateToggleState();
 
     // Handle Exam Settings Visibility & Auto-start Modes
+    document.querySelectorAll('.mode-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+            if (!anyChecked) {
+                e.preventDefault();
+                alert('⚠️ Please select at least one Category from the list first to unlock the modes!');
+            }
+        });
+    });
+
     const modeRadios = document.querySelectorAll('input[name="mode"]');
     
     modeRadios.forEach(radio => {
         radio.addEventListener('change', (e) => {
             const mode = e.target.value;
-            
-            // Auto start if categories are selected
             const selectedCats = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
-            if (selectedCats.length > 0) {
-                updateActiveQuestions();
-                if (mode === 'study') {
-                    switchScreen('study');
-                    studyCurrentPage = 1;
-                    renderStudyPage();
-                } else if (mode === 'flashcard') {
-                    switchScreen('flashcard');
-                    fcCurrentIndex = 0;
-                    renderFlashcard();
-                } else if (mode === 'exam') {
-                    switchScreen('examConfig');
-                }
-            } else {
-                if (mode === 'exam') {
-                    switchScreen('examConfig');
-                }
+            
+            if (selectedCats.length === 0) {
+                e.target.checked = false;
+                return;
+            }
+            
+            updateActiveQuestions();
+            if (mode === 'study') {
+                switchScreen('study');
+                studyCurrentPage = 1;
+                renderStudyPage();
+            } else if (mode === 'flashcard') {
+                switchScreen('flashcard');
+                fcCurrentIndex = 0;
+                renderFlashcard();
+            } else if (mode === 'exam') {
+                switchScreen('examConfig');
             }
         });
     });
