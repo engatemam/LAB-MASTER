@@ -8,7 +8,46 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof lec04Data !== 'undefined') rawQuestions.push(...lec04Data);
     if (typeof lec05Data !== 'undefined') rawQuestions.push(...lec05Data);
     if (typeof lec06Data !== 'undefined') rawQuestions.push(...lec06Data);
-    if (typeof pastExamsData !== 'undefined') rawQuestions.push(...pastExamsData);
+    if (typeof examFinal2024 !== 'undefined') rawQuestions.push(...examFinal2024);
+    if (typeof examMidterm2024 !== 'undefined') rawQuestions.push(...examMidterm2024);
+    if (typeof examMidtermSummer2025 !== 'undefined') rawQuestions.push(...examMidtermSummer2025);
+    if (typeof examQuiz2026 !== 'undefined') rawQuestions.push(...examQuiz2026);
+
+    // Normalize schema and clean options
+    rawQuestions = rawQuestions.map(q => {
+        let text = q.question || q.text || "";
+        let options = q.options || [];
+        let answer = q.answer !== undefined ? q.answer : (q.options && q.correctIndex !== undefined ? q.options[q.correctIndex] : undefined);
+        
+        if (text.toLowerCase().includes('true/false') || text.toLowerCase().includes('true or false')) {
+            let correct = "True";
+            if (answer && answer.toLowerCase().includes('false')) {
+                correct = "False";
+            }
+            options = ["True", "False"];
+            answer = correct;
+        } else {
+            // Deduplicate case-insensitively
+            let uniqueOpts = [];
+            let seen = new Set();
+            options.forEach(opt => {
+                let norm = String(opt).toLowerCase().replace(/\s+/g, ' ').trim();
+                if (!seen.has(norm)) {
+                    seen.add(norm);
+                    uniqueOpts.push(opt);
+                }
+            });
+            options = uniqueOpts;
+        }
+
+        return {
+            category: q.category,
+            question: text,
+            options: options,
+            answer: answer,
+            explanation: q.explanation
+        };
+    });
 
     const globalStats = document.getElementById('global-stats');
     if (rawQuestions.length === 0) {
@@ -16,17 +55,28 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
     
-    globalStats.textContent = `Total Questions Available: 320`;
+    globalStats.textContent = `Total Questions Available: ${rawQuestions.length}`;
+    
+    const welcomeTotalQ = document.getElementById('welcome-total-q');
+    if (welcomeTotalQ) welcomeTotalQ.textContent = rawQuestions.length;
 
     // 2. Extract Categories and Sort
     const categories = [...new Set(rawQuestions.map(q => q.category))];
     
+    const categoryOrder = [
+        "Lecture 01", "Lecture 02", "Lecture 03", 
+        "Lecture 04", "Lecture 05", "Lecture 06",
+        "Final 2024", "Midterm 2024", 
+        "Midterm Summer 2025", "Quiz 2026"
+    ];
+
     categories.sort((a, b) => {
-        const aIsPast = a.toLowerCase().includes('past');
-        const bIsPast = b.toLowerCase().includes('past');
-        if (aIsPast && !bIsPast) return 1;
-        if (!aIsPast && bIsPast) return -1;
-        return a.localeCompare(b);
+        const indexA = categoryOrder.indexOf(a);
+        const indexB = categoryOrder.indexOf(b);
+        if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
     });
 
     const categoryFilters = document.getElementById('category-filters');
@@ -286,7 +336,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const end = start + studyItemsPerPage;
         const pageQuestions = activeQuestions.slice(start, end);
 
-        pageQuestions.forEach(q => {
+        pageQuestions.forEach((q, idx) => {
+            const globalIndex = start + idx + 1;
             const card = document.createElement('div');
             card.className = 'study-card';
             
@@ -296,7 +347,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             card.innerHTML = `
-                <span class="category-badge">${q.category}</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span class="category-badge">${q.category}</span>
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">Question ${globalIndex}</span>
+                </div>
                 <div class="study-question">${q.question}</div>
                 <div class="study-options">${optionsHtml}</div>
                 <div class="study-explanation">

@@ -1,302 +1,178 @@
 const lec03Data = [
   {
-    "id": 1,
-    "category": "Lecture 03",
-    "question": "Why is C programming preferred over Assembly for 8051?",
-    "options": [
-      "It has smaller hex file sizes",
-      "It is easier, less time-consuming, and portable",
-      "It executes faster",
-      "It requires no compiler"
-    ],
-    "answer": "It is easier, less time-consuming, and portable",
-    "explanation": "C programming is less time-consuming, easier to modify, allows the use of libraries, and is portable to other microcontrollers."
+    category: "Lecture 03",
+    text: "........ is the default data type used by 8051 C compilers when no keyword is specified.",
+    options: ["unsigned char", "signed char", "signed int", "unsigned int"],
+    correctIndex: 1,
+    explanation: "C compilers use the signed char as the default if we do not put the keyword unsigned."
   },
   {
-    "id": 2,
-    "category": "Lecture 03",
-    "question": "What is the disadvantage of using C programming compared to Assembly?",
-    "options": [
-      "It is harder to modify",
-      "It lacks function libraries",
-      "It produces a larger hex file size",
-      "It is not portable"
-    ],
-    "answer": "It produces a larger hex file size",
-    "explanation": "While C is easier and faster to write, it generates a larger hex file size compared to optimized Assembly code."
+    category: "Lecture 03",
+    text: "True or False: Writing programs in C is generally more time consuming than writing in Assembly, but results in a smaller hex file size.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "False. C programming is less time consuming but has a larger hex file size. This twists the definition of C advantages."
   },
   {
-    "id": 3,
-    "category": "Lecture 03",
-    "question": "Which data type is used to access the byte-size Special Function Registers (SFR) in C?",
-    "options": [
-      "sbit",
-      "bit",
-      "sfr",
-      "unsigned char"
-    ],
-    "answer": "sfr",
-    "explanation": "To access the byte-size SFR registers, the 'sfr' data type is used."
+    category: "Lecture 03",
+    text: "The ........ data type allows access to single bits of bit-addressable RAM memory spaces, whereas `sbit` is used strictly for SFR registers.",
+    options: ["sbit", "bit", "sfr", "char"],
+    correctIndex: 1,
+    explanation: "`bit` is for RAM bit-addressable only, while `sbit` is for SFR bit-addressable only."
   },
   {
-    "id": 4,
-    "category": "Lecture 03",
-    "question": "Which data type allows access to single bits of bit-addressable memory spaces (20 \u2013 2FH)?",
-    "options": [
-      "bit",
-      "sbit",
-      "char",
-      "int"
-    ],
-    "answer": "bit",
-    "explanation": "The 'bit' data type allows access to single bits within the bit-addressable memory space."
+    category: "Lecture 03",
+    text: "For the 8051 microcontroller, the `sfr` data type represents 8-bit RAM addresses strictly in the range of ........",
+    options: ["00 - 7FH", "80 - FFH", "20 - 2FH", "00 - FFH"],
+    correctIndex: 1,
+    explanation: "The `sfr` data type accesses RAM addresses 80 – FFH only. Distractor math is used in other options."
   },
   {
-    "id": 5,
-    "category": "Lecture 03",
-    "question": "If the keyword 'unsigned' is not specified, what is the default for a char data type in Keil C compiler?",
-    "options": [
-      "unsigned char",
-      "signed char",
-      "unsigned int",
-      "signed int"
-    ],
-    "answer": "signed char",
-    "explanation": "C compilers use the signed char as the default if the keyword unsigned is not put."
+    category: "Lecture 03",
+    text: "The size of an `unsigned int` in 8051 C is 16 bits, which allows it to take a value from 0 to ........",
+    options: ["65536", "32767", "65535", "32768"],
+    correctIndex: 2,
+    explanation: "`unsigned int` is a 16-bit data type, taking a value from 0 to 65535. 65536 is a math distractor."
   },
   {
-    "id": 6,
-    "category": "Lecture 03",
-    "question": "What is the value range of a signed char?",
-    "options": [
-      "0 to 255",
-      "-128 to +127",
-      "-32768 to +32767",
-      "0 to 65535"
-    ],
-    "answer": "-128 to +127",
-    "explanation": "The signed char is an 8-bit data type that gives values from -128 to +127."
+    category: "Lecture 03",
+    text: "Which of the following is the correct syntax trap to include the 8051 header file in a C program?",
+    options: ["#include <8051.h>", "#include <reg51.h>", "#include <mcu51.h>", "#include <at89c51.h>"],
+    correctIndex: 1,
+    explanation: "#include <reg51.h> is the correct syntax. Spaces or wrong extensions are syntax traps."
   },
   {
-    "id": 7,
-    "category": "Lecture 03",
-    "question": "What is the value range of an unsigned char?",
-    "options": [
-      "0 to 255",
-      "-128 to +127",
-      "0 to 65535",
-      "-32768 to +32767"
-    ],
-    "answer": "0 to 255",
-    "explanation": "An unsigned char is an 8-bit data type with a value range from 0 to 255."
+    category: "Lecture 03",
+    text: "True or False: The `sbit` keyword allows access to the single bits of the bit-addressable RAM memory spaces 20 – 2FH.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "False. `sbit` allows access to single bits of the SFR registers, whereas `bit` accesses RAM memory spaces 20-2FH."
   },
   {
-    "id": 8,
-    "category": "Lecture 03",
-    "question": "What is the size and value range of an unsigned int?",
-    "options": [
-      "8-bit, 0 to 255",
-      "16-bit, 0 to 65535",
-      "16-bit, -32768 to +32767",
-      "8-bit, -128 to +127"
-    ],
-    "answer": "16-bit, 0 to 65535",
-    "explanation": "The unsigned int is a 16-bit data type that takes a value in the range of 0 to 65535 (0000 \u2013 FFFFH)."
+    category: "Lecture 03",
+    text: "The MSB ........ is used to represent the sign (- or +) in an 8-bit signed char data type.",
+    options: ["D0", "D7", "D8", "D15"],
+    correctIndex: 1,
+    explanation: "D7 is the MSB for an 8-bit data type, representing the sign."
   },
   {
-    "id": 9,
-    "category": "Lecture 03",
-    "question": "In signed data types, which bit is used to represent the sign (positive or negative)?",
-    "options": [
-      "LSB",
-      "MSB",
-      "The parity bit",
-      "The carry flag"
-    ],
-    "answer": "MSB",
-    "explanation": "The Most Significant Bit (MSB) is used to represent the sign (+ or -) in signed data types."
+    category: "Lecture 03",
+    text: "In 8051 C, the `signed int` uses exactly ........ bits for the magnitude of the number, excluding the sign bit.",
+    options: ["16", "15", "8", "7"],
+    correctIndex: 1,
+    explanation: "It uses 15 bits for the magnitude, and 1 bit (D15) for the sign. 16 is a math distractor."
   },
   {
-    "id": 10,
-    "category": "Lecture 03",
-    "question": "Which header file must be included to use standard SFR names like P1 and P2 without defining their addresses manually?",
-    "options": [
-      "<stdio.h>",
-      "<math.h>",
-      "<reg51.h> or <reg52.h>",
-      "<8051.h>"
-    ],
-    "answer": "<reg51.h> or <reg52.h>",
-    "explanation": "The reg51.h or reg52.h header file contains all the pre-defined SFR addresses so you can use names like P1 directly."
+    category: "Lecture 03",
+    text: "True or False: Ports P0 – P3 are bit-accessible but they are never byte-accessible.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "False. Ports P0 – P3 are byte-accessible and we use the P0 – P3 labels as defined in the header file."
   },
   {
-    "id": 11,
-    "category": "Lecture 03",
-    "question": "To configure an 8051 port pin as an input, what should be written to it?",
-    "options": [
-      "0",
-      "1",
-      "It is configured by default",
-      "High impedance"
-    ],
-    "answer": "1",
-    "explanation": "Writing a 1 to an 8051 port pin configures it as an input."
+    category: "Lecture 03",
+    text: "When burning code into the 8052 microcontroller, the ........ file must be uploaded to the programmer.",
+    options: ["C source code", "Executable image", "HEX file", "Disassembled Code"],
+    correctIndex: 2,
+    explanation: "The HEX file is sent to the programmer to burn into the microcontroller."
   },
   {
-    "id": 12,
-    "category": "Lecture 03",
-    "question": "To configure an 8051 port pin as an output, what is the recommended initialization value?",
-    "options": [
-      "0",
-      "1",
-      "0xFF",
-      "Floating"
-    ],
-    "answer": "0",
-    "explanation": "Writing a 0 to an 8051 port pin initializes it for output operations."
+    category: "Lecture 03",
+    text: "During the code building process, which tool specifically takes Object files (.o) and a Linker script (.ld) to produce an Executable image file?",
+    options: ["gcc compiler", "as (assembler)", "ld (linker)", "objcopy utility"],
+    correctIndex: 2,
+    explanation: "ld (linker) takes object files and a linker script to link them."
   },
   {
-    "id": 13,
-    "category": "Lecture 03",
-    "question": "In the building process, which tool converts C code into Assembly code?",
-    "options": [
-      "Assembler",
-      "Linker",
-      "Compiler",
-      "Object Copy"
-    ],
-    "answer": "Compiler",
-    "explanation": "The C Compiler converts the C source files into Assembly code."
+    category: "Lecture 03",
+    text: "The numerical value range for a `(signed) char` in 8051 C programming is from ........",
+    options: ["-128 to +127", "-127 to +128", "0 to 255", "-32768 to +32767"],
+    correctIndex: 0,
+    explanation: "The range is -128 to +127. Distractor math -127 to +128 is a common trap."
   },
   {
-    "id": 14,
-    "category": "Lecture 03",
-    "question": "Which tool collects multiple object files and assigns memory addresses using a script?",
-    "options": [
-      "Assembler",
-      "Linker",
-      "Compiler",
-      "Programmer"
-    ],
-    "answer": "Linker",
-    "explanation": "The Linker combines multiple object files and assigns absolute memory addresses."
+    category: "Lecture 03",
+    text: "To declare a single bit of Port 1 (P1.0) in C, which of the following is the exact syntax used?",
+    options: ["sfr MYBIT = 0x90;", "bit MYBIT = P1_0;", "sbit MYBIT = P1^0;", "#define MYBIT P1.0"],
+    correctIndex: 2,
+    explanation: "sbit MYBIT = P1^0; is the exact syntax. P1.0 or using bit instead of sbit are syntax traps."
   },
   {
-    "id": 15,
-    "category": "Lecture 03",
-    "question": "What is the role of the Linker Script (.ld file)?",
-    "options": [
-      "To convert Assembly to machine code",
-      "To define the memory ranges and divide Load view and Run view",
-      "To burn the hex file to the microcontroller",
-      "To map C code to Assembly for debugging"
-    ],
-    "answer": "To define the memory ranges and divide Load view and Run view",
-    "explanation": "The Linker script specifies memory boundaries and where code (ROM) and variables (RAM) reside."
+    category: "Lecture 03",
+    text: "True or False: The gcc compiler performs ONLY the link stage to output an Executable image file.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "False. The diagram shows gcc performing both (compile + link) stages."
   },
   {
-    "id": 16,
-    "category": "Lecture 03",
-    "question": "Where is the actual executing program code primarily stored (Load view) when the system is powered off?",
-    "options": [
-      "RAM",
-      "ROM",
-      "Registers",
-      "Cache"
-    ],
-    "answer": "ROM",
-    "explanation": "The code is written to ROM so that it is preserved when the device loses power."
+    category: "Lecture 03",
+    text: "In a C program, writing `P0=0xFF;` configures Port 0 to act as a(n) ........ port.",
+    options: ["Output", "Input", "Bidirectional", "Analog"],
+    correctIndex: 1,
+    explanation: "Writing 0xFF to a port makes it an input port."
   },
   {
-    "id": 17,
-    "category": "Lecture 03",
-    "question": "Which file format is ultimately burned into the 8051 microcontroller?",
-    "options": [
-      ".c",
-      ".obj",
-      ".hex",
-      ".lst"
-    ],
-    "answer": ".hex",
-    "explanation": "The HEX file is the final binary format containing machine code and memory addresses that is burned into the microcontroller."
+    category: "Lecture 03",
+    text: "To represent the sign in a 16-bit `signed int`, the MSB ........ is utilized.",
+    options: ["D7", "D8", "D15", "D16"],
+    correctIndex: 2,
+    explanation: "D15 is the MSB for a 16-bit signed int. D16 is distractor math."
   },
   {
-    "id": 18,
-    "category": "Lecture 03",
-    "question": "What is the purpose of the list file (.lst)?",
-    "options": [
-      "To be burned into the microcontroller",
-      "To map C code to Assembly for debugging and provide compilation information",
-      "To define memory segments",
-      "To store function libraries"
-    ],
-    "answer": "To map C code to Assembly for debugging and provide compilation information",
-    "explanation": "The list file helps developers debug by showing the C code mapped directly to generated Assembly."
+    category: "Lecture 03",
+    text: "True or False: A major disadvantage of C code is that it is highly non-portable to other microcontrollers.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "False. C code is highly portable to other microcontrollers with little or no modification."
   },
   {
-    "id": 19,
-    "category": "Lecture 03",
-    "question": "What specific letter in the microcontroller's part name (e.g., AT89S52) indicates support for SPI programming?",
-    "options": [
-      "A",
-      "C",
-      "S",
-      "P"
-    ],
-    "answer": "S",
-    "explanation": "The 'S' in parts like AT89S52 stands for SPI programming capability, allowing easy in-system programming."
+    category: "Lecture 03",
+    text: "The array declaration `char mynum[]={+1,-1,+2,-2};` implicitly allocates an array of type ........",
+    options: ["unsigned char", "signed char", "unsigned int", "signed int"],
+    correctIndex: 1,
+    explanation: "C compilers use the signed char as the default if we do not put the keyword unsigned."
   },
   {
-    "id": 20,
-    "category": "Lecture 03",
-    "question": "In Keil IDE, to generate a hex file, what option must be checked in the Output tab?",
-    "options": [
-      "Create HEX file",
-      "Generate Assembly",
-      "Build Object",
-      "Compile to Binary"
-    ],
-    "answer": "Create HEX file",
-    "explanation": "You must check 'Create HEX file' in the Output options to instruct the toolchain to generate the .hex file."
+    category: "Lecture 03",
+    text: "During the firmware building process, the tool ........ produces the Disassembled Code (.lst) from the Executable image file.",
+    options: ["objcopy", "gcc", "objdump", "ld"],
+    correctIndex: 2,
+    explanation: "The diagram explicitly shows objdump generating Disassembled Code (.lst)."
   },
   {
-    "id": 21,
-    "category": "Lecture 03",
-    "question": "What components are necessary for the 8051 hardware reset circuit?",
-    "options": [
-      "Inductor and Capacitor",
-      "Resistor and Capacitor",
-      "Two resistors",
-      "Diode and Capacitor"
-    ],
-    "answer": "Resistor and Capacitor",
-    "explanation": "A standard RC (Resistor-Capacitor) circuit is used to provide the reset signal during power-up."
+    category: "Lecture 03",
+    text: "What is the primary function of `objcopy` during the code building process?",
+    options: ["It links Object files", "It produces the Binary program file", "It compiles C files", "It assembles ASM files"],
+    correctIndex: 1,
+    explanation: "objcopy generates the Binary program file (.bin) from the Executable image file."
   },
   {
-    "id": 22,
-    "category": "Lecture 03",
-    "question": "What is the minimum duration the reset pin must be held high to effectively reset the 8051?",
-    "options": [
-      "1 machine cycle",
-      "2 machine cycles",
-      "4 machine cycles",
-      "8 machine cycles"
-    ],
-    "answer": "2 machine cycles",
-    "explanation": "The reset pin must be high for at least 2 machine cycles to successfully reset the microcontroller."
+    category: "Lecture 03",
+    text: "True or False: The `bit` data type can be freely used to access the byte-size SFR registers.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "False. The `sfr` data type is used to access the byte-size SFR registers, while `bit` is for RAM."
   },
   {
-    "id": 23,
-    "category": "Lecture 03",
-    "question": "Which tool can be used as an ISP programmer to transfer the hex file from the PC to the microcontroller?",
-    "options": [
-      "A multimeter",
-      "An oscilloscope",
-      "An Arduino board",
-      "A function generator"
-    ],
-    "answer": "An Arduino board",
-    "explanation": "An Arduino can be configured as an In-System Programmer (ISP) to burn the hex file to the 8051 microcontroller."
+    category: "Lecture 03",
+    text: "In the Keil IDE, when configuring the output for an 8051 project, the exact HEX Format selected to create the hex file is ........",
+    options: ["HEX-80", "HEX-86", "HEX-386", "HEX-51"],
+    correctIndex: 0,
+    explanation: "The screenshot shows the HEX Format selected as 'HEX-80' under Options for Target."
+  },
+  {
+    category: "Lecture 03",
+    text: "........ is the specific Xtal (MHz) value correctly configured in the Keil project options for the AT89S52 microcontroller example.",
+    options: ["11.0592", "12.0000", "16.0000", "8.0000"],
+    correctIndex: 0,
+    explanation: "The screenshot of the Keil Options for Target shows Xtal (MHz) as precisely 11.0592. Other values are distractor math."
+  },
+  {
+    category: "Lecture 03",
+    text: "True or False: The Hex File is transferred directly from the Text Editor to the Monitor ROM via a Serial Cable.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "False. The Hex file must first be generated by a Compiler/Assembler, and then sent via a Programmer or Terminal Emulator to the microcontroller."
   }
-]
-;
+];
+

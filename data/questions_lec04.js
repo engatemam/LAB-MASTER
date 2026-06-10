@@ -1,123 +1,287 @@
 const lec04Data = [
   {
-    "id": 1,
-    "category": "Lecture 04",
-    "question": "What are the three terminals of a Bipolar Junction Transistor (BJT)?",
-    "options": ["Source, Gate, Drain", "Base, Collector, Emitter", "Anode, Cathode, Gate", "Input, Output, Ground"],
-    "answer": "Base, Collector, Emitter",
-    "explanation": "A BJT has three terminals: the Base, the Collector, and the Emitter. Current applied to the base is amplified to control the current between the collector and emitter."
+    category: "Lecture 04",
+    text: "........ configuration of BJT is predominantly utilized in computer logic and switching circuits rather than audio amplification.",
+    options: [
+      "Common Emitter",
+      "Common Collector",
+      "Common Base",
+      "Common Gate"
+    ],
+    correctIndex: 0,
+    explanation: "Common Emitter is the most widely used configuration for logic and switching, often tested with tricky spellings like 'Emmiter'."
   },
   {
-    "id": 2,
-    "category": "Lecture 04",
-    "question": "Which BJT configuration is most commonly used in computer and control circuits?",
-    "options": ["Common Base", "Common Collector", "Common Emitter", "Common Gate"],
-    "answer": "Common Emitter",
-    "explanation": "According to the lecture, the Common Emitter configuration is the most widely used in computer and control circuits, even though it may not be ideal for audio amplification."
+    category: "Lecture 04",
+    text: "When verifying BJT connections using a multimeter, the ........ setting is used to determine the Beta value, which typically falls between ........ for valid configurations.",
+    options: [
+      "hFE, 100 and 200",
+      "hIE, 50 and 80",
+      "hOE, 10 and 20",
+      "hRE, 200 and 300"
+    ],
+    correctIndex: 0,
+    explanation: "Capitalization matters (hFE) and the normal Beta value for these transistors is between 100 and 200."
   },
   {
-    "id": 3,
-    "category": "Lecture 04",
-    "question": "Which of the following are examples of commonly used NPN transistors mentioned in the lecture?",
-    "options": ["BC547 and 2N2222", "PC817 and 2N2222", "BC547 and PC817", "AT89S52 and 8051"],
-    "answer": "BC547 and 2N2222",
-    "explanation": "The BC547 and 2N2222 are two of the most famous and widely available NPN transistors in the market."
+    category: "Lecture 04",
+    text: "True/False: An optocoupler strictly functions by using an external electrical current applied directly to the base of its internal phototransistor to suppress interference and isolate circuits.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "False. The optical light from the LED replaces the electrical base current to activate the phototransistor, achieving isolation."
   },
   {
-    "id": 4,
-    "category": "Lecture 04",
-    "question": "What setting on a multimeter is used to test a transistor and measure its Beta (current gain)?",
-    "options": ["VDC", "hFE", "Ohms", "Continuity"],
-    "answer": "hFE",
-    "explanation": "To test a transistor and find its Beta value (which is usually between 100 and 200), the multimeter should be set to the hFE option."
+    category: "Lecture 04",
+    text: "The famous optocoupler IC frequently used in mobile chargers and interface circuits is the ........ , which typically comes in a ........ -pin package.",
+    options: [
+      "PC817, 4",
+      "LM358, 8",
+      "NE555, 8",
+      "ULN2003, 16"
+    ],
+    correctIndex: 0,
+    explanation: "PC817 is the most famous, usually found in a 4-pin Dual-in-line or SMD package. Distractor math (871) and pin counts (6)."
   },
   {
-    "id": 5,
-    "category": "Lecture 04",
-    "question": "What are the primary internal components of an Optocoupler?",
-    "options": ["A relay coil and a metal armature", "An LED and a photodiode or phototransistor", "A capacitor and an inductor", "A BJT and a MOSFET"],
-    "answer": "An LED and a photodiode or phototransistor",
-    "explanation": "An optocoupler consists of an LED optically coupled to a photodiode or a phototransistor within a single package to provide circuit isolation."
+    category: "Lecture 04",
+    text: "True/False: While relays provide mechanical isolation and are faster than optocouplers, they handle significantly lower voltages and currents, making them suitable only for micro-level switching.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "False. Relays are slower (mechanical) but handle higher voltages and currents compared to optocouplers. Definition is completely twisted."
   },
   {
-    "id": 6,
-    "category": "Lecture 04",
-    "question": "What is the main function of an Optocoupler in a circuit?",
-    "options": ["To amplify high-frequency signals", "To store electrostatic charge", "To provide electrical isolation between input and output", "To convert AC to DC"],
-    "answer": "To provide electrical isolation between input and output",
-    "explanation": "Optocouplers are primarily used for circuit isolation, suppressing interference, and high voltage separation."
+    category: "Lecture 04",
+    text: "A standard electromagnetic Relay typically contains ........ pins in total, precisely divided into ........ for the coil (input) and ........ for the contacts (output).",
+    options: [
+      "5, 2, 3",
+      "5, 3, 2",
+      "6, 2, 4",
+      "4, 2, 2"
+    ],
+    correctIndex: 0,
+    explanation: "5 pins total: 2 for the coil (input) and 3 for the output contacts (COM, NO, NC). Distractor math trap."
   },
   {
-    "id": 7,
-    "category": "Lecture 04",
-    "question": "Which of the following is a widely used Optocoupler IC model mentioned in the lecture?",
-    "options": ["PC817", "BC547", "2N2222", "AT89S52"],
-    "answer": "PC817",
-    "explanation": "The PC817 is a very famous optocoupler model found in many devices, including mobile chargers."
+    category: "Lecture 04",
+    text: "In a relay's unenergized (default) state, the ........ pin is directly connected to the ........ pin, allowing current to flow if a circuit is attached.",
+    options: [
+      "Common, Normally Closed",
+      "Common, Normally Open",
+      "Coil, Normally Closed",
+      "Armature, Normally Open"
+    ],
+    correctIndex: 0,
+    explanation: "The Common (COM) is connected to Normally Closed (NC) by default. Watch out for 'Normaly' syntax trap."
   },
   {
-    "id": 8,
-    "category": "Lecture 04",
-    "question": "How does a Relay differ from an Optocoupler in terms of speed and power handling?",
-    "options": ["A relay is faster but handles less power.", "A relay is slower but handles higher currents and voltages.", "A relay is faster and handles more power.", "A relay is slower and handles less power."],
-    "answer": "A relay is slower but handles higher currents and voltages.",
-    "explanation": "Because a relay is an electro-mechanical device, it is slower than an optocoupler. However, it can handle much higher loads (current and voltage)."
+    category: "Lecture 04",
+    text: "To successfully interface a Relay with an 8051 microcontroller, a ........ is strictly required because the microcontroller's output current is generally too weak to energize the relay coil directly.",
+    options: [
+      "Transistor driver",
+      "Voltage regulator",
+      "Transformer driver",
+      "Operational amplifier"
+    ],
+    correctIndex: 0,
+    explanation: "A transistor driver amplifies the weak microcontroller current to a sufficient level to drive the relay coil. Syntax trap on 'Transister'."
   },
   {
-    "id": 9,
-    "category": "Lecture 04",
-    "question": "How many pins does a standard Relay typically have, and how are they divided?",
-    "options": ["3 pins: Base, Collector, Emitter", "4 pins: 2 for input, 2 for output", "5 pins: 2 for the input coil, 3 for output (Common, NC, NO)", "6 pins: 3 for input, 3 for output"],
-    "answer": "5 pins: 2 for the input coil, 3 for output (Common, NC, NO)",
-    "explanation": "A standard relay has 5 pins: two for the input coil to generate the magnetic field, and three for the output contacts (Common, Normally Closed, and Normally Open)."
+    category: "Lecture 04",
+    text: "True/False: In 8051 C programming for practical exams, it is absolutely mandatory to write the full definition body of the Delay function before the main() function to avoid syntax compilation errors.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "False. Dr. Emad explicitly mentioned that a function prototype before main() is sufficient; the full definition is not mandatory."
   },
   {
-    "id": 10,
-    "category": "Lecture 04",
-    "question": "In a relay, which terminal is the 'Common' pin normally connected to when the coil is NOT energized?",
-    "options": ["Normally Open (NO)", "Normally Closed (NC)", "Ground", "VCC"],
-    "answer": "Normally Closed (NC)",
-    "explanation": "When no current flows through the relay coil, the 'Common' pin rests against the 'Normally Closed' (NC) pin."
+    category: "Lecture 04",
+    text: "In order to configure an 8051 microcontroller pin strictly as an INPUT to read a push button, the pin MUST first be initialized with a logic ........ .",
+    options: [
+      "1",
+      "0",
+      "0xFF",
+      "High-Z"
+    ],
+    correctIndex: 0,
+    explanation: "To use a pin as input in the 8051, a logic 1 must be written to it first to configure its internal latch."
   },
   {
-    "id": 11,
-    "category": "Lecture 04",
-    "question": "Why is a transistor usually required to interface a relay with an 8051 microcontroller?",
-    "options": ["To step down the voltage", "To convert AC to DC", "Because the microcontroller's output current is too weak to drive the relay coil", "Because the relay requires an optical signal"],
-    "answer": "Because the microcontroller's output current is too weak to drive the relay coil",
-    "explanation": "The output current from the 8051 pins is generally too weak to energize a relay coil directly. A driver transistor is used to amplify the current."
+    category: "Lecture 04",
+    text: "Conversely, to initialize an 8051 microcontroller pin strictly as an OUTPUT (e.g., to drive an LED), it is standard practice to initialize the pin with a logic ........ .",
+    options: [
+      "0",
+      "1",
+      "0x00",
+      "Low-Z"
+    ],
+    correctIndex: 0,
+    explanation: "Initializing with a logic 0 is standard for preparing a pin as an output, especially when sinking current."
   },
   {
-    "id": 12,
-    "category": "Lecture 04",
-    "question": "When interfacing an 8051 microcontroller, what must be done to a pin before using it as an input?",
-    "options": ["It must be set to 0", "It must be set to 1", "It must be connected to an optocoupler", "It must be connected to a relay"],
-    "answer": "It must be set to 1",
-    "explanation": "To configure a pin or port on the 8051 as an input, a '1' must be written to it first (e.g., P0 = 0xFF or setting the specific bit to 1)."
+    category: "Lecture 04",
+    text: "True/False: When interfacing the 8051 microcontroller with external components like LEDs or Optocouplers, it is strongly recommended to configure the microcontroller as a 'source' rather than a 'sink' to avoid interface problems.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "False. The lecturer emphasized it is better to 'sink' current (output 0 to turn ON) rather than 'source' it. Twisted definition."
   },
   {
-    "id": 13,
-    "category": "Lecture 04",
-    "question": "In a Pull-Up resistor circuit for a push button, what is the default logic state read by the microcontroller when the button is NOT pressed?",
-    "options": ["Logic 0", "Logic 1", "High Impedance", "Floating"],
-    "answer": "Logic 1",
-    "explanation": "In a pull-up circuit, a resistor connects the pin to VCC. Thus, the default state is Logic 1. Pressing the button connects the pin to Ground, making it Logic 0."
+    category: "Lecture 04",
+    text: "In a standard ........ circuit configuration, the default logic state read by the microcontroller when the push button is NOT pressed is ........ .",
+    options: [
+      "Pull-up, 1",
+      "Pull-down, 1",
+      "Pull-up, 0",
+      "Pull-down, High-Z"
+    ],
+    correctIndex: 0,
+    explanation: "A pull-up resistor connects the pin to VCC, making the default unpressed state logic 1."
   },
   {
-    "id": 14,
-    "category": "Lecture 04",
-    "question": "When integrating an optocoupler with an 8051, why is it recommended to configure the microcontroller as a 'sink' rather than a 'source'?",
-    "options": ["To increase the operating speed", "To minimize memory usage", "To avoid problems with current limitations when driving the LED", "To allow the optocoupler to work without power"],
-    "answer": "To avoid problems with current limitations when driving the LED",
-    "explanation": "The lecture notes that it is safer and more reliable to use the microcontroller to sink current (outputting 0 to turn on the component) rather than sourcing current, avoiding potential interfacing problems."
+    category: "Lecture 04",
+    text: "The precise syntax ........ is used in Keil C to declare and access a single bit of a Special Function Register (SFR), such as an individual port pin.",
+    options: [
+      "sbit",
+      "sfr",
+      "bit",
+      "pin"
+    ],
+    correctIndex: 0,
+    explanation: "'sbit' is the exact Keil C keyword. Syntax traps: Sbit, s_bit, bit."
   },
   {
-    "id": 15,
-    "category": "Lecture 04",
-    "question": "What is the purpose of the flyback diode placed in parallel with the relay coil?",
-    "options": ["To emit light when the relay is on", "To amplify the current for the transistor", "To protect the circuit from reverse voltage spikes when the relay turns off", "To increase the relay's switching speed"],
-    "answer": "To protect the circuit from reverse voltage spikes when the relay turns off",
-    "explanation": "A diode is typically placed across the relay coil to protect the driving transistor and the microcontroller from reverse voltage spikes generated when the coil's magnetic field collapses."
+    category: "Lecture 04",
+    text: "True/False: If an external pull-down resistor circuit is connected to an 8051 input pin, pressing the connected push button will force a logic 0 into the microcontroller.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "False. In a pull-down circuit, the default is 0. Pressing the button connects it to VCC, supplying a logic 1."
+  },
+  {
+    category: "Lecture 04",
+    text: "The commonly used general-purpose NPN transistors mentioned in the lecture for switching and driving applications are ........ and ........ .",
+    options: [
+      "BC547, 2N2222",
+      "TIP120, IRFZ44N",
+      "LM317, 7805",
+      "NE555, LM358"
+    ],
+    correctIndex: 0,
+    explanation: "BC547 and 2N2222 are correct. Distractor math traps with transposed digits like BC574 or missing digits 2N222."
+  },
+  {
+    category: "Lecture 04",
+    text: "In an optocoupler structure, the internal components consist of an LED optically coupled with a ........ or a ........ inside a single package.",
+    options: [
+      "Photodiode, Phototransistor",
+      "Photodiode, Photoresistor",
+      "Phototransistor, Photothyristor",
+      "Photodiode, Photothyristor"
+    ],
+    correctIndex: 0,
+    explanation: "Direct quote from the lecture slide: 'coupled to a photodiode or a phototransistor in a single package.'"
+  },
+  {
+    category: "Lecture 04",
+    text: "True/False: When an optocoupler's LED cathode is connected to an 8051 pin (sink configuration), outputting a logic 1 from the microcontroller turns ON the internal LED.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "False. Outputting logic 1 means the pin is at VCC. Since the anode is also at VCC, the potential difference is 0, so the LED is OFF."
+  },
+  {
+    category: "Lecture 04",
+    text: "To correctly assign the name 'IN' to the first bit of Port 0 and 'OUT' to the last bit of Port 2 in Keil C, one MUST write: ........ .",
+    options: [
+      "sbit IN=P0^0; sbit OUT=P2^7;",
+      "sbit IN=P0^1; sbit OUT=P2^8;",
+      "sbit IN=P0.0; sbit OUT=P2.7;",
+      "sfr IN=0x80; sfr OUT=0xA0;"
+    ],
+    correctIndex: 0,
+    explanation: "P0^0 and P2^7 are the exact syntax for the 1st and 8th bits. 'Sbit' and dot notation are syntax traps."
+  },
+  {
+    category: "Lecture 04",
+    text: "An optocoupler is extensively used in electronic circuits primarily for ........ in data communication and for high voltage separation.",
+    options: [
+      "Suppressing interference",
+      "Amplifying signals",
+      "Generating oscillations",
+      "Regulating voltage"
+    ],
+    correctIndex: 0,
+    explanation: "'Suppressing interference' is the exact slide terminology. Watch out for spelling 'Supressing' trap."
+  },
+  {
+    category: "Lecture 04",
+    text: "True/False: The 'Normally Open' (NO) pin of a relay is physically connected to the 'Normally Closed' (NC) pin when a sufficient magnetic field is generated by the relay coil.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "False. The COM pin moves from NC to NO. NO does not connect to NC. Tricky twisted definition."
+  },
+  {
+    category: "Lecture 04",
+    text: "In the context of a relay module driven by a BJT, placing a ........ in parallel with the relay coil is crucial to protect the transistor from back EMF.",
+    options: [
+      "Diode",
+      "Resistor",
+      "Capacitor",
+      "Inductor"
+    ],
+    correctIndex: 0,
+    explanation: "A freewheeling/flyback diode is used in parallel with the coil for reverse current protection."
+  },
+  {
+    category: "Lecture 04",
+    text: "True/False: According to the lecture, the most famous optocoupler (PC817) exclusively comes in a 6-pin Dual-in-line package for maximum isolation.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "False. PC817 is primarily a 4-pin device. The definition is twisted with distractor numbers."
+  },
+  {
+    category: "Lecture 04",
+    text: "A Bipolar Junction Transistor (BJT) is a semiconductor device that consists of ........ alternating layers of P-type and N-type materials.",
+    options: [
+      "3",
+      "2",
+      "4",
+      "5"
+    ],
+    correctIndex: 0,
+    explanation: "A BJT consists of exactly 3 layers (NPN or PNP)."
+  },
+  {
+    category: "Lecture 04",
+    text: "In a typical Relay structure, when current flows through the insulated coil, the generated magnetic field specifically attracts the metal ........ to mechanically switch the contact point.",
+    options: [
+      "Armature",
+      "Stator",
+      "Core",
+      "Commutator"
+    ],
+    correctIndex: 0,
+    explanation: "The magnetic field attracts the armature. 'Armeture' is a syntax trap, and the core is the stationary part."
   }
-]
-;
+];
+

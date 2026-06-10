@@ -1,115 +1,96 @@
 const notesLec06 = [
   {
-    "title": "Introduction to Serial Communication: Parallel vs Serial",
-    "conceptOverview": "يناقش الدكتور في هذا الجزء الفرق بين نقل البيانات بشكل متوازي (Parallel) وبشكل تسلسلي (Serial). يوضح أن النقل المتوازي، رغم كونه أسرع بكثير لنقله عدة بتات في نفس الوقت (مثل 8 بتات)، إلا أنه يتطلب عددًا كبيرًا من الأسلاك (Pins) مما يزيد من التكلفة والتعقيد في التوصيل مع الأجهزة الخارجية. لذلك، مع تطور سرعات الأجهزة، أصبح النقل التسلسلي هو المعيار السائد (مثل USB) لأنه يستخدم مسارات أقل، حيث يتم إرسال البتات بشكل متتابع، بت تلو الآخر.",
-    "technicalDeepDive": "Data communication fundamentally occurs in two modes: Parallel and Serial. Parallel transfer sends multiple bits simultaneously using multiple wires (e.g., an 8-bit data bus), offering high speed but requiring high pin count and complex interfacing hardware. Serial transfer sends bits sequentially over a single line. Despite initially being slower, modern serial protocols (USB, I2C, SPI) have surpassed parallel interfaces in speed and efficiency due to reduced crosstalk and simplified cabling. Serial communication is further categorized into Synchronous (sharing a common clock signal between sender and receiver) and Asynchronous (no shared clock). The 8051 relies on UART (Universal Asynchronous Receiver-Transmitter) for asynchronous communication, as opposed to USART which adds synchronous capabilities.",
-    "profFocus": "يركز الدكتور على أن معظم الأجهزة الحديثة (مثل الحواسيب المحمولة) تخلت عن النقل المتوازي وأصبحت تعتمد بالكامل على النقل التسلسلي (مثل منافذ USB) بسبب كفاءته وتوفيره لعدد الأطراف، مشيراً إلى أن النقل المتوازي أصبح من الماضي في أجهزة الكمبيوتر الحديثة.",
-    "mermaidCode": `graph LR;
-    subgraph Parallel Transfer
+    "title": "Parallel vs. Serial Communication Basics",
+    "conceptOverview": "يناقش الدكتور الطرق الأساسية لنقل البيانات بين الأجهزة: النقل المتوازي (Parallel) والنقل التسلسلي (Serial). النقل المتوازي يرسل عدة بتات (مثل 8 بت) في نفس الوقت، لكن يعيبه أنه يحتاج إلى عدد كبير من الأسلاك مما يزيد من التكلفة ويجعله غير عملي للمسافات الطويلة. بالمقابل، النقل التسلسلي يرسل بت واحد في كل مرة عبر سلك واحد، مما يقلل التكلفة والتعقيد. ينقسم النقل التسلسلي إلى متزامن (Synchronous) يعتمد على إشارة ساعة مشتركة، وغير متزامن (Asynchronous) لا يعتمد على إشارة ساعة بل على سرعة متفق عليها مسبقاً (Baud Rate).",
+    "technicalDeepDive": "Data transfer between computers and microcontrollers fundamentally occurs in two ways: Parallel and Serial. \n\n1. **Parallel Transfer**: Multiple bits (e.g., 8, 16, or 32 bits) are transmitted simultaneously over multiple data lines. While inherently faster over short distances (like internal CPU buses), its primary disadvantage over long distances is the requirement of more wires, making it bulky, expensive, and susceptible to crosstalk and clock skew.\n\n2. **Serial Transfer**: Data is transmitted bit by bit over a single line. It requires fewer wires, reducing physical complexity and cost, making it ideal for long-distance communication.\n\nSerial communication is further classified into:\n- **Synchronous**: Relies on a shared clock signal between the sender and receiver to synchronize data sampling.\n- **Asynchronous**: Does not use a shared clock. Instead, it relies on predefined communication parameters (Baud Rate) and data framing (Start and Stop bits) to synchronize the transmission. In standard UART terminology, the idle state of the line is known as 'Mark' (logic 1 or high), and the active/start state is 'Space' (logic 0 or low).",
+    "profFocus": "يركز الدكتور على أن النقل التسلسلي هو الخيار الأمثل للمسافات الطويلة، وأن فهم الفرق بين 'Mark' (Logic 1) و 'Space' (Logic 0) هو حجر الأساس لفهم حالة خط النقل في وضع السكون (Idle) وأثناء الإرسال.",
+    "mermaidCode": `graph TD
+    subgraph Parallel
         S1["Sender"] -- "Bit 0" --> R1["Receiver"]
         S1 -- "Bit 1" --> R1
         S1 -- "Bit 7" --> R1
     end
-    subgraph Serial Transfer
+    subgraph Serial
         S2["Sender"] -- "Bits 0-7 sequentially" --> R2["Receiver"]
-    end`
+    end
+    subgraph Timing
+        A["Synchronous (Shared Clock)"]
+        B["Asynchronous (No Clock, uses Framing)"]
+    end`,
+    "imageDesc": "يوضح هذا المخطط الفروق الأساسية بين أنواع الاتصال. في القسم الأول (Parallel)، نرى كيف يتم إرسال البتات من 0 إلى 7 بشكل متوازٍ عبر خطوط متعددة بين المرسل والمستقبل. في القسم الثاني (Serial)، يتم إرسال البتات بشكل متسلسل عبر خط واحد. أما القسم الثالث (Timing)، فيبين تقسيم الاتصال التسلسلي إلى متزامن يعتمد على إشارة ساعة مشتركة، وغير متزامن يعتمد على إطار البيانات بدون إشارة ساعة."
   },
   {
-    "title": "Asynchronous Communication, Framing, and UART",
-    "conceptOverview": "يشرح الدكتور كيفية عمل النقل التسلسلي غير المتزامن (Asynchronous) باستخدام بروتوكول UART. بما أنه لا توجد إشارة مزامنة (Clock)، يجب تغليف البيانات بما يسمى 'Framing' لكي يتعرف المستقبل على بداية ونهاية البيانات. يتكون الإطار من 'Start Bit' بقيمة 0، ثم البيانات (غالباً 8 بتات)، ثم 'Stop Bit' أو أكثر بقيمة 1. قبل البدء يكون الخط في حالة 'Mark' أي 1، وبعد الانتهاء يعود لـ 'Space'.",
-    "technicalDeepDive": "In asynchronous serial communication, there is no shared clock, meaning the receiver must independently sample the incoming data. This is achieved through data 'framing'. An 8-bit character is encapsulated by a Start bit (always Low, 0) and one or more Stop bits (always High, 1). The idle state of the transmission line is High (Logic 1), known as 'Mark'. The transition from High to Low signals the Start bit, preparing the receiver to sample the subsequent bits. The Stop bit ensures a transition back to the High state, completing the frame. The total frame length is typically 10 bits (1 start + 8 data + 1 stop). The simplest PC-to-microcontroller connection requires only 3 pins: Transmit (TxD), Receive (RxD), and Ground (GND). Transfer speed is measured in bps (bits per second) or Baud Rate.",
-    "profFocus": "يؤكد الدكتور على أهمية فهم مكونات الـ Frame (Start bit = 0, Stop bit = 1) وأن هذه البتات تضاف تلقائياً بواسطة هاردوير الـ UART، ولا يتدخل المبرمج في وضعها يدوياً.",
+    "title": "UART, USART, and Asynchronous Framing",
+    "conceptOverview": "يشرح الدكتور بروتوكولات UART و USART، وكيفية تكوين إطار البيانات (Framing) في النقل غير المتزامن. نظراً لغياب إشارة الساعة، يتم تغليف البيانات بـ Start Bit (قيمته 0) للإعلان عن بداية البيانات، و Stop Bit (قيمته 1) للإعلان عن نهايتها. كما يناقش التوصيل الفعلي للـ UART والذي يحتاج إلى 3 أطراف فقط (TxD, RxD, Ground). لتوصيل الميكروكنترولر بحاسوب حديث، نستخدم محول (USB to Serial) ونعكس أطراف الإرسال والاستقبال، ثم نستخدم برامج مثل PuTTY أو TeraTerm للتواصل.",
+    "technicalDeepDive": "The hardware handling asynchronous serial communication is the **UART** (Universal Asynchronous Receiver-transmitter). A related protocol, **USART** (Universal Synchronous-Asynchronous Receiver-transmitter), can operate in both synchronous and asynchronous modes.\n\n**Framing**: Because asynchronous communication lacks a shared clock, data must be encapsulated in a frame for proper detection. The standard frame consists of:\n- **Start Bit**: Always a logic 0 (Low / Space). It signals the receiver that a new data packet is arriving, causing a transition from the idle High state to Low.\n- **Data Bits**: Usually 8 bits, transmitted LSB first.\n- **Stop Bit(s)**: Always a logic 1 (High / Mark). It signals the end of the data packet and ensures the line returns to the idle state.\n\n**Physical Connection**: The simplest physical connection for a PC to communicate with a microcontroller via UART requires only three pins: **TxD** (Transmit Data), **RxD** (Receive Data), and **Ground** (Common ground is mandatory for voltage reference).\n\n**Modern Interfacing**: Modern PCs lack built-in RS-232/UART COM ports. To bridge this gap, a **USB to Serial UART module** is required. The connection must be cross-coupled: the microcontroller's TxD connects to the module's RxD, and the microcontroller's RxD connects to the module's TxD. Software terminal emulators like **PuTTY** or **TeraTerm** are used on the PC to open a virtual COM port and interface with the microcontroller.",
+    "profFocus": "يؤكد الدكتور بشدة على قاعدة التوصيل العكسي (TxD to RxD and RxD to TxD) عند استخدام محول USB، مشيراً إلى أن الخطأ في هذا التوصيل هو السبب الأكثر شيوعاً لعدم استجابة الدوائر العملية. كما يبرز أهمية برامج الـ Terminal كأداة تشخيص أساسية للمهندس.",
     "mermaidCode": `sequenceDiagram
-    participant Line as TxD Line State
-    Note over Line: Idle State (Mark = 1)
-    Line->>Line: Start Bit (0)
-    Note over Line: Data Bit 0 (LSB)
-    Note over Line: Data Bits 1-6
-    Note over Line: Data Bit 7 (MSB)
-    Line->>Line: Stop Bit (1)
-    Note over Line: Idle State (Mark = 1)`
+    participant PC as "USB-UART Module (PC)"
+    participant MCU as "8051 Microcontroller"
+    Note over PC, MCU: 3-Wire Connection
+    PC-->>MCU: Common Ground
+    MCU->>PC: MCU TxD connects to PC RxD
+    PC->>MCU: PC TxD connects to MCU RxD
+    Note over MCU: Framing Process
+    MCU->>MCU: Line Idle (Mark = 1)
+    MCU->>MCU: Start Bit (Space = 0)
+    MCU->>MCU: 8 Data Bits
+    MCU->>MCU: Stop Bit (Mark = 1)`,
+    "imageDesc": "يوضح هذا المخطط التتابعي كيفية توصيل وتشغيل واجهة UART. يبدأ بتوضيح التوصيل ثلاثي الأسلاك بين الميكروكنترولر (8051) ومحول USB-UART في الحاسوب، حيث يتم توصيل الأرضي المشترك، وربط خط الإرسال (TxD) من الميكروكنترولر بخط الاستقبال (RxD) في الحاسوب والعكس. ثم يشرح المخطط عملية تغليف البيانات (Framing Process)، بدءاً من حالة السكون (Mark = 1)، مروراً ببت البداية (Space = 0)، ثم 8 بتات من البيانات، وأخيراً بت النهاية (Mark = 1)."
   },
   {
-    "title": "Baud Rate Calculation and 8051 Timers",
-    "conceptOverview": "يتطرق الدكتور إلى السرعات القياسية (Baud Rates) المستخدمة في التواصل التسلسلي، مثل 9600 و 4800. يشرح بالتفصيل كيف يحسب الميكروكنترولر هذه السرعات. للوصول لهذه السرعات القياسية، يجب استخدام كريستالة بتردد 11.0592 ميجاهرتز تحديداً. يتم قسمة هذا التردد على 12 للحصول على تردد الآلة (Machine Cycle)، ثم يقسم على 32 داخل دائرة الـ UART، فينتج تردد قدره 28800 هرتز. هذا الرقم يستخدم لتحديد القيمة السالبة التي ستوضع في مسجل Timer 1 للوصول للـ Baud Rate المطلوب.",
-    "technicalDeepDive": "The 8051's UART requires a precise baud rate to synchronize with external devices. To achieve standard PC baud rates (e.g., 9600, 4800, 2400), an exact crystal oscillator frequency of 11.0592 MHz must be used. The hardware divides this frequency by 12 to yield the machine cycle frequency (11.0592 MHz / 12 = 921.6 kHz). For UART operations, this frequency is further divided by 32, resulting in exactly 28,800 Hz. Timer 1, configured in Mode 2 (8-bit auto-reload), is utilized as the baud rate generator. The TH1 register is loaded with a calculated value: TH1 = -(28800 / Desired Baud Rate). For example, for 9600 baud, TH1 = -(28800 / 9600) = -3 (which is 0xFD in hexadecimal). For 4800 baud, TH1 = -6 (0xFA). For 2400 baud, TH1 = -12 (0xF4).",
-    "profFocus": "يُحذر الدكتور بشدة من استخدام أي تردد كريستالة آخر غير 11.0592 ميجاهرتز إذا أردت التواصل مع أجهزة الـ PC، لأن أي رقم آخر (مثل 12 ميجاهرتز) سيؤدي إلى إنتاج Baud Rates غير دقيقة بنسبة خطأ عالية، مما يتسبب في إرسال أو استقبال بيانات غير مفهومة (Garbage data).",
-    "mermaidCode": `graph TD;
-    A["Crystal Oscillator 11.0592 MHz"] --> B["Divide by 12"];
-    B --> C["Machine Cycle 921.6 kHz"];
-    C --> D["Divide by 32"];
-    D --> E["UART Base Frequency 28800 Hz"];
-    E --> F["Divide by Desired Baud Rate e.g. 9600"];
-    F --> G["Timer TH1 Reload Value = 3 -> loaded as -3"]`
+    "title": "8051 UART Registers: SBUF and SCON",
+    "conceptOverview": "يتناول هذا الجزء المسجلات المخصصة للـ UART في الـ 8051. مسجل SBUF هو وعاء يحمل البيانات (8 بت) المراد إرسالها أو التي تم استقبالها. أما مسجل SCON فهو لوحة التحكم التي تحدد وضع التشغيل (Mode)، وتفعل خاصية الاستقبال (REN)، وتدير بتات البيانات التاسعة (TB8/RB8)، وتحتوي على أعلام المقاطعة (TI و RI).",
+    "technicalDeepDive": "The 8051 UART heavily relies on two 8-bit Special Function Registers:\n\n1. **SBUF (Serial Buffer)**: This register is used solely to hold data for serial communication. Physically, it acts as two distinct registers: one for writing (transmit buffer) and one for reading (receive buffer). Writing a byte to SBUF automatically initiates the framing and transmission process.\n\n2. **SCON (Serial Control)**: Used to program the start bit, stop bit, data bits, and operational modes.\nKey bits in SCON include:\n- **SM0 and SM1**: Mode selection bits. Setting SM0=0 and SM1=1 selects **Mode 1**, which is the standard 8-bit data framing with 1 start bit and 1 stop bit.\n- **SM2**: Primarily utilized in Modes 2 and 3 for multiprocessor communication environments.\n- **REN (Receive Enable)**: Must be set to 1 to enable the 8051 to receive serial data.\n- **TB8 and RB8**: Represent the 9th bit transmitted and received, respectively, exclusively in 9-bit communication modes (Modes 2 and 3).\n- **TI and RI**: Transmit and Receive Interrupt flags.\n\nLoading SCON with **50H** (01010000 in binary) is standard practice. This selects Mode 1 and enables the receiver (REN=1).",
+    "profFocus": "يسلط الدكتور الضوء على القيمة 50H لمسجل SCON، معتبراً إياها 'الرقم السحري' لتهيئة الاتصال التسلسلي القياسي. كما يشدد على التفريق بين وظيفتي SBUF كمسجل للإرسال والاستقبال في نفس الوقت رغم أنه يحمل نفس الاسم البرمجي.",
+    "mermaidCode": `graph TD
+    SCON["SCON Register (50H)"] --> SM0["Bit 7: SM0 = 0"]
+    SCON --> SM1["Bit 6: SM1 = 1 (Mode 1)"]
+    SCON --> SM2["Bit 5: SM2 = 0"]
+    SCON --> REN["Bit 4: REN = 1 (Receive Enable)"]
+    SCON --> TB8["Bit 3: TB8 = 0"]
+    SCON --> RB8["Bit 2: RB8 = 0"]
+    SCON --> TI["Bit 1: TI (Tx Interrupt)"]
+    SCON --> RI["Bit 0: RI (Rx Interrupt)"]
+    SBUF_TX["SBUF (Transmit Buffer)"]
+    SBUF_RX["SBUF (Receive Buffer)"]
+    SCON -- "Controls Framing" --> SBUF_TX
+    SCON -- "Controls Framing" --> SBUF_RX`,
+    "imageDesc": "يستعرض هذا المخطط الهيكلي تركيبة مسجل التحكم SCON في الميكروكنترولر 8051 عند تهيئته بالقيمة 50H. يوضح المخطط تفاصيل كل بت، مثل اختيار وضع التشغيل الأول (Mode 1) عبر SM0 و SM1، وتفعيل الاستقبال (REN). كما يظهر كيف يتحكم هذا المسجل في عملية تغليف البيانات لكل من مسجل إرسال البيانات (SBUF_TX) ومسجل استقبال البيانات (SBUF_RX)."
   },
   {
-    "title": "SBUF and SCON Registers",
-    "conceptOverview": "يشرح الدكتور المسجلات الأساسية المسؤولة عن التواصل التسلسلي: مسجل SBUF ومسجل SCON. مسجل SBUF (Serial Buffer) يتكون من 8 بتات ويُستخدم كوعاء لوضع البيانات المراد إرسالها أو استخراج البيانات المُستقبلة. بمجرد كتابة البيانات فيه، يبدأ الميكروكنترولر بإرسالها. أما مسجل SCON (Serial Control)، فيُستخدم لضبط إعدادات النقل مثل تحديد الـ Mode (نستخدم Mode 1 الذي يعتمد على 8 بتات وبيانات الـ Framing)، وكذلك تفعيل الاستقبال عبر البت (REN)، وفيه أيضاً أعلام الإرسال والاستقبال (TI و RI) التي تشير لانتهاء الإرسال أو وصول بيانات جديدة.",
-    "technicalDeepDive": "Serial communication in the 8051 relies on two primary Special Function Registers (SFRs). 1. SBUF (Serial Buffer): An 8-bit register handling both transmission and reception. Writing to SBUF initiates serial transmission via the TxD pin. Reading from SBUF retrieves data received via the RxD pin. Physically, there are two separate SBUF registers (one for Tx, one for Rx) sharing the same address. 2. SCON (Serial Control): An 8-bit register configuring the UART mode. Its bit structure is [SM0, SM1, SM2, REN, TB8, RB8, TI, RI]. We configure SM0=0 and SM1=1 to select Mode 1 (8-bit UART, variable baud rate framed with start/stop bits). SM2 is for multiprocessor communication (kept 0). REN (Receive Enable) must be set to 1 to allow data reception. TI (Transmit Interrupt) flag is raised by hardware when a byte has finished transmitting. RI (Receive Interrupt) flag is raised when a full byte is received. SCON is typically initialized with 0x50 (01010000 in binary), setting Mode 1 and enabling REN.",
-    "profFocus": "يؤكد الدكتور على أهمية مراقبة الأعلام (Flags) الـ TI والـ RI. لا يتم تصفير هذه الأعلام تلقائياً بواسطة الهاردوير بعد رفعها، بل يجب على المبرمج تصفيرها برمجياً (Clear TI / Clear RI) لكي يتمكن الميكروكنترولر من إرسال أو استقبال البايت التالي بنجاح.",
-    "mermaidCode": `classDiagram
-    class SCON {
-        SM0: 0
-        SM1: 1
-        SM2: 0
-        REN: 1
-        TB8: 0
-        RB8: 0
-        TI: 0
-        RI: 0
-    }
-    class SBUF_TX
-    class SBUF_RX
-    SCON --> SBUF_TX : Controls
-    SCON --> SBUF_RX : Controls`
+    "title": "Baud Rate Generation: Crystal 11.0592 MHz and Timer 1",
+    "conceptOverview": "يشرح الدكتور كيفية حساب سرعة النقل (Baud Rate) في الـ 8051. السر يكمن في استخدام كريستالة بتردد 11.0592 ميجاهرتز بالتحديد. هذا التردد العجيب ينقسم ليولد ترددات تتوافق تماماً مع السرعات القياسية (مثل 9600 و 4800) بدون أي نسبة خطأ. نستخدم Timer 1 في الوضع الثاني (Mode 2 - Auto Reload) عبر وضع القيمة 20H في TMOD، ثم نحسب قيمة سالبة نضعها في مسجل TH1.",
+    "technicalDeepDive": "In the 8051, **Timer 1 configured in Mode 2 (8-bit auto-reload)** is standardly used to set the baud rate. To configure this, the value **20H** is loaded into the **TMOD** register.\n\n**Baud Rate Calculation Math**:\n1. **Machine Cycle Frequency**: The 8051 divides the external crystal frequency by 12. Using a mathematically precise **11.0592 MHz crystal**, the machine cycle fed to the timer is `11.0592 MHz / 12 = 921.6 kHz`.\n2. **UART Division**: The UART circuitry further divides this timer overflow rate by **32** (in default mode 1). Thus, the base frequency for the timer overflow is `921.6 kHz / 32 = 28,800 Hz`.\n3. **Why 11.0592 MHz?** This specific crystal is frequently used because the resulting 28,800 Hz perfectly divides down to standard baud rates without error, ensuring reliable communication.\n\n**Calculating TH1 Reload Value**:\nWe divide 28,800 by the desired baud rate to find the timer ticks needed, and load the two's complement (negative value) into TH1.\n- **For 9600 Baud**: `28800 / 9600 = 3`. The timer must count 3 steps to overflow. Loading TH1 with **-3 (which is FDH in hexadecimal)** achieves exactly 9600 baud.\n- **For 4800 Baud**: `28800 / 4800 = 6`. Loading TH1 with **-6 (or FAH)** achieves exactly 4800 baud.",
+    "profFocus": "يحذر الدكتور من محاولة استخدام كريستالة 12 ميجاهرتز للتواصل التسلسلي مع الحاسوب، لأن قسمتها لا تعطي أرقاماً صحيحة للسرعات القياسية، مما يولد نسبة خطأ عالية تجعل البيانات المستقبلة مشوهة. التردد 11.0592 ميجاهرتز هو شرط أساسي لنجاح الاتصال.",
+    "mermaidCode": `graph TD
+    A["Crystal: 11.0592 MHz"] -->|"Divide by 12"| B["Machine Cycle: 921.6 kHz"]
+    B -->|"Divide by 32"| C["Base Frequency: 28800 Hz"]
+    C -->|"Divide by 9600 Baud"| D["Timer Ticks: 3"]
+    D -->|"Two's Complement"| E["TH1 = -3 (FDH)"]
+    C -->|"Divide by 4800 Baud"| F["Timer Ticks: 6"]
+    F -->|"Two's Complement"| G["TH1 = -6 (FAH)"]`,
+    "imageDesc": "يشرح هذا المخطط التسلسلي خطوات حساب سرعة نقل البيانات (Baud Rate). يبدأ بتردد الكريستالة 11.0592 ميجاهرتز الذي يُقسم على 12 للحصول على تردد دورة الآلة (921.6 كيلوهرتز)، ثم يُقسم على 32 للحصول على التردد الأساسي (28800 هرتز). بعد ذلك، يوضح كيفية حساب قيمة المؤقت عبر قسمة التردد الأساسي على سرعة النقل المطلوبة (مثل 9600 أو 4800)، وتحويل الناتج إلى المتمم الثنائي (Two's Complement) ليتم تخزينه في مسجل TH1 بقيم مثل FDH أو FAH."
   },
   {
-    "title": "Programming Serial Data Transmitting and Receiving",
-    "conceptOverview": "يقدم الدكتور خطوات برمجة الميكروكنترولر للإرسال التسلسلي. تبدأ الخطوات بضبط التايمر (TMOD = 0x20) ليعمل Timer 1 في Mode 2، ثم وضع القيمة السالبة في مسجل TH1 بناءً على الـ Baud Rate. يتم ضبط مسجل SCON بالقيمة 50H لاختيار Mode 1 وتفعيل الاستقبال. يتم تشغيل التايمر عبر (TR1 = 1). للإرسال، يتم مسح علم TI، ووضع البيانات في SBUF، ثم الانتظار في حلقة (While loop) حتى يصبح TI بواحد، مما يعني اكتمال الإرسال، ثم يتم تصفيره. للاستقبال، ننتظر العكس حتى يصبح RI بواحد، نقرأ البيانات من SBUF، ونصفر علم الـ RI.",
-    "technicalDeepDive": "The sequence to program 8051 UART initialization and communication involves specific steps: \n1. Initialization: Configure TMOD = 0x20 to set Timer 1 in Mode 2 (8-bit auto-reload). Load TH1 with the required reload value (e.g., TH1 = -3 for 9600 baud). Configure SCON = 0x50 to select UART Mode 1 (8-bit data, 1 start, 1 stop) and enable reception (REN=1). Start Timer 1 by setting TR1 = 1. \n2. Transmission Routine: Clear the TI flag (TI = 0). Write the character to SBUF (SBUF = 'A'). Wait synchronously by polling TI (`while(TI==0);`). Once the hardware completes shifting the byte out through the TxD pin, it sets TI=1. Clear TI before the next transmission. \n3. Reception Routine: Poll the RI flag (`while(RI==0);`). Once hardware shifts a full byte in from the RxD pin, it sets RI=1. Clear RI (RI = 0). Read the byte from SBUF (`char x = SBUF;`). In advanced C programs, strings are sent sequentially via pointer manipulation, iterating through characters to the transmit routine until a null-terminator (0x00) is encountered.",
-    "profFocus": "يشير الدكتور إلى أسلوب برمجة متقدم ومُفضل لإرسال جملة كاملة (String)، حيث يتم تمرير مؤشر (Pointer) لدالة مخصصة، وتقوم هذه الدالة بالمرور على كل حرف، ترسله وتنتظر اكتمال إرساله، ثم تنتقل للحرف الذي يليه حتى تصل إلى حرف النهاية (Null character).",
-    "mermaidCode": `flowchart TD;
-    StartInit("Initialize UART") --> TMOD["TMOD = 0x20"];
-    TMOD --> TH1["TH1 = -3 for 9600"];
-    TH1 --> SCON["SCON = 0x50"];
-    SCON --> TR1["TR1 = 1"];
-    TR1 --> TxRxChoice{"Tx or Rx Routine?"};
-    TxRxChoice -- Transmit --> ClrTI["Clear TI=0"];
-    ClrTI --> LoadSBUF["SBUF = Data"];
-    LoadSBUF --> WaitTI{"Is TI=1?"};
-    WaitTI -- No --> WaitTI;
-    WaitTI -- Yes --> DoneTx["Clear TI, Done"];
-    TxRxChoice -- Receive --> WaitRI{"Is RI=1?"};
-    WaitRI -- No --> WaitRI;
-    WaitRI -- Yes --> ReadSBUF["Data = SBUF"];
-    ReadSBUF --> ClrRI["Clear RI=0"];`
-  },
-  {
-    "title": "PC Interfacing via USB to Serial UART Module",
-    "conceptOverview": "يشرح الدكتور الجانب العملي من التوصيل والتطبيق. نظراً لأن الحواسيب الحديثة لا تحتوي على منفذ UART أو RS232 المباشر، يجب استخدام قطعة تحويل (USB to Serial UART Converter). يتم توصيل طرف الإرسال Tx من الميكروكنترولر بطرف الاستقبال Rx في المحول، وطرف الاستقبال Rx في الميكرو بطرف الإرسال Tx في المحول، مع توحيد الأرضي (Ground) لكلا الدائرتين. على جهاز الكمبيوتر، نحتاج لبرنامج Terminal (مثل Putty)، وتحديد الـ COM Port الخاص بالمحول وسرعة النقل (Baud Rate) التي يجب أن تتطابق تماماً مع ما تمت برمجته في الميكروكنترولر، لتتمكن من إرسال الأوامر (مثل 1 أو 2 لفتح وغلق الليدات) واستقبال الردود النصية من الميكروكنترولر.",
-    "technicalDeepDive": "Physical interfacing between an 8051 and a modern PC requires a USB to Serial UART converter module (e.g., using CH340 or FT232 chips), as native serial ports are obsolete. The connections use a crossed/null-modem configuration: the 8051's TxD (Port 3.1) connects to the module's Rx pin, and the 8051's RxD (Port 3.0) connects to the module's Tx pin. Common ground (GND) between the microcontroller circuit and the USB module is mandatory. On the PC side, the module mounts as a Virtual COM Port (verified via Windows Device Manager). A Serial Terminal software (like PuTTY or Tera Term) is used to establish communication. The software configuration must exactly match the 8051's programmed settings: correct COM port, matching baud rate (e.g., 9600), 8 data bits, 1 stop bit, and no parity. Typing in the terminal sends ASCII characters to the microcontroller, which evaluates them using logic structures (e.g., `if (number == '1')`) to execute hardware control, such as toggling LEDs, and sends responsive status strings back to the terminal.",
-    "profFocus": "أشار الدكتور إلى خطأ شائع جداً يقع فيه الطلاب وهو توصيل Tx بـ Tx و Rx بـ Rx، وأكد أن التوصيل يجب أن يكون متعاكساً (Tx مع Rx) لكي يتحدث المرسل مع المستقبل. كما أشار إلى أن الضغط على أزرار لوحة المفاتيح يرسل بيانات للبرنامج، ولكن الحرف المكتوب قد لا يظهر على الشاشة إلا إذا كان هناك ميزة الـ 'Local Echo' مفعلة في برنامج الـ Terminal أو إذا برمجت الميكروكنترولر ليعيد إرسال الحرف الذي استقبله.",
-    "mermaidCode": `graph LR;
-    subgraph 8051 Microcontroller
-        P31["P3.1 / TxD"]
-        P30["P3.0 / RxD"]
-        G1["GND"]
+    "title": "Software Implementation: TI/RI Flags and String Transmission",
+    "conceptOverview": "يركز هذا القسم على الجانب البرمجي وتتبع أعلام (Flags) الإرسال والاستقبال. عند الانتهاء من إرسال البايت، يرفع الهاردوير علم TI (Transmit Interrupt). وعند اكتمال استقبال بايت جديد، يرفع علم RI (Receive Interrupt). الفخ هنا أن المبرمج يجب أن يقوم بتصفير هذه الأعلام يدوياً في الكود. كما يوضح كيفية إرسال نصوص كاملة في لغة C باستخدام المؤشرات (Pointers) والتكرار حتى الوصول لحرف نهاية النص (Null terminator).",
+    "technicalDeepDive": "Proper software flow control relies on monitoring the hardware flags in the SCON register:\n\n- **TI (Transmit Interrupt) Flag**: When data is written to SBUF, hardware begins framing and transmission. The hardware sets the TI flag to 1 **at the end of the transmission of the stop bit**. Software monitors this using instructions like `JNB TI, label` (Jump if Not Bit) to wait. Once TI is 1, **the programmer must clear the TI flag to 0 using software** before initiating the next byte transmission.\n- **RI (Receive Interrupt) Flag**: When the receiver detects a valid frame, it shifts the data into the receive SBUF. Hardware sets the RI flag to 1 **once the new character has been fully received** (at the stop bit). Software polls RI, reads the byte from SBUF, and **immediately clears the RI flag to 0** to prepare for the next incoming byte.\n\n**Transmitting Strings in C**:\nSince SBUF can only hold one byte at a time, strings cannot be written simultaneously. In C programming, the string is handled as a character array. It is passed as a pointer and transmitted character by character using a loop until the **null terminator ('\\\\0' or 0)** is reached.\n```c\nvoid SendString(char *str) {\n    int i = 0;\n    while(str[i] != '\\\\0') {\n        SBUF = str[i];     // Load byte\n        while(TI == 0);    // Wait for TI flag\n        TI = 0;            // Clear TI flag\n        i++;\n    }\n}\n```",
+    "profFocus": "يعتبر الدكتور أن نسيان كتابة سطر `TI = 0` أو `RI = 0` هو الخطأ البرمجي الأكثر شيوعاً بين الطلاب، مما يؤدي إلى إرسال أول حرف فقط أو توقف البرنامج في حلقة مفرغة (Infinite Loop). كما يؤكد على أهمية فهم كيفية تعامل لغة C مع النصوص كمصفوفات تنتهي بالصفر.",
+    "mermaidCode": `graph TD
+    subgraph Tx Logic
+        TxStart["Write Data to SBUF"] --> TxWait["Check if TI == 1"]
+        TxWait -- "No" --> TxWait
+        TxWait -- "Yes (Stop Bit Sent)" --> TxClear["Software: Clear TI = 0"]
+        TxClear --> TxNext["Ready for Next Byte"]
     end
-    subgraph USB-to-UART Converter
-        Rx["Rx Pin"]
-        Tx["Tx Pin"]
-        G2["GND"]
-        USB["USB Interface"]
-    end
-    subgraph PC
-        Port["COM Port"]
-        Term["Terminal Software e.g., PuTTY"]
-    end
-    P31 -->|"Data"| Rx
-    Tx -->|"Data"| P30
-    G1 --- G2
-    USB <--> Port
-    Port <--> Term`
+    subgraph Rx Logic
+        RxWait["Check if RI == 1"]
+        RxWait -- "No" --> RxWait
+        RxWait -- "Yes (Byte Received)" --> RxRead["Read Data from SBUF"]
+        RxRead --> RxClear["Software: Clear RI = 0"]
+        RxClear --> RxNext["Ready for Next Byte"]
+    end`,
+    "imageDesc": "يوضح هذا المخطط المنطق البرمجي لعمليتي الإرسال والاستقبال في UART. في قسم الإرسال (Tx Logic)، تبدأ العملية بكتابة البيانات في SBUF، ثم الانتظار حتى يصبح علم الإرسال (TI) بواحد، وبعدها يجب تصفيره برمجياً استعداداً للبايت التالي. في قسم الاستقبال (Rx Logic)، يتم الانتظار حتى يصبح علم الاستقبال (RI) بواحد دلالة على استلام بايت، ثم تُقرأ البيانات من SBUF، ويُصفر العلم برمجياً لاستقبال البايت القادم."
   }
 ];
-
