@@ -13,6 +13,36 @@
     --card-bg: rgba(13, 17, 23, 0.8);
 }
 
+[data-theme="cyberpunk"] {
+    --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    --glass-bg: rgba(255, 0, 60, 0.1);
+    --glass-border: rgba(255, 0, 60, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(255, 0, 60, 0.4);
+    --text-primary: #fff;
+    --text-secondary: #fcd34d;
+    --accent: #ff003c;
+    --accent-hover: #ff4d6d;
+    --accent-cyan: #00f0ff;
+    --success: #00ff9d;
+    --danger: #ff003c;
+    --card-bg: rgba(15, 12, 41, 0.8);
+}
+
+[data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --accent-cyan: #0ea5e9;
+    --success: #059669;
+    --danger: #e11d48;
+    --card-bg: rgba(255, 255, 255, 0.8);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -1176,6 +1206,27 @@ input[type=number] { -moz-appearance: textfield; }
     transform: scale(1.15) rotate(5deg);
     background: var(--accent);
     color: #000;
+}
+
+/* SURVIVAL MODE ANIMATIONS */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes pulse-danger {
+    0% { transform: scale(1); text-shadow: 0 0 10px var(--danger); color: white; }
+    50% { transform: scale(1.1); text-shadow: 0 0 30px var(--danger); color: var(--danger); }
+    100% { transform: scale(1); text-shadow: 0 0 10px var(--danger); color: white; }
+}
+.pulse-danger {
+    animation: pulse-danger 0.5s infinite;
 }
 
 /* 3. Buttons Bounce */

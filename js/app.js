@@ -1,5 +1,166 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Data Aggregation
+    // --- Audio Engine (Web Audio API) ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
+    const audioEngine = {
+        playTone(freq, type, duration, vol = 0.1) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = type;
+            oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            
+            gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + duration);
+        },
+        playDing() {
+            this.playTone(880, 'sine', 0.5, 0.1);
+            setTimeout(() => this.playTone(1108, 'sine', 0.6, 0.1), 100);
+        },
+        playBuzz() {
+            this.playTone(150, 'sawtooth', 0.3, 0.15);
+            setTimeout(() => this.playTone(130, 'sawtooth', 0.4, 0.15), 150);
+        },
+        playTick() {
+            this.playTone(1000, 'sine', 0.05, 0.05);
+        },
+        playAlarm() {
+            for(let i=0; i<6; i++) {
+                setTimeout(() => this.playTone(800, 'square', 0.2, 0.1), i * 300);
+            }
+        }
+    };
+
+    // --- CUSTOM SYS MODAL LOGIC ---
+    const sysModal = document.getElementById('sys-modal');
+    const sysModalContent = document.getElementById('sys-modal-content');
+    const sysModalTitle = document.getElementById('sys-modal-title');
+    const sysModalMsg = document.getElementById('sys-modal-msg');
+    const sysModalBtns = document.getElementById('sys-modal-btns');
+
+    function openSysModal(title, msg, buttons) {
+        return new Promise(resolve => {
+            sysModalTitle.innerHTML = title;
+            sysModalMsg.innerHTML = msg;
+            sysModalBtns.innerHTML = '';
+            
+            buttons.forEach(btn => {
+                const b = document.createElement('button');
+                b.className = btn.class || 'btn-primary';
+                b.textContent = btn.text;
+                b.addEventListener('click', () => {
+                    closeSysModal();
+                    resolve(btn.value);
+                });
+                sysModalBtns.appendChild(b);
+            });
+            
+            sysModal.style.display = 'flex';
+            requestAnimationFrame(() => {
+                sysModalContent.style.opacity = '1';
+                sysModalContent.style.transform = 'scale(1)';
+            });
+        });
+    }
+
+    function closeSysModal() {
+        sysModalContent.style.opacity = '0';
+        sysModalContent.style.transform = 'scale(0.9)';
+        setTimeout(() => sysModal.style.display = 'none', 300);
+    }
+
+    window.customAlert = function(msg) {
+        audioEngine.playBuzz();
+        return openSysModal('⚠️ Alert', msg, [{ text: 'OK', value: true }]);
+    };
+
+    window.customConfirm = function(msg) {
+        audioEngine.playTick();
+        return openSysModal('❓ Confirm Action', msg, [
+            { text: 'Cancel', value: false, class: 'btn-secondary' },
+            { text: 'Yes, Proceed', value: true, class: 'btn-danger' }
+        ]);
+    };
+
+    // --- CONFETTI ENGINE ---
+    function fireConfetti() {
+        const canvas = document.createElement('canvas');
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100vw';
+        canvas.style.height = '100vh';
+        canvas.style.pointerEvents = 'none';
+        canvas.style.zIndex = '99999';
+        document.body.appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const pieces = [];
+        const colors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4'];
+        
+        for (let i = 0; i < 150; i++) {
+            pieces.push({
+                x: canvas.width / 2,
+                y: canvas.height / 2 + 100,
+                vx: (Math.random() - 0.5) * 20,
+                vy: (Math.random() - 1) * 20 - 5,
+                size: Math.random() * 10 + 5,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rotation: Math.random() * 360,
+                rotSpeed: (Math.random() - 0.5) * 10
+            });
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+            pieces.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.5; // gravity
+                p.rotation += p.rotSpeed;
+                
+                if (p.y < canvas.height) active = true;
+                
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation * Math.PI / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                ctx.restore();
+            });
+            
+            if (active) requestAnimationFrame(animate);
+            else document.body.removeChild(canvas);
+        }
+        animate();
+    }
+
+    // Achievements System
+    let labAchievements = JSON.parse(localStorage.getItem('labAchievements')) || [];
+    let labMistakes = JSON.parse(localStorage.getItem('labMistakes')) || [];
+    // Clean up any empty string mistakes that might have been saved due to previous bug
+    labMistakes = labMistakes.filter(m => m && m.trim() !== "");
+    let labTotalQ = parseInt(localStorage.getItem('labTotalQ')) || 0;
+    let labCorrectQ = parseInt(localStorage.getItem('labCorrectQ')) || 0;
+
+    function saveStats() {
+        localStorage.setItem('labMistakes', JSON.stringify(labMistakes));
+        localStorage.setItem('labTotalQ', labTotalQ);
+        localStorage.setItem('labCorrectQ', labCorrectQ);
+    }
+
+    // 1. Data arrays mergingregation
     let rawQuestions = [];
     
     if (typeof lec01Data !== 'undefined') rawQuestions.push(...lec01Data);
@@ -97,6 +258,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkboxes = document.querySelectorAll('.cat-checkbox');
     const selectAllBtn = document.getElementById('select-all-btn');
 
+    // Restore from LocalStorage
+    try {
+        const saved = JSON.parse(localStorage.getItem('labSavedCategories'));
+        if (saved && Array.isArray(saved) && saved.length > 0) {
+            // Visually check them first
+            checkboxes.forEach(cb => {
+                if (saved.includes(cb.value)) cb.checked = true;
+            });
+            updateToggleState();
+            
+            // Ask user if they want to keep them
+            setTimeout(async () => {
+                if(await customConfirm("Welcome back! We found your previous selections. Would you like to keep them?")) {
+                    updateActiveQuestions();
+                } else {
+                    // Clear Categories
+                    localStorage.removeItem('labSavedCategories');
+                    checkboxes.forEach(cb => cb.checked = false);
+                    updateActiveQuestions();
+                    updateToggleState();
+                    
+                    // Clear Dashboard Stats
+                    labTotalQ = 0;
+                    labCorrectQ = 0;
+                    labMistakes = [];
+                    labAchievements = [];
+                    saveStats();
+                    localStorage.setItem('labAchievements', JSON.stringify([]));
+                }
+            }, 100); // slight delay for UI to paint
+        }
+    } catch(e) {}
+
     function updateToggleState() {
         const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
         const allChecked = Array.from(checkboxes).every(cb => cb.checked);
@@ -127,29 +321,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Auto-update Active Questions dynamically
-    function updateActiveQuestions() {
+    function updateActiveQuestions(isUserTriggered = false) {
         const selectedCats = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+        localStorage.setItem('labSavedCategories', JSON.stringify(selectedCats));
         activeQuestions = rawQuestions.filter(q => selectedCats.includes(q.category));
         
-        if (screens && screens.study && screens.study.classList.contains('active')) {
-            studyCurrentPage = 1;
-            renderStudyPage();
-        } else if (screens && screens.flashcard && screens.flashcard.classList.contains('active')) {
-            fcCurrentIndex = 0;
-            renderFlashcard();
+        if (isUserTriggered) {
+            if (screens && (screens.study.classList.contains('active') || screens.flashcard.classList.contains('active') || screens.examConfig.classList.contains('active'))) {
+                modeRadios.forEach(r => r.checked = false);
+                switchScreen('welcome');
+            }
         }
     }
 
-    checkboxes.forEach(cb => cb.addEventListener('change', () => {
-        updateToggleState();
-        updateActiveQuestions();
-    }));
+    checkboxes.forEach(cb => {
+        cb.addEventListener('click', (e) => {
+            const isLocked = screens && ((screens.exam && screens.exam.classList.contains('active')) || (screens.survival && screens.survival.classList.contains('active')));
+            if (isLocked) {
+                e.preventDefault();
+                customAlert('⚠️ Please finish your current exam before changing configurations!');
+            }
+        });
+        cb.addEventListener('change', () => {
+            updateToggleState();
+            updateActiveQuestions(true);
+        });
+    });
 
-    selectAllBtn.addEventListener('click', () => {
+    selectAllBtn.addEventListener('click', (e) => {
+        const isLocked = screens && ((screens.exam && screens.exam.classList.contains('active')) || (screens.survival && screens.survival.classList.contains('active')));
+        if (isLocked) {
+            e.preventDefault();
+            customAlert('⚠️ Please finish your current exam before changing configurations!');
+            return;
+        }
         const isDeselect = selectAllBtn.textContent === 'Deselect All';
         checkboxes.forEach(cb => cb.checked = !isDeselect);
         updateToggleState();
-        updateActiveQuestions();
+        updateActiveQuestions(true);
     });
 
     // Initialize button state
@@ -158,10 +367,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle Exam Settings Visibility & Auto-start Modes
     document.querySelectorAll('.mode-card').forEach(card => {
         card.addEventListener('click', (e) => {
+            const isLocked = screens && ((screens.exam && screens.exam.classList.contains('active')) || (screens.survival && screens.survival.classList.contains('active')));
+            if (isLocked) {
+                e.preventDefault();
+                e.stopPropagation();
+                customAlert('⚠️ Please finish your current exam before changing modes!');
+                return;
+            }
             const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
             if (!anyChecked) {
                 e.preventDefault();
-                alert('⚠️ Please select at least one Category from the list first to unlock the modes!');
+                customAlert('⚠️ Please select at least one Category from the list first to unlock the modes!');
             }
         });
     });
@@ -173,13 +389,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const mode = e.target.value;
             const selectedCats = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
             
+            if (mode === 'search') {
+                switchScreen('search');
+                return; // Search doesn't need categories
+            }
+
             if (selectedCats.length === 0) {
                 e.target.checked = false;
+                customAlert("Please select at least one lecture or exam category before choosing a study mode!");
                 return;
             }
             
             updateActiveQuestions();
-            if (mode === 'study') {
+            
+            if (mode === 'mistakes') {
+                // Filter active questions to ONLY include mistakes
+                activeQuestions = activeQuestions.filter(q => labMistakes.includes(q.question));
+                if (activeQuestions.length === 0) {
+                    customAlert("Great job! You don't have any mistakes in the selected categories. ??");
+                    e.target.checked = false;
+                    return;
+                }
+                switchScreen('study'); // Use study mode for review
+                studyCurrentPage = 1;
+                renderStudyPage();
+            } else if (mode === 'study') {
                 switchScreen('study');
                 studyCurrentPage = 1;
                 renderStudyPage();
@@ -187,6 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 switchScreen('flashcard');
                 fcCurrentIndex = 0;
                 renderFlashcard();
+            } else if (mode === 'survival') {
+                switchScreen('survival');
+                startSurvivalMode();
             } else if (mode === 'exam') {
                 switchScreen('examConfig');
             }
@@ -226,7 +463,9 @@ document.addEventListener('DOMContentLoaded', () => {
         exam: document.getElementById('exam-screen'),
         flashcard: document.getElementById('flashcard-screen'),
         results: document.getElementById('results-screen'),
-        notes: document.getElementById('notes-content-screen')
+        notes: document.getElementById('notes-content-screen'),
+        dashboard: document.getElementById('dashboard-screen'),
+        survival: document.getElementById('survival-screen')
     };
 
     function switchScreen(screenName) {
@@ -259,14 +498,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('exam-start-btn')?.addEventListener('click', () => {
         const selectedCats = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
         if (selectedCats.length === 0) {
-            alert('Please select at least one category to start the exam.');
+            customAlert('Please select at least one category to start the exam.');
             return;
         }
 
         activeQuestions = rawQuestions.filter(q => selectedCats.includes(q.category));
 
         if (activeQuestions.length === 0) {
-            alert("No questions found for the selected categories.");
+            customAlert("No questions found for the selected categories.");
             return;
         }
 
@@ -276,8 +515,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Utilities
     document.querySelectorAll('.exit-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if(timerInterval) clearInterval(timerInterval);
+        btn.addEventListener('click', async () => {
+            if (screens && screens.exam && screens.exam.classList.contains('active')) {
+                if (!(await customConfirm("Are you sure you want to quit? Your exam progress will be lost."))) return;
+                if (timerInterval) clearInterval(timerInterval);
+            } else if (screens && screens.survival && screens.survival.classList.contains('active')) {
+                if (!(await customConfirm("Are you sure you want to surrender?"))) return;
+                if (typeof survivalInterval !== 'undefined') clearInterval(survivalInterval);
+            } else {
+                if (typeof timerInterval !== 'undefined' && timerInterval) clearInterval(timerInterval);
+            }
+            
+            modeRadios.forEach(r => r.checked = false);
             switchScreen('welcome');
         });
     });
@@ -288,24 +537,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- TEXT TO SPEECH (TTS) ---
     function speakText(text) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            // Remove HTML tags for clean reading
-            const cleanText = text.replace(/<[^>]+>/g, '');
-            const utterance = new SpeechSynthesisUtterance(cleanText);
-            utterance.lang = 'en-US';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        
+        // Remove HTML tags for clean reading
+        let textToRead = text.replace(/<[^>]+>/g, '');
+        
+        const arabicIndex = textToRead.search(/[\u0600-\u06FF]/);
+        
+        if (arabicIndex !== -1) {
+            const engPart = textToRead.substring(0, arabicIndex).trim();
+            const arPart = textToRead.substring(arabicIndex).trim();
+            
+            if (engPart) {
+                const u1 = new SpeechSynthesisUtterance(engPart);
+                u1.lang = 'en-US';
+                u1.rate = 0.9;
+                window.speechSynthesis.speak(u1);
+            }
+            if (arPart) {
+                const u2 = new SpeechSynthesisUtterance(arPart);
+                u2.lang = 'ar-SA';
+                u2.rate = 0.9;
+                window.speechSynthesis.speak(u2);
+            }
+        } else {
+            const u = new SpeechSynthesisUtterance(textToRead.trim());
+            u.lang = 'en-US';
+            u.rate = 0.9;
+            window.speechSynthesis.speak(u);
         }
+    }
+
+    function formatExplanation(text) {
+        if (!text) return '';
+        let formatted = text.replace(/([a-zA-Z0-9.?!>])\s+([\u0600-\u06FF])/g, '$1<br><br>$2');
+        formatted = formatted.replace(/([\u0600-\u06FF].*?)(?=<br>|$)/g, '<div dir="rtl" style="text-align: right; color: #a5b4fc; font-family: Tahoma, Arial, sans-serif; margin-top: 8px; line-height: 1.6;">$1</div>');
+        return formatted;
     }
     
     function stopSpeaking() {
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     }
 
+    // Stop speaking if clicking outside TTS button
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.tts-btn') && 'speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+    });
+
     // --- STUDY MODE LOGIC ---
     let studyCurrentPage = 1;
-    const studyItemsPerPage = 5;
+    const studyItemsPerPage = 1;
     const studyGrid = document.getElementById('study-grid');
     const studyPageInfo = document.getElementById('study-page-info');
 
@@ -355,7 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="study-options">${optionsHtml}</div>
                 <div class="study-explanation">
                     <strong>Correct Answer:</strong> ${q.answer}<br>
-                    <strong>Explanation:</strong> ${q.explanation}<br><br>
+                    <strong>Explanation:</strong> ${formatExplanation(q.explanation)}<br><br>
                     <button class="tts-btn" style="background: var(--accent-cyan); color: white; padding: 6px 12px; font-size: 0.9rem; cursor: pointer;">
                         🔊 Read Aloud
                     </button>
@@ -377,12 +661,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     const selected = optDiv.getAttribute('data-opt');
                     if (selected === q.answer) {
                         optDiv.classList.add('correct');
+                        audioEngine.playDing();
+                        labTotalQ++;
+                        labCorrectQ++;
+                        if (labMistakes.includes(q.question)) {
+                            labMistakes = labMistakes.filter(t => t !== q.question);
+                        }
+                        saveStats();
                     } else {
                         optDiv.classList.add('incorrect');
+                        audioEngine.playBuzz();
                         // highlight correct one
                         opts.forEach(o => {
                             if(o.getAttribute('data-opt') === q.answer) o.classList.add('correct');
                         });
+                        labTotalQ++;
+                        if (!labMistakes.includes(q.question)) {
+                            labMistakes.push(q.question);
+                        }
+                        saveStats();
                     }
                     exp.classList.add('show');
                     // Disable further clicks
@@ -435,7 +732,7 @@ document.addEventListener('DOMContentLoaded', () => {
         back.innerHTML = `<h3>Correct Answer:</h3>
                           <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fff;">${q.answer}</p>
                           <h4 style="color: var(--text-secondary); margin-bottom: 5px;">Explanation:</h4>
-                          <p style="font-size: 0.95rem; line-height: 1.6;">${q.explanation}</p>
+                          <div style="font-size: 0.95rem; line-height: 1.6;">${formatExplanation(q.explanation)}</div>
                           <button class="tts-btn btn-small" style="background: var(--accent-cyan); color: white; margin-top: 20px;">🔊 Read Aloud</button>`;
                           
         back.querySelector('.tts-btn').addEventListener('click', (e) => {
@@ -515,8 +812,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderExamQuestion() {
+        if (examCurrentIndex >= examQuestions.length) {
+            endExam();
+            return;
+        }
+
         selectedAnswer = null;
         examCurrentQEl.textContent = examCurrentIndex + 1;
+        
+        // Update Progress Bar
+        const progressEl = document.getElementById('exam-progress-bar');
+        if (progressEl) {
+            progressEl.style.width = `${((examCurrentIndex) / examQuestions.length) * 100}%`;
+        }
+
         const q = examQuestions[examCurrentIndex];
         
         examCatBadge.textContent = q.category;
@@ -538,7 +847,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('exam-next-btn').addEventListener('click', () => {
         if (!selectedAnswer) {
-            alert('Please select an answer!');
+            customAlert('Please select an answer!');
             return;
         }
 
@@ -557,8 +866,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.querySelector('.finish-early-btn').addEventListener('click', () => {
-        if(confirm('Are you sure you want to finish early?')) {
+    document.querySelector('.finish-early-btn').addEventListener('click', async () => {
+        if(await customConfirm('Are you sure you want to finish early?')) {
             finishExam();
         }
     });
@@ -566,6 +875,25 @@ document.addEventListener('DOMContentLoaded', () => {
     function finishExam() {
         clearInterval(timerInterval);
         switchScreen('results');
+        
+        const answeredCount = examAnswers.filter(a => a !== null).length;
+        labTotalQ += answeredCount;
+        labCorrectQ += examScore;
+        
+        examIncorrect.forEach(item => {
+            if (!labMistakes.includes(item.q.question)) {
+                labMistakes.push(item.q.question);
+            }
+        });
+        
+        const correctQs = examQuestions.filter(q => !examIncorrect.find(inc => inc.q === q));
+        correctQs.forEach(q => {
+            if (labMistakes.includes(q.question)) {
+                labMistakes = labMistakes.filter(t => t !== q.question);
+            }
+        });
+        saveStats();
+        checkAchievements();
         
         // Animate the final score circle
         const finalScoreEl = document.getElementById('final-score');
@@ -580,6 +908,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (targetScore === 100) {
                     finalScoreEl.style.color = 'var(--accent)';
                     finalScoreEl.style.textShadow = '0 0 15px var(--accent)';
+                    fireConfetti();
                 }
             } else {
                 currentScore++;
@@ -604,7 +933,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h4>${item.q.question}</h4>
                 <p>Your answer: <span style="text-decoration:line-through;">${item.selectedAnswer}</span></p>
                 <p class="review-correct-ans">Correct answer: ${item.q.answer}</p>
-                <p class="review-exp">${item.q.explanation}</p>
+                <div class="review-exp">${formatExplanation(item.q.explanation)}</div>
             `;
             reviewList.appendChild(div);
         });
@@ -626,7 +955,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     navTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
+        tab.addEventListener('click', (e) => {
+            const isLocked = screens && ((screens.exam && screens.exam.classList.contains('active')) || (screens.survival && screens.survival.classList.contains('active')));
+            if (isLocked) {
+                e.preventDefault();
+                customAlert('⚠️ Please finish your current session (Exam or Survival) before changing tabs!');
+                return;
+            }
             navTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             
@@ -891,9 +1226,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const examScreen = document.getElementById('exam-screen');
         const flashcardScreen = document.getElementById('flashcard-screen'); // for future feature
         
-        if (studyScreen.classList.contains('active')) {
-            if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('next-btn')?.click(); }
-            if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('prev-btn')?.click(); }
+        if (studyScreen && studyScreen.classList.contains('active')) {
+            if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('study-next')?.click(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('study-prev')?.click(); }
             
             const options = document.querySelectorAll('#study-options .study-opt');
             if ((e.key === '1' || e.key === 'a' || e.key === 'A') && options[0]) options[0].click();
@@ -913,11 +1248,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (flashcardScreen && flashcardScreen.classList.contains('active')) {
-            if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('fc-next')?.click(); }
-            if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('fc-prev')?.click(); }
+            if (e.key === 'ArrowRight') { 
+                e.preventDefault(); 
+                tinderSwipe('right');
+            }
+            if (e.key === 'ArrowLeft') { 
+                e.preventDefault(); 
+                tinderSwipe('left');
+            }
             if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); document.getElementById('fc-flip-btn')?.click(); }
         }
     });
+
+    // --- TINDER-STYLE FLASHCARD SWIPE ---
+    function tinderSwipe(direction) {
+        const fc = document.getElementById('flashcard');
+        if (!fc) return;
+        const currentQText = activeQuestions[fcCurrentIndex].question;
+        
+        if (direction === 'left') {
+            fc.style.transition = 'transform 0.3s, box-shadow 0.3s';
+            fc.style.boxShadow = '-20px 0 30px rgba(244, 63, 94, 0.5)';
+            fc.style.transform = 'translateX(-50px) rotate(-5deg)';
+            audioEngine.playBuzz();
+            
+            if (!labMistakes.includes(currentQText)) {
+                labMistakes.push(currentQText);
+            }
+            if (!labMistakes.includes(currentQText)) {
+                labMistakes.push(currentQText);
+            }
+            saveStats();
+        } else {
+            fc.style.transition = 'transform 0.3s, box-shadow 0.3s';
+            fc.style.boxShadow = '20px 0 30px rgba(16, 185, 129, 0.5)';
+            fc.style.transform = 'translateX(50px) rotate(5deg)';
+            audioEngine.playDing();
+            audioEngine.playDing();
+        }
+        
+        setTimeout(() => {
+            fc.style.boxShadow = 'none';
+            fc.style.transform = 'none';
+            if (fcCurrentIndex < activeQuestions.length - 1) {
+                stopSpeaking();
+                fcCurrentIndex++;
+                renderFlashcard();
+            } else {
+                customAlert("Flashcards completed! 🎉");
+                switchScreen('welcome');
+            }
+        }, 300);
+    }
 
     // --- POMODORO TIMER LOGIC ---
     let pomoInterval;
@@ -944,12 +1326,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (pomoTime > 0) {
                     pomoTime--;
                     updatePomoDisplay();
+                    if (pomoTime <= 10 && pomoTime > 0) audioEngine.playTick();
                 } else {
                     clearInterval(pomoInterval);
                     pomoRunning = false;
                     pomoStartBtn.textContent = 'Start';
+                    audioEngine.playAlarm();
                     speakText("Pomodoro session complete! Take a break."); // Voice alert!
-                    alert("Pomodoro session complete! Take a break.");
+                    customAlert("Pomodoro session complete! Take a break.");
                     pomoTime = 5 * 60;
                     updatePomoDisplay();
                 }
@@ -965,6 +1349,252 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePomoDisplay();
     });
 
+    // --- PREMIUM FEATURES LOGIC ---
+    
+    // Dashboard updates
+    document.getElementById('dashboard-btn')?.addEventListener('click', () => {
+        switchScreen('dashboard');
+        document.getElementById('dash-total-q').textContent = labTotalQ;
+        const accuracy = labTotalQ === 0 ? 0 : Math.round((labCorrectQ / labTotalQ) * 100);
+        document.getElementById('dash-accuracy').textContent = accuracy + '%';
+        document.getElementById('dash-mistakes').textContent = labMistakes.length;
+        renderAchievements();
+    });
 
+    document.getElementById('dash-reset-btn')?.addEventListener('click', async () => {
+        if (await customConfirm("Are you sure you want to completely reset your Dashboard stats and achievements?")) {
+            labTotalQ = 0;
+            labCorrectQ = 0;
+            labMistakes = [];
+            labAchievements = [];
+            saveStats();
+            localStorage.setItem('labAchievements', JSON.stringify([]));
+            document.getElementById('dashboard-btn').click(); // refresh dashboard
+            customAlert("Stats successfully reset!");
+        }
+    });
+
+    // Theme Toggle
+    const themeBtn = document.getElementById('theme-btn');
+    let currentTheme = localStorage.getItem('labTheme') || 'dark';
+    document.body.setAttribute('data-theme', currentTheme);
+    
+    themeBtn?.addEventListener('click', () => {
+        if (currentTheme === 'dark') {
+            currentTheme = 'light';
+        } else if (currentTheme === 'light') {
+            currentTheme = 'cyberpunk';
+        } else {
+            currentTheme = 'dark';
+        }
+        document.body.setAttribute('data-theme', currentTheme);
+        localStorage.setItem('labTheme', currentTheme);
+    });
+
+
+
+    // Achievements System
+    
+    function checkAchievements() {
+        const newlyUnlocked = [];
+        if (!labAchievements.includes('century') && labTotalQ >= 100) newlyUnlocked.push('century');
+        if (!labAchievements.includes('perfect') && examScore === examQuestions.length && examQuestions.length > 0) newlyUnlocked.push('perfect');
+        const hour = new Date().getHours();
+        if (!labAchievements.includes('nightowl') && (hour >= 23 || hour <= 4)) newlyUnlocked.push('nightowl');
+        
+        newlyUnlocked.forEach(id => {
+            labAchievements.push(id);
+            customAlert("🏆 Achievement Unlocked!");
+        });
+        localStorage.setItem('labAchievements', JSON.stringify(labAchievements));
+    }
+
+    function renderAchievements() {
+        const container = document.getElementById('achievements-container');
+        if (!container) return;
+        
+        const allBadges = [
+            { id: 'century', icon: '💯', title: 'Century Club', desc: 'Answered 100+ questions' },
+            { id: 'perfect', icon: '🌟', title: 'The Perfectionist', desc: 'Scored 100% on an exam' },
+            { id: 'nightowl', icon: '🦉', title: 'Night Owl', desc: 'Studied past midnight' }
+        ];
+        
+        container.innerHTML = allBadges.map(b => {
+            const unlocked = labAchievements.includes(b.id);
+            return `
+                <div style="background: ${unlocked ? 'rgba(16, 185, 129, 0.2)' : 'rgba(0,0,0,0.3)'}; border: 1px solid ${unlocked ? '#10b981' : 'var(--glass-border)'}; border-radius: 8px; padding: 10px; width: 150px; text-align: center; opacity: ${unlocked ? '1' : '0.5'};">
+                    <div style="font-size: 2rem;">${b.icon}</div>
+                    <strong style="display: block; margin: 5px 0; font-size: 0.9rem;">${b.title}</strong>
+                    <span style="font-size: 0.7rem; color: var(--text-secondary);">${b.desc}</span>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // --- ARCADE SURVIVAL MODE ---
+    let survivalScore = 0;
+    let survivalCombo = 1;
+    let survivalTime = 30;
+    let survivalInterval;
+    let survivalQuestions = [];
+
+    function startSurvivalMode() {
+        survivalScore = 0;
+        survivalCombo = 1;
+        survivalTime = 30;
+        survivalQuestions = [...activeQuestions];
+        shuffle(survivalQuestions);
+        document.getElementById('survival-score').textContent = 'Score: 0';
+        document.getElementById('survival-combo').textContent = 'Combo: x1';
+        document.getElementById('survival-timer').classList.remove('pulse-danger');
+        
+        clearInterval(survivalInterval);
+        survivalInterval = setInterval(() => {
+            survivalTime--;
+            const tEl = document.getElementById('survival-timer');
+            tEl.textContent = survivalTime;
+            
+            if (survivalTime <= 5 && survivalTime > 0) {
+                tEl.classList.add('pulse-danger');
+            } else {
+                tEl.classList.remove('pulse-danger');
+            }
+            
+            if (survivalTime <= 0) {
+                tEl.textContent = '0';
+                endSurvivalMode();
+            }
+        }, 1000);
+        
+        renderSurvivalQuestion();
+    }
+
+    function renderSurvivalQuestion() {
+        if (survivalQuestions.length === 0) {
+            survivalQuestions = [...activeQuestions];
+            shuffle(survivalQuestions);
+        }
+        
+        const q = survivalQuestions.pop();
+        const qContainer = document.getElementById('survival-question-container');
+        const qTextEl = document.getElementById('survival-q-text');
+        
+        qTextEl.innerHTML = q.question || "<em>Error: Question text missing. Please check console.</em>";
+        console.log("Survival Question loaded:", q);
+        
+        const optsContainer = document.getElementById('survival-options');
+        optsContainer.innerHTML = '';
+        
+        let opts = [...q.options];
+        shuffle(opts);
+        
+        opts.forEach(opt => {
+            const btn = document.createElement('div');
+            btn.className = 'study-opt';
+            btn.innerHTML = `<span class="opt-text">${opt}</span>`;
+            
+            btn.addEventListener('click', () => {
+                if (opt === q.answer) {
+                    btn.classList.add('correct');
+                    audioEngine.playDing();
+                    survivalScore += 100 * survivalCombo;
+                    survivalCombo++;
+                    survivalTime += 5; // +5 seconds
+                    labTotalQ++;
+                    labCorrectQ++;
+                    saveStats();
+                    
+                    document.getElementById('survival-score').textContent = `Score: ${survivalScore}`;
+                    document.getElementById('survival-combo').textContent = `Combo: x${survivalCombo}`;
+                    
+                    qContainer.style.borderColor = '#10b981';
+                    qContainer.style.transform = 'scale(1.02)';
+                    setTimeout(() => {
+                        qContainer.style.borderColor = 'rgba(244, 63, 94, 0.3)';
+                        qContainer.style.transform = 'none';
+                        renderSurvivalQuestion();
+                    }, 400);
+                } else {
+                    btn.classList.add('incorrect');
+                    audioEngine.playBuzz();
+                    survivalCombo = 1;
+                    survivalTime -= 10; // -10 seconds
+                    
+                    labTotalQ++;
+                    if (!labMistakes.includes(q.question)) {
+                        labMistakes.push(q.question);
+                    }
+                    saveStats();
+                    
+                    qContainer.style.borderColor = '#f43f5e';
+                    qContainer.classList.add('shake');
+                    setTimeout(() => {
+                        qContainer.style.borderColor = 'rgba(244, 63, 94, 0.3)';
+                        qContainer.classList.remove('shake');
+                        renderSurvivalQuestion();
+                    }, 400);
+                }
+            });
+            optsContainer.appendChild(btn);
+        });
+    }
+
+    function endSurvivalMode() {
+        clearInterval(survivalInterval);
+        audioEngine.playAlarm();
+        customAlert(`Time's up! You survived and scored ${survivalScore} points.`);
+        switchScreen('welcome');
+        modeRadios.forEach(r => r.checked = false);
+    }
+    
+
+
+    // --- DEEP FOCUS AMBIENT AUDIO ---
+    let focusPlaying = false;
+    let brownNoiseNode = null;
+    let brownNoiseGain = null;
+    
+    function toggleFocusAudio() {
+        if (focusPlaying) {
+            if (brownNoiseNode) brownNoiseNode.stop();
+            focusPlaying = false;
+            document.getElementById('focus-audio-btn').innerHTML = '📻 Lo-Fi Focus';
+            document.getElementById('focus-audio-btn').style.background = 'var(--glass-bg)';
+        } else {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const bufferSize = audioCtx.sampleRate * 2; 
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = buffer.getChannelData(0);
+            let lastOut = 0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                output[i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = output[i];
+                output[i] *= 3.5; 
+            }
+            brownNoiseNode = audioCtx.createBufferSource();
+            brownNoiseNode.buffer = buffer;
+            brownNoiseNode.loop = true;
+            
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 400; 
+            
+            brownNoiseGain = audioCtx.createGain();
+            brownNoiseGain.gain.value = 0.8; 
+            
+            brownNoiseNode.connect(filter);
+            filter.connect(brownNoiseGain);
+            brownNoiseGain.connect(audioCtx.destination);
+            
+            brownNoiseNode.start();
+            focusPlaying = true;
+            document.getElementById('focus-audio-btn').innerHTML = '⏸️ Pause Focus Audio';
+            document.getElementById('focus-audio-btn').style.background = 'var(--accent-cyan)';
+        }
+    }
+    
+    document.getElementById('focus-audio-btn')?.addEventListener('click', toggleFocusAudio);
 
 });

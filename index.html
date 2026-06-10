@@ -111,11 +111,25 @@
                                 <span style="font-size: 0.8rem;">Flip cards for active recall</span>
                             </div>
                         </label>
-                        <label class="mode-card">
+                        <label class="mode-card" style="margin-bottom: 5px;">
                             <input type="radio" name="mode" value="exam">
                             <div class="mode-content" style="width: 100%;">
                                 <strong>⏱️ Exam Mode</strong>
                                 <span style="font-size: 0.8rem;">Timed simulation with strict grading</span>
+                            </div>
+                        </label>
+                        <label class="mode-card" style="margin-bottom: 5px; border-color: var(--danger); background: rgba(244, 63, 94, 0.1);">
+                            <input type="radio" name="mode" value="survival">
+                            <div class="mode-content" style="width: 100%;">
+                                <strong style="color: var(--danger);">🕹️ Arcade Survival</strong>
+                                <span style="font-size: 0.8rem;">Race the clock! +5s correct, -10s wrong.</span>
+                            </div>
+                        </label>
+                        <label class="mode-card" style="margin-bottom: 5px;">
+                            <input type="radio" name="mode" value="mistakes">
+                            <div class="mode-content" style="width: 100%;">
+                                <strong>🧠 Review Mistakes</strong>
+                                <span style="font-size: 0.8rem;">Spaced repetition for your weak points</span>
                             </div>
                         </label>
                     </div>
@@ -137,8 +151,11 @@
                 <a href="downloads/lectures.zip" download class="btn-primary" style="display: block; width: 100%; text-align: center; margin-top: 20px; text-decoration: none; border-radius: 8px; font-weight: 600; background: var(--accent-cyan); color: white;">⬇️ Download All Lectures</a>
             </div>
             
-            <footer class="main-footer" style="background: none; border: none; margin-top: auto; padding-top: 20px;">
-                <p>Created by Eng. Ahmed Tarek Emam</p>
+            <footer class="main-footer" style="background: none; border: none; margin-top: auto; padding-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <button id="focus-audio-btn" class="btn-primary" style="background: var(--glass-bg); border: 1px solid var(--glass-border); width: 100%; border-radius: 8px; color: var(--text-primary); font-weight: 600;">📻 Lo-Fi Focus</button>
+                <button id="dashboard-btn" class="btn-primary" style="background: var(--glass-bg); border: 1px solid var(--glass-border); width: 100%; border-radius: 8px; color: var(--text-primary); font-weight: 600;">📊 Dashboard & Progress</button>
+                <button id="theme-btn" class="btn-primary" style="background: var(--glass-bg); border: 1px solid var(--glass-border); width: 100%; border-radius: 8px; color: var(--text-primary); font-weight: 600;">🌗 Toggle Theme</button>
+                <p style="text-align: center; margin-top: 10px;">Created by Eng. Ahmed Tarek Emam</p>
             </footer>
         </aside>
 
@@ -237,6 +254,9 @@
                     <div class="exam-timer" id="timer-display">30:00</div>
                     <button class="btn-danger finish-early-btn">Finish Early</button>
                 </div>
+                <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 20px; overflow: hidden; margin-top: 15px;">
+                    <div id="exam-progress-bar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.3s ease; box-shadow: 0 0 10px var(--accent);"></div>
+                </div>
 
                 <div class="question-container">
                     <span id="exam-category-badge" class="category-badge">Category</span>
@@ -274,7 +294,70 @@
                     <!-- Notes populated dynamically -->
                 </div>
             </div>
-            
+            <!-- ARCADE SURVIVAL SCREEN -->
+            <div id="survival-screen" class="screen glass-panel">
+                <div class="screen-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--danger); padding-bottom: 15px; margin-bottom: 25px;">
+                    <h2 style="color: var(--danger); margin: 0; display: flex; align-items: center; gap: 10px;">
+                        <span>🕹️</span> Arcade Survival
+                    </h2>
+                    <div style="text-align: right;">
+                        <div id="survival-score" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-cyan);">Score: 0</div>
+                        <div id="survival-combo" style="font-size: 1rem; color: #fcd34d;">Combo: x1</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <div id="survival-timer" style="font-size: 4rem; font-weight: 900; color: white; text-shadow: 0 0 20px var(--danger);">30</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Seconds Remaining</p>
+                </div>
+                <div id="survival-question-container" style="background: rgba(0,0,0,0.4); padding: 25px; border-radius: 12px; border: 1px solid rgba(244, 63, 94, 0.3); margin-bottom: 20px;">
+                    <h3 id="survival-q-text" style="font-size: 1.2rem; line-height: 1.5; color: white; text-align: center;">Question text goes here</h3>
+                </div>
+                
+                <div id="survival-options" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+                    <!-- Options injected here -->
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="exit-btn btn-danger">Surrender (Exit)</button>
+                </div>
+            </div>
+
+            <!-- DASHBOARD SCREEN -->
+            <div id="dashboard-screen" class="screen glass-panel">
+                <div class="screen-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; margin-bottom: 25px;">
+                    <h2 style="color: var(--accent); margin: 0; display: flex; align-items: center; gap: 10px;">
+                        <span>📊</span> Performance Dashboard
+                    </h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="dash-reset-btn" style="background: rgba(244, 63, 94, 0.2); color: var(--danger); border: 1px solid var(--danger); padding: 5px 15px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.background='var(--danger)'; this.style.color='white'" onmouseout="this.style.background='rgba(244, 63, 94, 0.2)'; this.style.color='var(--danger)'">Reset Stats</button>
+                        <button class="exit-btn btn-danger">Exit</button>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="glass-panel" style="text-align: center; padding: 20px;">
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px; font-size: 1rem;">Total Questions Answered</h3>
+                        <div id="dash-total-q" style="font-size: 2.5rem; font-weight: bold; color: var(--accent-cyan);">0</div>
+                    </div>
+                    <div class="glass-panel" style="text-align: center; padding: 20px;">
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px; font-size: 1rem;">Overall Accuracy</h3>
+                        <div id="dash-accuracy" style="font-size: 2.5rem; font-weight: bold; color: #10b981;">0%</div>
+                    </div>
+                    <div class="glass-panel" style="text-align: center; padding: 20px;">
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px; font-size: 1rem;">Mistakes Bank</h3>
+                        <div id="dash-mistakes" style="font-size: 2.5rem; font-weight: bold; color: #f43f5e;">0</div>
+                    </div>
+                </div>
+                <div class="glass-panel" style="margin-bottom: 30px;">
+                    <h3 style="margin-bottom: 15px; color: var(--accent);">🏆 Achievements</h3>
+                    <div id="achievements-container" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <!-- Badges will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
         </main>
     </div>
 
@@ -309,5 +392,12 @@
             <p id="modal-desc"></p>
         </div>
     </div>
+    
+    <!-- SYSTEM MODAL (Alerts/Confirms) -->
+    <div id="sys-modal" class="modal" style="display: none; align-items: center; justify-content: center; z-index: 9999; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);">
+        <div id="sys-modal-content" class="glass-panel" style="max-width: 400px; text-align: center; padding: 30px; border-top: 4px solid var(--accent); transform: scale(0.9); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: rgba(15, 23, 42, 0.95);">
+            <h3 id="sys-modal-title" style="margin-bottom: 15px; font-size: 1.4rem; color: var(--accent);">Alert</h3>
+            <p id="sys-modal-msg" style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.5; font-size: 1rem;"></p>
+            <div id="sys-modal-btns" style="display: flex; gap: 10px; justify-content: center;">
 </body>
 </html>
