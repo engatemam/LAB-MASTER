@@ -89,6 +89,78 @@ document.addEventListener('DOMContentLoaded', () => {
         ]);
     };
 
+    window.showRanksInfo = function() {
+        audioEngine.playTick();
+        const html = `
+            <div style="text-align: left; line-height: 1.8;">
+                <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 0.95rem;">You need <strong>500 XP</strong> for each level.</p>
+                <ul style="list-style: none; padding: 0; margin-bottom: 20px;">
+                    <li style="margin-bottom: 8px; background: rgba(205, 127, 50, 0.1); padding: 5px 10px; border-radius: 8px; border-left: 3px solid #cd7f32;">🥉 <b style="color: #cd7f32;">Fresh Engineer</b> : Level 1+</li>
+                    <li style="margin-bottom: 8px; background: rgba(192, 192, 192, 0.1); padding: 5px 10px; border-radius: 8px; border-left: 3px solid #c0c0c0;">🥈 <b style="color: #c0c0c0;">Junior Developer</b> : Level 5+</li>
+                    <li style="margin-bottom: 8px; background: rgba(255, 215, 0, 0.1); padding: 5px 10px; border-radius: 8px; border-left: 3px solid #ffd700;">🥇 <b style="color: #ffd700;">Senior Engineer</b> : Level 10+</li>
+                    <li style="margin-bottom: 8px; background: rgba(0, 255, 255, 0.1); padding: 5px 10px; border-radius: 8px; border-left: 3px solid #00ffff;">💎 <b style="color: #00ffff;">Tech Lead</b> : Level 20+</li>
+                    <li style="margin-bottom: 8px; background: rgba(255, 0, 255, 0.1); padding: 5px 10px; border-radius: 8px; border-left: 3px solid #ff00ff;">🔮 <b style="color: #ff00ff;">Principal Architect</b> : Level 30+</li>
+                    <li style="margin-bottom: 8px; background: rgba(255, 69, 0, 0.1); padding: 5px 10px; border-radius: 8px; border-left: 3px solid #ff4500;">👑 <b style="color: #ff4500;">Engineering Legend</b> : Level 50+</li>
+                </ul>
+                <div style="padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px solid var(--glass-border);">
+                    <h4 style="color: var(--accent); margin-bottom: 8px;">How to earn XP?</h4>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary); display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                        <div>• Correct Answer: <b>+5</b></div>
+                        <div>• Mistake Fix: <b>+15</b></div>
+                        <div>• Flashcard: <b>+2</b></div>
+                        <div>• Survival Combo: <b>+50</b></div>
+                    </div>
+                </div>
+            </div>
+        `;
+        openSysModal('🏆 Ranks & XP Guide', html, [{ text: 'Awesome!', value: true }]);
+    };
+
+    window.showToast = function(msg, icon = '🏆') {
+        const toast = document.createElement('div');
+        toast.style.position = 'fixed';
+        toast.style.bottom = '20px';
+        toast.style.right = '20px';
+        toast.style.background = 'var(--glass-bg)';
+        toast.style.backdropFilter = 'blur(10px)';
+        toast.style.color = '#fff';
+        toast.style.padding = '15px 25px';
+        toast.style.borderRadius = '12px';
+        toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.5)';
+        toast.style.display = 'flex';
+        toast.style.alignItems = 'center';
+        toast.style.gap = '15px';
+        toast.style.zIndex = '999999';
+        toast.style.transform = 'translateY(100px)';
+        toast.style.opacity = '0';
+        toast.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        toast.style.border = '1px solid var(--accent)';
+        
+        toast.innerHTML = `
+            <div style="font-size: 2rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));">${icon}</div>
+            <div>
+                <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 3px; color: var(--accent);">Awesome!</div>
+                <div style="font-size: 0.9rem; opacity: 0.9;">${msg}</div>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            audioEngine.playDing();
+            setTimeout(() => audioEngine.playTone(1318.51, 'sine', 0.5, 0.1), 150);
+            fireConfetti();
+        }, 100);
+        
+        setTimeout(() => {
+            toast.style.transform = 'translateY(100px)';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 500);
+        }, 5000);
+    };
+
     // --- CONFETTI ENGINE ---
     function fireConfetti() {
         const canvas = document.createElement('canvas');
@@ -153,11 +225,33 @@ document.addEventListener('DOMContentLoaded', () => {
     labMistakes = labMistakes.filter(m => m && m.trim() !== "");
     let labTotalQ = parseInt(localStorage.getItem('labTotalQ')) || 0;
     let labCorrectQ = parseInt(localStorage.getItem('labCorrectQ')) || 0;
+    let labFcReviewedCount = parseInt(localStorage.getItem('labFcReviewedCount')) || 0;
+    let labReviewMistakesCount = parseInt(localStorage.getItem('labReviewMistakesCount')) || 0;
+    let maxSurvivalCombo = parseInt(localStorage.getItem('maxSurvivalCombo')) || 0;
+    let labCurrentLevel = parseInt(localStorage.getItem('labCurrentLevel')) || 1;
+
+    // --- ARCADE SURVIVAL MODE GLOBALS ---
+    let survivalScore = 0;
+    let survivalCombo = 1;
+    let survivalTime = 30;
+    let survivalInterval;
+    let survivalQuestions = [];
 
     function saveStats() {
+        let xp = (labTotalQ * 10) + (labCorrectQ * 5) + (labFcReviewedCount * 2) + (maxSurvivalCombo * 50) + (labReviewMistakesCount * 15);
+        let level = Math.floor(xp / 500) + 1;
+        if (level > labCurrentLevel) {
+            labCurrentLevel = level;
+            showToast(`You leveled up to Level ${level}!`, '🚀');
+        }
+
         localStorage.setItem('labMistakes', JSON.stringify(labMistakes));
         localStorage.setItem('labTotalQ', labTotalQ);
         localStorage.setItem('labCorrectQ', labCorrectQ);
+        localStorage.setItem('labFcReviewedCount', labFcReviewedCount);
+        localStorage.setItem('labReviewMistakesCount', labReviewMistakesCount);
+        localStorage.setItem('maxSurvivalCombo', maxSurvivalCombo);
+        localStorage.setItem('labCurrentLevel', labCurrentLevel);
     }
 
     // 1. Data arrays mergingregation
@@ -176,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Normalize schema and clean options
     rawQuestions = rawQuestions.map(q => {
-        let text = q.question || q.text || "";
+        let text = q.text || q.text || "";
         let options = q.options || [];
         let answer = q.answer !== undefined ? q.answer : (q.options && q.correctIndex !== undefined ? q.options[q.correctIndex] : undefined);
         
@@ -203,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return {
             category: q.category,
-            question: text,
+            text: text,
             options: options,
             answer: answer,
             explanation: q.explanation
@@ -404,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (mode === 'mistakes') {
                 // Filter active questions to ONLY include mistakes
-                activeQuestions = activeQuestions.filter(q => labMistakes.includes(q.question));
+                activeQuestions = activeQuestions.filter(q => labMistakes.includes(q.text));
                 if (activeQuestions.length === 0) {
                     customAlert("Great job! You don't have any mistakes in the selected categories. ??");
                     e.target.checked = false;
@@ -635,7 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="category-badge">${q.category}</span>
                     <span style="color: var(--text-secondary); font-size: 0.9rem;">Question ${globalIndex}</span>
                 </div>
-                <div class="study-question">${q.question}</div>
+                <div class="study-question">${q.text}</div>
                 <div class="study-options">${optionsHtml}</div>
                 <div class="study-explanation">
                     <strong>Correct Answer:</strong> ${q.answer}<br>
@@ -664,8 +758,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         audioEngine.playDing();
                         labTotalQ++;
                         labCorrectQ++;
-                        if (labMistakes.includes(q.question)) {
-                            labMistakes = labMistakes.filter(t => t !== q.question);
+                        if (labMistakes.includes(q.text)) {
+                            labMistakes = labMistakes.filter(t => t !== q.text);
+                        }
+                        if (document.querySelector('input[name="mode"]:checked')?.value === 'mistakes') {
+                            labReviewMistakesCount++;
                         }
                         saveStats();
                     } else {
@@ -676,8 +773,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             if(o.getAttribute('data-opt') === q.answer) o.classList.add('correct');
                         });
                         labTotalQ++;
-                        if (!labMistakes.includes(q.question)) {
-                            labMistakes.push(q.question);
+                        if (!labMistakes.includes(q.text)) {
+                            labMistakes.push(q.text);
                         }
                         saveStats();
                     }
@@ -726,7 +823,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         card.classList.remove('flipped');
         
-        front.innerHTML = `<h3 style="font-size: 1.4rem; text-align: center; line-height: 1.5;">${q.question}</h3>
+        front.innerHTML = `<h3 style="font-size: 1.4rem; text-align: center; line-height: 1.5;">${q.text}</h3>
                            <p style="margin-top: 30px; color: var(--text-secondary);"><i class="fas fa-hand-pointer"></i> Click to flip</p>`;
                            
         back.innerHTML = `<h3>Correct Answer:</h3>
@@ -829,7 +926,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const q = examQuestions[examCurrentIndex];
         
         examCatBadge.textContent = q.category;
-        examQText.textContent = q.question;
+        examQText.textContent = q.text;
         examOptions.innerHTML = '';
         
         q.options.forEach(opt => {
@@ -876,20 +973,20 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(timerInterval);
         switchScreen('results');
         
-        const answeredCount = examAnswers.filter(a => a !== null).length;
+        const answeredCount = examQuestions.length;
         labTotalQ += answeredCount;
         labCorrectQ += examScore;
         
         examIncorrect.forEach(item => {
-            if (!labMistakes.includes(item.q.question)) {
-                labMistakes.push(item.q.question);
+            if (!labMistakes.includes(item.q.text)) {
+                labMistakes.push(item.q.text);
             }
         });
         
         const correctQs = examQuestions.filter(q => !examIncorrect.find(inc => inc.q === q));
         correctQs.forEach(q => {
-            if (labMistakes.includes(q.question)) {
-                labMistakes = labMistakes.filter(t => t !== q.question);
+            if (labMistakes.includes(q.text)) {
+                labMistakes = labMistakes.filter(t => t !== q.text);
             }
         });
         saveStats();
@@ -930,7 +1027,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'review-item';
             div.innerHTML = `
-                <h4>${item.q.question}</h4>
+                <h4>${item.q.text}</h4>
                 <p>Your answer: <span style="text-decoration:line-through;">${item.selectedAnswer}</span></p>
                 <p class="review-correct-ans">Correct answer: ${item.q.answer}</p>
                 <div class="review-exp">${formatExplanation(item.q.explanation)}</div>
@@ -1050,6 +1147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Lecture selected, switch to mode-active to read it
             updateMobileModeState('notes', true);
             closeMobileMenu();
+            switchScreen('notes'); // Route to the screen!
             // Original logic continues
             lectureItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
@@ -1264,7 +1362,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function tinderSwipe(direction) {
         const fc = document.getElementById('flashcard');
         if (!fc) return;
-        const currentQText = activeQuestions[fcCurrentIndex].question;
+        const currentQText = activeQuestions[fcCurrentIndex].text;
         
         if (direction === 'left') {
             fc.style.transition = 'transform 0.3s, box-shadow 0.3s';
@@ -1275,16 +1373,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!labMistakes.includes(currentQText)) {
                 labMistakes.push(currentQText);
             }
-            if (!labMistakes.includes(currentQText)) {
-                labMistakes.push(currentQText);
-            }
+            labTotalQ++;
+            labFcReviewedCount++;
             saveStats();
         } else {
             fc.style.transition = 'transform 0.3s, box-shadow 0.3s';
             fc.style.boxShadow = '20px 0 30px rgba(16, 185, 129, 0.5)';
             fc.style.transform = 'translateX(50px) rotate(5deg)';
             audioEngine.playDing();
-            audioEngine.playDing();
+            
+            if (labMistakes.includes(currentQText)) {
+                labMistakes = labMistakes.filter(t => t !== currentQText);
+            }
+            labTotalQ++;
+            labCorrectQ++;
+            labFcReviewedCount++;
+            saveStats();
         }
         
         setTimeout(() => {
@@ -1354,6 +1458,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dashboard updates
     document.getElementById('dashboard-btn')?.addEventListener('click', () => {
         switchScreen('dashboard');
+        
+        const quotes = [
+            "Engineering is the closest thing to magic that exists in the world.",
+            "Success is the sum of small efforts, repeated day in and day out.",
+            "Strive for progress, not perfection.",
+            "The expert in anything was once a beginner.",
+            "There is no elevator to success. You have to take the stairs.",
+            "Hard work beats talent when talent doesn't work hard.",
+            "It always seems impossible until it is done.",
+            "Don't stop when you're tired. Stop when you're done."
+        ];
+        const quoteEl = document.getElementById('dash-quote');
+        if (quoteEl) quoteEl.textContent = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+        
+        let xp = (labTotalQ * 10) + (labCorrectQ * 5) + (labFcReviewedCount * 2) + (maxSurvivalCombo * 50) + (labReviewMistakesCount * 15);
+        let level = Math.floor(xp / 500) + 1;
+        let currentLevelXp = xp % 500;
+        
+        let rankData = { title: "Fresh Engineer", icon: "🥉", color: "#cd7f32" };
+        if (level >= 5) rankData = { title: "Junior Developer", icon: "🥈", color: "#c0c0c0" };
+        if (level >= 10) rankData = { title: "Senior Engineer", icon: "🥇", color: "#ffd700" };
+        if (level >= 20) rankData = { title: "Tech Lead", icon: "💎", color: "#00ffff" };
+        if (level >= 30) rankData = { title: "Principal Architect", icon: "🔮", color: "#ff00ff" };
+        if (level >= 50) rankData = { title: "Engineering Legend", icon: "👑", color: "#ff4500" };
+
+        document.getElementById('dash-rank').innerHTML = `<span style="display:inline-flex; align-items:center; gap:5px; padding: 2px 10px; border-radius: 20px; background: ${rankData.color}22; border: 1px solid ${rankData.color}; color: ${rankData.color}; box-shadow: 0 0 10px ${rankData.color}44;">${rankData.icon} ${rankData.title}</span>`;
+        document.getElementById('dash-xp').textContent = currentLevelXp;
+        document.getElementById('dash-xp-bar').style.width = `${(currentLevelXp / 500) * 100}%`;
+
         document.getElementById('dash-total-q').textContent = labTotalQ;
         const accuracy = labTotalQ === 0 ? 0 : Math.round((labCorrectQ / labTotalQ) * 100);
         document.getElementById('dash-accuracy').textContent = accuracy + '%';
@@ -1367,6 +1500,10 @@ document.addEventListener('DOMContentLoaded', () => {
             labCorrectQ = 0;
             labMistakes = [];
             labAchievements = [];
+            labFcReviewedCount = 0;
+            labReviewMistakesCount = 0;
+            maxSurvivalCombo = 0;
+            labCurrentLevel = 1;
             saveStats();
             localStorage.setItem('labAchievements', JSON.stringify([]));
             document.getElementById('dashboard-btn').click(); // refresh dashboard
@@ -1376,17 +1513,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Theme Toggle
     const themeBtn = document.getElementById('theme-btn');
+    const themes = ['dark', 'ocean-blue', 'forest-emerald', 'sunset-amber', 'amethyst-violet'];
     let currentTheme = localStorage.getItem('labTheme') || 'dark';
+    if (!themes.includes(currentTheme)) currentTheme = 'dark';
     document.body.setAttribute('data-theme', currentTheme);
     
     themeBtn?.addEventListener('click', () => {
-        if (currentTheme === 'dark') {
-            currentTheme = 'light';
-        } else if (currentTheme === 'light') {
-            currentTheme = 'cyberpunk';
-        } else {
-            currentTheme = 'dark';
-        }
+        let idx = themes.indexOf(currentTheme);
+        currentTheme = themes[(idx + 1) % themes.length];
         document.body.setAttribute('data-theme', currentTheme);
         localStorage.setItem('labTheme', currentTheme);
     });
@@ -1397,29 +1531,54 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function checkAchievements() {
         const newlyUnlocked = [];
+        if (!labAchievements.includes('firstblood') && labCorrectQ >= 1) newlyUnlocked.push('firstblood');
         if (!labAchievements.includes('century') && labTotalQ >= 100) newlyUnlocked.push('century');
-        if (!labAchievements.includes('perfect') && examScore === examQuestions.length && examQuestions.length > 0) newlyUnlocked.push('perfect');
+        if (!labAchievements.includes('completionist') && labCorrectQ >= 339) newlyUnlocked.push('completionist');
+        if (!labAchievements.includes('sharpshooter') && labTotalQ >= 100 && (labCorrectQ / labTotalQ) >= 0.9) newlyUnlocked.push('sharpshooter');
+        if (!labAchievements.includes('perfect') && typeof examScore !== 'undefined' && typeof examQuestions !== 'undefined' && examScore === examQuestions.length && examQuestions.length > 0) newlyUnlocked.push('perfect');
         const hour = new Date().getHours();
         if (!labAchievements.includes('nightowl') && (hour >= 23 || hour <= 4)) newlyUnlocked.push('nightowl');
+        if (!labAchievements.includes('earlybird') && (hour >= 5 && hour <= 9)) newlyUnlocked.push('earlybird');
+        if (!labAchievements.includes('combomaster') && maxSurvivalCombo >= 10) newlyUnlocked.push('combomaster');
+        if (!labAchievements.includes('survivorgod') && maxSurvivalCombo >= 20) newlyUnlocked.push('survivorgod');
+        if (!labAchievements.includes('unbreakable') && typeof survivalScore !== 'undefined' && survivalScore >= 10000) newlyUnlocked.push('unbreakable');
+        if (!labAchievements.includes('flashcardking') && labFcReviewedCount >= 50) newlyUnlocked.push('flashcardking');
+        if (!labAchievements.includes('scholar') && labFcReviewedCount >= 100) newlyUnlocked.push('scholar');
+        if (!labAchievements.includes('comebackkid') && labReviewMistakesCount >= 10) newlyUnlocked.push('comebackkid');
+        if (!labAchievements.includes('flawless') && labMistakes.length === 0 && labTotalQ >= 50) newlyUnlocked.push('flawless');
+        if (!labAchievements.includes('explorer') && activeQuestions.length >= rawQuestions.length && rawQuestions.length > 0) newlyUnlocked.push('explorer');
         
         newlyUnlocked.forEach(id => {
             labAchievements.push(id);
-            customAlert("🏆 Achievement Unlocked!");
+            const badge = allBadgesList?.find(b => b.id === id) || { title: 'Achievement Unlocked', icon: '🏆' };
+            showToast(`Unlocked: ${badge.title}`, badge.icon);
         });
         localStorage.setItem('labAchievements', JSON.stringify(labAchievements));
     }
+
+    const allBadgesList = [
+        { id: 'firstblood', icon: '🩸', title: 'First Blood', desc: 'Answered your first question correctly' },
+        { id: 'century', icon: '💯', title: 'Century Club', desc: 'Answered 100+ questions' },
+        { id: 'completionist', icon: '🌌', title: 'Completionist', desc: 'Mastered 339+ correct answers' },
+        { id: 'sharpshooter', icon: '🏹', title: 'Sharpshooter', desc: 'Maintained 90%+ accuracy over 100 Qs' },
+        { id: 'perfect', icon: '🎯', title: 'The Perfectionist', desc: 'Scored 100% on an exam' },
+        { id: 'combomaster', icon: '🔥', title: 'Combo Master', desc: 'Reached a 10x Combo in Survival' },
+        { id: 'survivorgod', icon: '⚡', title: 'Survival God', desc: 'Reached a 20x Combo in Survival' },
+        { id: 'unbreakable', icon: '🛡️', title: 'Unbreakable', desc: 'Reached 10,000+ Score in Survival' },
+        { id: 'flashcardking', icon: '🗂️', title: 'Flashcard King', desc: 'Reviewed 50+ Flashcards' },
+        { id: 'scholar', icon: '🎓', title: 'The Scholar', desc: 'Reviewed 100+ Flashcards' },
+        { id: 'comebackkid', icon: '🔄', title: 'Comeback Kid', desc: 'Fixed 10 mistakes in Review Mode' },
+        { id: 'flawless', icon: '✨', title: 'Flawless Mind', desc: 'Cleared all mistakes after 50+ Qs' },
+        { id: 'explorer', icon: '🧭', title: 'The Explorer', desc: 'Selected all categories at once' },
+        { id: 'nightowl', icon: '🦉', title: 'Night Owl', desc: 'Studied past midnight' },
+        { id: 'earlybird', icon: '🌅', title: 'Early Bird', desc: 'Studied between 5 AM and 9 AM' }
+    ];
 
     function renderAchievements() {
         const container = document.getElementById('achievements-container');
         if (!container) return;
         
-        const allBadges = [
-            { id: 'century', icon: '💯', title: 'Century Club', desc: 'Answered 100+ questions' },
-            { id: 'perfect', icon: '🌟', title: 'The Perfectionist', desc: 'Scored 100% on an exam' },
-            { id: 'nightowl', icon: '🦉', title: 'Night Owl', desc: 'Studied past midnight' }
-        ];
-        
-        container.innerHTML = allBadges.map(b => {
+        container.innerHTML = allBadgesList.map(b => {
             const unlocked = labAchievements.includes(b.id);
             return `
                 <div style="background: ${unlocked ? 'rgba(16, 185, 129, 0.2)' : 'rgba(0,0,0,0.3)'}; border: 1px solid ${unlocked ? '#10b981' : 'var(--glass-border)'}; border-radius: 8px; padding: 10px; width: 150px; text-align: center; opacity: ${unlocked ? '1' : '0.5'};">
@@ -1432,11 +1591,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- ARCADE SURVIVAL MODE ---
-    let survivalScore = 0;
-    let survivalCombo = 1;
-    let survivalTime = 30;
-    let survivalInterval;
-    let survivalQuestions = [];
 
     function startSurvivalMode() {
         survivalScore = 0;
@@ -1479,7 +1633,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const qContainer = document.getElementById('survival-question-container');
         const qTextEl = document.getElementById('survival-q-text');
         
-        qTextEl.innerHTML = q.question || "<em>Error: Question text missing. Please check console.</em>";
+        qTextEl.innerHTML = q.text || "<em>Error: Question text missing. Please check console.</em>";
         console.log("Survival Question loaded:", q);
         
         const optsContainer = document.getElementById('survival-options');
@@ -1499,6 +1653,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     audioEngine.playDing();
                     survivalScore += 100 * survivalCombo;
                     survivalCombo++;
+                    maxSurvivalCombo = Math.max(maxSurvivalCombo, survivalCombo);
                     survivalTime += 5; // +5 seconds
                     labTotalQ++;
                     labCorrectQ++;
@@ -1521,8 +1676,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     survivalTime -= 10; // -10 seconds
                     
                     labTotalQ++;
-                    if (!labMistakes.includes(q.question)) {
-                        labMistakes.push(q.question);
+                    if (!labMistakes.includes(q.text)) {
+                        labMistakes.push(q.text);
                     }
                     saveStats();
                     
