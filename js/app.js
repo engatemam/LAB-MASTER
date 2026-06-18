@@ -1693,7 +1693,6 @@ document.addEventListener('DOMContentLoaded', () => {
             optsContainer.appendChild(btn);
         });
     }
-
     function endSurvivalMode() {
         clearInterval(survivalInterval);
         audioEngine.playAlarm();
@@ -1702,9 +1701,16 @@ document.addEventListener('DOMContentLoaded', () => {
         modeRadios.forEach(r => r.checked = false);
     }
     
+    // --- QURAN AUDIO ---
+    const reciters = [
+        { name: "ياسر الدوسري", url: "https://server11.mp3quran.net/yasser/" },
+        { name: "مشاري العفاسي", url: "https://server8.mp3quran.net/afs/" },
+        { name: "عبد الباسط عبد الصمد", url: "https://server7.mp3quran.net/basit/" },
+        { name: "ماهر المعيقلي", url: "https://server12.mp3quran.net/maher/" },
+        { name: "محمود خليل الحصري", url: "https://server13.mp3quran.net/husr/" },
+        { name: "محمد صديق المنشاوي", url: "https://server10.mp3quran.net/minsh/" }
+    ];
 
-
-    // --- QURAN AUDIO (Yasser Al-Dosari) ---
     const surahNames = [
         "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
         "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه",
@@ -1721,12 +1727,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     let currentSurahIndex = -1; // No default Surah
+    let currentReciterIndex = 0; // Default: Yasser Al-Dosari
     let quranAudio = new Audio();
     let focusPlaying = false;
 
     function getSurahUrl(index) {
         const num = (index + 1).toString().padStart(3, '0');
-        return `https://server11.mp3quran.net/yasser/${num}.mp3`;
+        return `${reciters[currentReciterIndex].url}${num}.mp3`;
     }
 
     quranAudio.addEventListener('ended', () => {
@@ -1759,6 +1766,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('focus-audio-btn')?.addEventListener('click', toggleFocusAudio);
 
+    window.changeReciter = function(idx) {
+        currentReciterIndex = parseInt(idx);
+        if (currentSurahIndex !== -1) {
+            const wasPlaying = focusPlaying;
+            const currentTime = quranAudio.currentTime; // optional: could try to keep time, but audio streams are different. Best to just restart surah.
+            quranAudio.src = getSurahUrl(currentSurahIndex);
+            if (wasPlaying) {
+                quranAudio.play().catch(e => console.error(e));
+            }
+        }
+    };
+
     window.selectSurah = function(index) {
         currentSurahIndex = index;
         quranAudio.src = getSurahUrl(currentSurahIndex);
@@ -1766,19 +1785,47 @@ document.addEventListener('DOMContentLoaded', () => {
         focusPlaying = true;
         document.getElementById('focus-audio-btn').innerHTML = `⏸️ ${surahNames[currentSurahIndex]}`;
         document.getElementById('focus-audio-btn').style.background = 'var(--accent-cyan)';
-        document.getElementById('sys-modal').style.display = 'none'; // quick close
+        
+        const closeBtn = document.querySelector('#sys-modal-btns button');
+        if (closeBtn) {
+            closeBtn.click();
+        } else {
+            document.getElementById('sys-modal').style.display = 'none';
+        }
     };
 
     document.getElementById('quran-menu-btn')?.addEventListener('click', () => {
         audioEngine.playTick();
-        let html = '<div style="max-height: 400px; overflow-y: auto; text-align: right; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px;">';
+        let html = `
+        <div style="margin-bottom: 15px; text-align: right; direction: rtl;">
+            <label style="color: var(--text-secondary); margin-bottom: 5px; display: block; font-family: 'Cairo', sans-serif;">اختر القارئ:</label>
+            <select onchange="changeReciter(this.value)" style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: var(--text-primary); font-family: 'Cairo', sans-serif; font-size: 1rem; outline: none; cursor: pointer;">`;
+        
+        reciters.forEach((r, idx) => {
+            html += `<option value="${idx}" ${idx === currentReciterIndex ? 'selected' : ''} style="background: var(--card-bg); color: var(--text-primary);">${r.name}</option>`;
+        });
+        
+        html += `</select></div>
+        <div style="max-height: 50vh; overflow-y: auto; text-align: right; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; padding: 10px; direction: rtl;">`;
+        
         surahNames.forEach((name, i) => {
             const numStr = (i + 1).toString();
             const isActive = i === currentSurahIndex ? 'background: rgba(0, 255, 204, 0.2); border-color: var(--accent-cyan); color: #fff;' : 'background: rgba(255,255,255,0.05); border-color: var(--glass-border);';
-            html += `<button onclick="selectSurah(${i})" style="padding: 10px; border: 1px solid; border-radius: 8px; cursor: pointer; text-align: center; font-family: 'Cairo', sans-serif; font-weight: 600; font-size: 0.95rem; color: var(--text-primary); transition: 0.2s; ${isActive}" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='${i === currentSurahIndex ? 'rgba(0, 255, 204, 0.2)' : 'rgba(255,255,255,0.05)'}'">${numStr}. ${name}</button>`;
+            html += `<button onclick="selectSurah(${i})" style="padding: 10px; border: 1px solid; border-radius: 8px; cursor: pointer; text-align: center; font-family: 'Cairo', sans-serif; font-weight: 600; font-size: 1rem; color: var(--text-primary); transition: 0.2s; ${isActive}" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='${i === currentSurahIndex ? 'rgba(0, 255, 204, 0.2)' : 'rgba(255,255,255,0.05)'}'">${numStr}. ${name}</button>`;
         });
         html += '</div>';
-        openSysModal('📖 اختر السورة', html, [{ text: 'Close', value: true }]);
+
+        const modalContent = document.getElementById('sys-modal-content');
+        const originalMaxWidth = modalContent.style.maxWidth;
+        const originalWidth = modalContent.style.width;
+        
+        modalContent.style.maxWidth = '800px';
+        modalContent.style.width = '90%';
+
+        openSysModal('📖 القرآن الكريم', html, [{ text: 'إغلاق', value: true }]).then(() => {
+            modalContent.style.maxWidth = originalMaxWidth;
+            modalContent.style.width = originalWidth;
+        });
     });
 
 });
