@@ -40,7 +40,7 @@ Welcome to the ultimate native-grade educational platform designed specifically 
 - **🔄 Session Memory**: A smart "Welcome Back" prompt on page load allows you to instantly restore your previous lecture selections, or wipe everything (including your Dashboard) for a fresh start.
 - **🔊 Text-to-Speech (TTS) Dictation**: Let the AI read complex engineering explanations aloud to you to improve focus and pronunciation.
 - **⌨️ Keyboard Shortcuts**: Navigate the entire platform without a mouse. Use `Left/Right Arrows` to swipe flashcards, and `1-4` or `A-D` to instantly select options.
-- **🎵 Lo-Fi Focus Audio**: A built-in ambient brown-noise generator directly inside the sidebar to help you lock in and maintain deep work sessions.
+- **📻 The Holy Quran Player**: A built-in, fully-featured audio player integrated directly into the sidebar streaming all 114 Surahs recited by Sheikh Yasser Al-Dosari, with auto-play progression to bring peace and focus to your study sessions.
 
 ### 🎨 State-of-the-Art Premium Design
 - **Cinematic Landing Gate**: A full-screen frosted glass entry gate that welcomes users with beautiful fade animations and a live global database counter.

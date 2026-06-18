@@ -1704,52 +1704,81 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
 
-    // --- DEEP FOCUS AMBIENT AUDIO ---
+    // --- QURAN AUDIO (Yasser Al-Dosari) ---
+    const surahNames = [
+        "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
+        "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه",
+        "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم",
+        "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر",
+        "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق",
+        "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة",
+        "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج",
+        "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس",
+        "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد",
+        "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات",
+        "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر",
+        "المسد", "الإخلاص", "الفلق", "الناس"
+    ];
+
+    let currentSurahIndex = -1; // No default Surah
+    let quranAudio = new Audio();
     let focusPlaying = false;
-    let brownNoiseNode = null;
-    let brownNoiseGain = null;
-    
+
+    function getSurahUrl(index) {
+        const num = (index + 1).toString().padStart(3, '0');
+        return `https://server11.mp3quran.net/yasser/${num}.mp3`;
+    }
+
+    quranAudio.addEventListener('ended', () => {
+        if (currentSurahIndex === -1) return;
+        currentSurahIndex++;
+        if (currentSurahIndex >= 114) currentSurahIndex = 0;
+        quranAudio.src = getSurahUrl(currentSurahIndex);
+        quranAudio.play().catch(e => console.error(e));
+        document.getElementById('focus-audio-btn').innerHTML = `⏸️ ${surahNames[currentSurahIndex]}`;
+    });
+
     function toggleFocusAudio() {
+        if (currentSurahIndex === -1) {
+            document.getElementById('quran-menu-btn')?.click();
+            return;
+        }
+
         if (focusPlaying) {
-            if (brownNoiseNode) brownNoiseNode.stop();
+            quranAudio.pause();
             focusPlaying = false;
-            document.getElementById('focus-audio-btn').innerHTML = '📻 Lo-Fi Focus';
+            document.getElementById('focus-audio-btn').innerHTML = `📻 ${surahNames[currentSurahIndex]}`;
             document.getElementById('focus-audio-btn').style.background = 'var(--glass-bg)';
         } else {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            
-            const bufferSize = audioCtx.sampleRate * 2; 
-            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            const output = buffer.getChannelData(0);
-            let lastOut = 0;
-            for (let i = 0; i < bufferSize; i++) {
-                const white = Math.random() * 2 - 1;
-                output[i] = (lastOut + (0.02 * white)) / 1.02;
-                lastOut = output[i];
-                output[i] *= 3.5; 
-            }
-            brownNoiseNode = audioCtx.createBufferSource();
-            brownNoiseNode.buffer = buffer;
-            brownNoiseNode.loop = true;
-            
-            const filter = audioCtx.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.value = 400; 
-            
-            brownNoiseGain = audioCtx.createGain();
-            brownNoiseGain.gain.value = 0.8; 
-            
-            brownNoiseNode.connect(filter);
-            filter.connect(brownNoiseGain);
-            brownNoiseGain.connect(audioCtx.destination);
-            
-            brownNoiseNode.start();
+            quranAudio.play().catch(e => console.error("Audio play failed:", e));
             focusPlaying = true;
-            document.getElementById('focus-audio-btn').innerHTML = '⏸️ Pause Focus Audio';
+            document.getElementById('focus-audio-btn').innerHTML = `⏸️ ${surahNames[currentSurahIndex]}`;
             document.getElementById('focus-audio-btn').style.background = 'var(--accent-cyan)';
         }
     }
-    
+
     document.getElementById('focus-audio-btn')?.addEventListener('click', toggleFocusAudio);
+
+    window.selectSurah = function(index) {
+        currentSurahIndex = index;
+        quranAudio.src = getSurahUrl(currentSurahIndex);
+        quranAudio.play().catch(e => console.error(e));
+        focusPlaying = true;
+        document.getElementById('focus-audio-btn').innerHTML = `⏸️ ${surahNames[currentSurahIndex]}`;
+        document.getElementById('focus-audio-btn').style.background = 'var(--accent-cyan)';
+        document.getElementById('sys-modal').style.display = 'none'; // quick close
+    };
+
+    document.getElementById('quran-menu-btn')?.addEventListener('click', () => {
+        audioEngine.playTick();
+        let html = '<div style="max-height: 400px; overflow-y: auto; text-align: right; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px;">';
+        surahNames.forEach((name, i) => {
+            const numStr = (i + 1).toString();
+            const isActive = i === currentSurahIndex ? 'background: rgba(0, 255, 204, 0.2); border-color: var(--accent-cyan); color: #fff;' : 'background: rgba(255,255,255,0.05); border-color: var(--glass-border);';
+            html += `<button onclick="selectSurah(${i})" style="padding: 10px; border: 1px solid; border-radius: 8px; cursor: pointer; text-align: center; font-family: 'Cairo', sans-serif; font-weight: 600; font-size: 0.95rem; color: var(--text-primary); transition: 0.2s; ${isActive}" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='${i === currentSurahIndex ? 'rgba(0, 255, 204, 0.2)' : 'rgba(255,255,255,0.05)'}'">${numStr}. ${name}</button>`;
+        });
+        html += '</div>';
+        openSysModal('📖 اختر السورة', html, [{ text: 'Close', value: true }]);
+    });
 
 });
