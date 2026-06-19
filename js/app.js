@@ -1229,6 +1229,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Mermaid rendering skipped or failed:', e);
                 }
             }
+
+            // Scroll to the top of the page/container
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const rightContent = document.querySelector('.right-content');
+            if (rightContent) {
+                rightContent.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
     });
 
