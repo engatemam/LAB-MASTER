@@ -1167,7 +1167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const secDiv = document.createElement('div');
                 secDiv.className = 'note-section';
                 
-                let html = `<h3 class="arabic-text" style="color: var(--accent); margin-bottom: 15px;">${section.title}</h3>`;
+                let html = `<h3 dir="rtl" class="arabic-text" style="color: var(--accent); margin-bottom: 15px;">${section.title}</h3>`;
                 
                 // 1. Concept Overview (Arabic/Bilingual)
                 if (section.conceptOverview) {
