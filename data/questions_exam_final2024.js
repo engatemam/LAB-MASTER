@@ -1,104 +1,214 @@
 const examFinal2024 = [
-  { category: "Final 2024", text: "........ display graphical signals in a format on a pair of axes, generally with Y as voltage and X as the time.", options: ["Multimeter", "Oscilloscope", "Power Supply", "Function Generator"], correctIndex: 1, explanation: "Oscilloscopes plot voltage against time." },
-  { category: "Final 2024", text: "This part of the processor contains the logic to perform arithmetic and logic operations.", options: ["CU", "DMA", "ALU", "Registers"], correctIndex: 2, explanation: "The Arithmetic Logic Unit (ALU) does the computation." },
-  { category: "Final 2024", text: "........ is able to generate waveforms with common shapes.", options: ["Power Supply", "Multimeter", "Oscilloscope", "Function Generator"], correctIndex: 3, explanation: "A function generator creates standard waveforms." },
-  { category: "Final 2024", text: "........ measure both AC and DC voltage and current as well as resistance.", options: ["Power Supply", "Oscilloscope", "Multimeter", "Function Generator"], correctIndex: 2, explanation: "A multimeter measures voltage, current, and resistance." },
-  { category: "Final 2024", text: "During the....phase, an instruction is read from the memory and decoded by the instruction decoder.", options: ["execute", "fetch", "halting", "None of above"], correctIndex: 1, explanation: "The instruction is fetched from memory during the fetch phase." },
-  { category: "Final 2024", text: "At......, the description is translated into generic logic gates.", options: ["Technology mapping", "synthesis", "Functional design", "place and route"], correctIndex: 1, explanation: "Synthesis translates RTL code into gate-level representation." },
-  { category: "Final 2024", text: "In....triggering, the sequential circuit is operated with the clock signal when it is in Logic High or low.", options: ["level", "edge"], correctIndex: 0, explanation: "Level triggering acts on the high or low voltage level, whereas edge triggering acts on transitions." },
-  { category: "Final 2024", text: "The..... package have contacts embedded in the bottom of the package.", options: ["FBGA", "PLCC", "SOP", "QFP"], correctIndex: 0, explanation: "Fine-pitch Ball Grid Array (FBGA) uses an array of solder balls on the bottom." },
-  { category: "Final 2024", text: "The most common type of through-hole package is the.......", options: ["PLCC", "DIP", "QFP", "SSOP"], correctIndex: 1, explanation: "Dual In-line Package (DIP) is the most standard through-hole." },
-  { category: "Final 2024", text: "The software components of an embedded system frequently referred to as the system ........", options: ["task", "firmware", "memory", "kernel"], correctIndex: 1, explanation: "Firmware is software embedded in hardware devices." },
-  { category: "Final 2024", text: "........ is considered as a type of data converters to allow interaction with analog sensors and actuators.", options: ["diagnostics", "ADC", "FPGA", "None of above"], correctIndex: 1, explanation: "Analog-to-Digital Converter (ADC) translates analog signals to digital." },
-  { category: "Final 2024", text: "The high-speed ...... are inserted in between the CPU and memory.", options: ["main memories", "caches", "SSD", "None of above"], correctIndex: 1, explanation: "Caches sit between the fast CPU and slower main memory." },
-  { category: "Final 2024", text: "The... is an abstract interface between the hardware and the lowest-level software.", options: ["Register file", "architecture", "Bus", "Program counter"], correctIndex: 1, explanation: "Instruction Set Architecture (ISA) bridges hardware and software." },
-  { category: "Final 2024", text: "..... is used to provide fixed position for solder paste printing.", options: ["PCB", "Solder paste", "SMC", "Stencil"], correctIndex: 3, explanation: "Stencils provide the mask for applying solder paste accurately." },
-  { category: "Final 2024", text: "At....... stage, the electrical solder connections are formed between the components and PCB by heating the assembly to a sufficient temperature.", options: ["Reflow soldering", "Solder paste printing", "SMC placement", "None of above"], correctIndex: 0, explanation: "Reflow soldering melts the paste to form connections." },
-  { category: "Final 2024", text: "SMD resistor with label '474' has a resistance of ........ \u2126.", options: ["4704", "470", "470 K", "47.4"], correctIndex: 2, explanation: "47 * 10^4 = 470,000 \u2126 or 470 K\u2126." },
-  { category: "Final 2024", text: "........ is targeted for high end market where performance is important.", options: ["Microprocessor", "Microcontroller"], correctIndex: 0, explanation: "Microprocessors prioritize processing power, requiring external memory/peripherals." },
-  { category: "Final 2024", text: "In.........., you can handle the compile and link processing using scripts.", options: ["makefile", "Elf file", "Linker script", "LINKV2"], correctIndex: 0, explanation: "Makefiles automate the compilation and linking process." },
-  { category: "Final 2024", text: "Includes lot of power saving features ........", options: ["Microprocessor", "Microcontroller"], correctIndex: 1, explanation: "Microcontrollers usually feature deep sleep and power-saving modes." },
-  { category: "Final 2024", text: "To generate the final combined executable image, a separate .....process is required.", options: ["compilation", "assembler", "linking", "None of above"], correctIndex: 2, explanation: "The linker combines object files into the final executable." },
-  { category: "Final 2024", text: "you can check the program execution status and results by outputting information via various I/O mechanisms such as a .....interface.", options: ["Flash memory", "bootloader", "UART", "None of above"], correctIndex: 2, explanation: "UART allows printing text output for debugging." },
-  { category: "Final 2024", text: "Allows multiple processes to be executed concurrently, by dividing the processor's time into time slots.", options: ["Interrupt driven", "polling", "RTOS", "None of above"], correctIndex: 2, explanation: "A Real-Time Operating System uses scheduling to multitask." },
-  { category: "Final 2024", text: "...... method is not energy efficient.", options: ["Interrupt driven", "polling", "RTOS", "None of above"], correctIndex: 1, explanation: "Polling wastes CPU cycles and battery power checking states." },
-  { category: "Final 2024", text: "The ......connect the logic signals to FPGA pins.", options: ["DSP blocks", "inverters", "I/O blocks", "NAND"], correctIndex: 2, explanation: "I/O blocks interface the internal logic with external pins." },
-  { category: "Final 2024", text: "Signal substitution is used when the system being tested has been ........ from its signal source.", options: ["separated", "integrated"], correctIndex: 0, explanation: "A separated system needs an injected/substituted signal for testing." },
-  { category: "Final 2024", text: "In....method, you check for the presence or absence of a signal at a point halfway between input and output.", options: ["Signal-Tracing", "Signal Substitution", "Half-Splitting", "None of above"], correctIndex: 2, explanation: "Half-splitting is a divide-and-conquer troubleshooting method." },
-  { category: "Final 2024", text: "In.... technique, the processor can wait until there is data ready for processing, process it, and then wait again.", options: ["Interrupt driven", "polling", "RTOS", "None of above"], correctIndex: 0, explanation: "Interrupts wake the processor when data is ready." },
-  { category: "Final 2024", text: "The capacities of some FPGAs are specified in a number of.....", options: ["LUTs", "capacitors", "Buses", "None of above"], correctIndex: 0, explanation: "Look-Up Tables (LUTs) determine the logic capacity." },
-  { category: "Final 2024", text: "5-variable expression can be implemented by using... of 4-input LUT.", options: ["one", "two", "three", "four"], correctIndex: 1, explanation: "Two 4-input LUTs plus a multiplexer can implement a 5-variable function." },
-  { category: "Final 2024", text: "The programming file of FPGA is called....", options: ["bitstream", "elf", "NAND", "constraints"], correctIndex: 0, explanation: "FPGAs are programmed using a bitstream file." },
-  { category: "Final 2024", text: "Importing submodules inside the top module is called ........", options: ["declaration", "modulation", "substitution", "instantiation"], correctIndex: 3, explanation: "In HDL, invoking a sub-module is instantiation." },
-  { category: "Final 2024", text: "The user ........ are to be specified for timing, power, and area.", options: ["bitstream", "netlist", "constraints", "Verilog"], correctIndex: 2, explanation: "Constraints tell the synthesis tools the design requirements." },
-  { category: "Final 2024", text: "Altera calls their basic blocks ....", options: ["Logic Elements", "LUT", "FF", "None of above"], correctIndex: 0, explanation: "Altera uses the term Logic Elements (LEs)." },
-  { category: "Final 2024", text: "..... is a general-purpose hardware description language that can be used to describe and simulate the operation of a wide variety of digital systems.", options: ["FPGA", "JTAG", "Verilog", "ASIC"], correctIndex: 2, explanation: "Verilog is an HDL." },
-  { category: "Final 2024", text: "The module of Verilog is ended by '...' syntax.", options: ["END", "endmodule", "endmodule;", "End_module"], correctIndex: 1, explanation: "endmodule terminates a module block in Verilog." },
-  { category: "Final 2024", text: "The address space of ARM cortex-M that is used for mapping is ....GB.", options: ["2", "4", "8", "32"], correctIndex: 1, explanation: "ARM Cortex-M has a 32-bit address bus giving 4GB address space." },
-  { category: "Final 2024", text: "The syntax 'assign C=A|B' is a...... assignment.", options: ["continuous", "procedural"], correctIndex: 0, explanation: "The 'assign' keyword is for continuous assignments in Verilog." },
-  { category: "Final 2024", text: "A...statement must complete the evaluation of the right-hand side of a statement before the next statements.", options: ["blocking", "non-blocking"], correctIndex: 0, explanation: "Blocking assignments (=) execute sequentially." },
-  { category: "Final 2024", text: "........ assignment is recommended to be used for sequential circuits.", options: ["non-blocking", "blocking"], correctIndex: 0, explanation: "Non-blocking assignments (<=) are used for modeling edge-triggered logic (flip-flops)." },
-  { category: "Final 2024", text: "Operator '<=' is used for representing the .....assignment.", options: ["blocking", "non-blocking"], correctIndex: 1, explanation: "<= represents a non-blocking assignment." },
-  { category: "Final 2024", text: "reg[....:0]mem[0:4095] defines an array of 4096, 8-bit of vector of type reg.", options: ["6", "7", "8", "9"], correctIndex: 1, explanation: "[7:0] creates an 8-bit wide vector." },
-  { category: "Final 2024", text: "The synthesis step of FPGA requires the behavioral ........", options: ["timing", "Logic gates", "netlist", "power"], correctIndex: 2, explanation: "Synthesis converts behavioral HDL/netlist into a gate-level design." },
-  { category: "Final 2024", text: "Refer to reg[5:0] mem [0:1023], we can select the 3rd bit of the 6th element by mem[...][...].", options: ["2,5", "3,6", "6,3", "5,2"], correctIndex: 3, explanation: "Index 5 is the 6th element, index 2 is the 3rd bit." },
-  { category: "Final 2024", text: "The conditional operator of this circuit is assign.....", options: ["F=E?A:(C?B:D);", "F=E?A:(B?D:C);", "F=E?A:(D?B:C);", "F=A?E:(B?D:C);"], correctIndex: 1, explanation: "This depends on the unprovided circuit diagram. Option B is selected as placeholder." },
-  { category: "Final 2024", text: "AHB bus is used for .....-bandwidth communication.", options: ["high", "low"], correctIndex: 0, explanation: "Advanced High-performance Bus (AHB) handles high-bandwidth." },
-  { category: "Final 2024", text: "Interrupts are usually generated from on-chip peripherals or ........", options: ["external inputs", "CPU core", "ISR", "None of above"], correctIndex: 0, explanation: "External pins (inputs) or internal peripherals generate interrupts." },
-  { category: "Final 2024", text: ".....is a dedicated hardware unit inside the Cortex-M based microcontrollers that is responsible for the exceptions handling.", options: ["NVIC", "EXTI", "IRQ", "CSS"], correctIndex: 0, explanation: "Nested Vectored Interrupt Controller (NVIC) handles exceptions in ARM Cortex-M." },
-  { category: "Final 2024", text: "The .......are used for the communication between the core and peripheral devices.", options: ["DMA", "UART", "buses", "GPIO"], correctIndex: 2, explanation: "Buses provide the data path for communication." },
-  { category: "Final 2024", text: "SWD uses a bus called ........", options: ["JTAG", "DAP", "AHB", "GPIO"], correctIndex: 1, explanation: "Serial Wire Debug (SWD) connects to the Debug Access Port (DAP)." },
-  { category: "Final 2024", text: "OpenOCD is designed to be a generic tool able to work with tens of hardware debuggers.", options: ["True", "False"], correctIndex: 0, explanation: "OpenOCD supports many different JTAG/SWD adapters." },
-  { category: "Final 2024", text: "Arbitrary Waveform Generator (AWG) is a programmable Oscilloscope.", options: ["True", "False"], correctIndex: 1, explanation: "An AWG generates waveforms; an oscilloscope measures them." },
-  { category: "Final 2024", text: "The weakness of physical contact to PCB is considered as one of SMD disadvantages.", options: ["True", "False"], correctIndex: 0, explanation: "SMD solder joints bear the mechanical stress, making them weaker than through-hole." },
-  { category: "Final 2024", text: "The BJT transistor can be checked with some types of multimeters.", options: ["True", "False"], correctIndex: 0, explanation: "Many multimeters have hFE or diode test modes for BJT testing." },
-  { category: "Final 2024", text: "The registers can be used for data storage.", options: ["True", "False"], correctIndex: 0, explanation: "Registers provide fast, temporary data storage within the CPU." },
-  { category: "Final 2024", text: "Linux is an application software.", options: ["True", "False"], correctIndex: 1, explanation: "Linux is system software (an operating system)." },
-  { category: "Final 2024", text: "The 7400 TTL logic family was powered off of a + 5v supply.", options: ["True", "False"], correctIndex: 0, explanation: "Standard TTL logic operates on 5V." },
-  { category: "Final 2024", text: "There are multiple I/O devices in a computer system.", options: ["True", "False"], correctIndex: 0, explanation: "A system usually has many I/O devices (keyboard, mouse, display, etc.)." },
-  { category: "Final 2024", text: "The address bus is unidirectional.", options: ["True", "False"], correctIndex: 0, explanation: "Addresses are driven by the CPU to memory and peripherals, making it unidirectional." },
-  { category: "Final 2024", text: "Programmable I/O blocks of FPGA can be programmed to be bidirectional lines.", options: ["True", "False"], correctIndex: 0, explanation: "FPGA I/O pins can be configured as input, output, or bidirectional." },
-  { category: "Final 2024", text: "Assembly code and C code depend on the instruction set architecture.", options: ["True", "False"], correctIndex: 1, explanation: "C code is hardware independent. Assembly depends on the ISA." },
-  { category: "Final 2024", text: "Cache memories are faster than registers.", options: ["True", "False"], correctIndex: 1, explanation: "Registers are the fastest, followed by L1 Cache." },
-  { category: "Final 2024", text: "System kernel is responsible for task management.", options: ["True", "False"], correctIndex: 0, explanation: "The OS kernel manages scheduling and tasks." },
-  { category: "Final 2024", text: "Embedded systems can include dedicated subsystems such as FPGA.", options: ["True", "False"], correctIndex: 0, explanation: "FPGAs are often used as accelerators or custom interfaces in embedded systems." },
-  { category: "Final 2024", text: "SMD More reliable at high speed.", options: ["True", "False"], correctIndex: 0, explanation: "Surface Mount Devices (SMDs) exhibit significantly superior high-frequency response due to the minimization of parasitic inductance (L_p) and parasitic capacitance (C_p) inherent in their extremely short lead lengths, thereby reducing signal reflection and impedance mismatching (\u0639\u062f\u0645 \u062a\u0637\u0627\u0628\u0642 \u0627\u0644\u0645\u0645\u0627\u0646\u0639\u0629) during high-speed signal propagation." },
-  { category: "Final 2024", text: "SMD resistors with 2% tolerance contain 4 digits as value.", options: ["True", "False"], correctIndex: 1, explanation: "In Electronic Industries Alliance (EIA) standards for SMD resistors, a 3-digit coding scheme is universally employed for tolerances of 2%, 5%, and 10% (where the 3rd digit is the multiplier), whereas 1% or tighter precision resistors necessitate a 4-digit code (or EIA-96 standard) to accommodate the required precision (\u0627\u0644\u062f\u0642\u0629 \u0627\u0644\u0639\u0627\u0644\u064a\u0629).<br><br><b>\ud83d\udca1 Exam Trap:</b> Assuming 4 digits means 2% tolerance, while it actually indicates 1% or tighter." },
-  { category: "Final 2024", text: "Each SMD component is picked from its packaging using either a vacuum or gripper nozzle.", options: ["True", "False"], correctIndex: 0, explanation: "Automated Surface Mount Technology (SMT) assembly utilizes computer numerical control (CNC) Pick-and-Place robotic systems equipped with pneumatic vacuum nozzles (\u0641\u0648\u0647\u0627\u062a \u0627\u0644\u0634\u0641\u0637 \u0627\u0644\u0641\u0631\u0627\u063a\u064a) or mechanical grippers to precisely extract components from tape-and-reel packaging and place them onto the PCB solder paste." },
-  { category: "Final 2024", text: "Label of '100R' means 100 Kohm in SMD resistor.", options: ["True", "False"], correctIndex: 1, explanation: "According to standard alphanumeric SMD coding conventions, the character 'R' represents the decimal point location for resistive values. Consequently, '100R' unequivocally designates a resistance of 100 Ohms exactly, not 100 kOhms (\u0648\u0627\u0644\u062a\u064a \u0643\u0627\u0646\u062a \u0633\u062a\u064f\u0643\u062a\u0628 104 \u0623\u0648 1003).<br><br><b>\ud83d\udca1 Exam Trap:</b> Confusing the 'R' character (decimal point) with 'k' or assuming the 0 is a multiplier." },
-  { category: "Final 2024", text: "Without IDE, the actual microcontroller-flashing procedures can be quite simple.", options: ["True", "False"], correctIndex: 1, explanation: "In the absence of an Integrated Development Environment (IDE), flashing a microcontroller mandates direct interaction with low-level toolchains (\u0645\u062b\u0644 GCC \u0623\u0648 OpenOCD) and complex command-line arguments to compile, link, and transfer the hex/bin executable via hardware debuggers (\u0645\u062b\u0644 JTAG/SWD), which is computationally and procedurally intricate (\u0639\u0645\u0644\u064a\u0629 \u0645\u0639\u0642\u062f\u0629).<br><br><b>\ud83d\udca1 Exam Trap:</b> Believing bare-metal command-line flashing is simpler than using an automated IDE." },
-  { category: "Final 2024", text: "IDE for microcontrollers can include middleware.", options: ["True", "False"], correctIndex: 0, explanation: "Modern IDEs for embedded systems (e.g., STM32CubeIDE) seamlessly integrate extensive Middleware architectures, including Real-Time Operating Systems (RTOS), TCP/IP network protocol stacks, and USB libraries, thereby abstracting the underlying hardware complexity and accelerating firmware deployment (\u062a\u0633\u0631\u064a\u0639 \u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0646\u0638\u0627\u0645)." },
-  { category: "Final 2024", text: "RTOS cannot be used to handle multiple tasks concurrently.", options: ["True", "False"], correctIndex: 1, explanation: "A Real-Time Operating System (RTOS) inherently leverages preemptive or cooperative scheduling algorithms (\u062e\u0648\u0627\u0631\u0632\u0645\u064a\u0627\u062a \u0627\u0644\u062c\u062f\u0648\u0644\u0629) to manage task contexts, utilizing a deterministic kernel to switch CPU execution between multiple threads/tasks concurrently, ensuring strict timing deadlines are met (\u0636\u0645\u0627\u0646 \u062a\u0644\u0628\u064a\u0629 \u0627\u0644\u0645\u062a\u0637\u0644\u0628\u0627\u062a \u0627\u0644\u0632\u0645\u0646\u064a\u0629 \u0627\u0644\u0635\u0627\u0631\u0645\u0629).<br><br><b>\ud83d\udca1 Exam Trap:</b> Assuming RTOS is purely sequential and incapable of concurrent multi-tasking." },
-  { category: "Final 2024", text: "Interrupts from different peripherals can be assigned with different interrupt priority levels.", options: ["True", "False"], correctIndex: 0, explanation: "The Nested Vectored Interrupt Controller (NVIC) in ARM Cortex-M architectures provides a sophisticated programmable priority model, enabling each peripheral interrupt to be assigned preemption and sub-priority levels, which fundamentally governs interrupt nesting and preemption dynamics (\u062f\u064a\u0646\u0627\u0645\u064a\u0643\u064a\u0629 \u0627\u0644\u0645\u0642\u0627\u0637\u0639\u0629 \u0627\u0644\u0645\u062a\u062f\u0627\u062e\u0644\u0629)." },
-  { category: "Final 2024", text: "A debug adaptor can be used to test microcontroller board.", options: ["True", "False"], correctIndex: 0, explanation: "A hardware debug adaptor interfaces with the microcontroller via standardized test access ports (\u0645\u062b\u0644 JTAG \u0623\u0648 SWD), establishing a bidirectional communication channel that allows memory/register inspection, stepping through execution, and hardware breakpoint insertion for rigorous real-time system validation (\u0627\u0644\u062a\u062d\u0642\u0642 \u0627\u0644\u0641\u0639\u0644\u064a \u0644\u0644\u0646\u0638\u0627\u0645)." },
-  { category: "Final 2024", text: "Signal injection can be used to insert a signal at certain points in the system.", options: ["True", "False"], correctIndex: 0, explanation: "Signal injection is a deterministic diagnostic methodology where synthesized, precise electrical stimuli (\u0625\u0634\u0627\u0631\u0627\u062a \u0645\u0631\u062c\u0639\u064a\u0629) are injected into internal nodes of a circuit. The resulting transfer function and dynamic response of the system are analyzed to isolate localized faults (\u062a\u062d\u062f\u064a\u062f \u0627\u0644\u0623\u0639\u0637\u0627\u0644 \u0627\u0644\u0645\u0648\u0636\u0639\u064a\u0629) and characterize stage-by-stage gain or logic operation." },
-  { category: "Final 2024", text: "FPGAs are ICs that contain an array of non-identical logic blocks with programmable inter-connections.", options: ["True", "False"], correctIndex: 1, explanation: "Field-Programmable Gate Arrays (FPGAs) are architected upon a highly homogenous matrix of identical Configurable Logic Blocks (CLBs) or Logic Elements (LEs). These structurally uniform elements utilize Look-Up Tables (LUTs) and flip-flops, interconnected via a programmable routing matrix, rather than non-identical logic islands (\u0639\u0646\u0627\u0635\u0631 \u063a\u064a\u0631 \u0645\u062a\u0637\u0627\u0628\u0642\u0629).<br><br><b>\ud83d\udca1 Exam Trap:</b> Assuming FPGA logic blocks are non-identical (heterogeneous) by default." },
-  { category: "Final 2024", text: "It is possible to prototype or even manufacture large systems in a single FPGA.", options: ["True", "False"], correctIndex: 0, explanation: "Contemporary high-density FPGAs possess millions of configurable logic gates, embedded multipliers, and hardware IP cores (\u0645\u062b\u0644 \u0645\u0639\u0627\u0644\u062c\u0627\u062a ARM). This profound integration enables the implementation and rapid prototyping of an entire System-on-Chip (SoC) infrastructure directly onto a single silicon die (\u0634\u0631\u064a\u062d\u0629 \u0633\u064a\u0644\u064a\u0643\u0648\u0646 \u0648\u0627\u062d\u062f\u0629)." },
-  { category: "Final 2024", text: "Signal tracing is the procedure of tracking signals as they progress through a system from output to input.", options: ["True", "False"], correctIndex: 1, explanation: "Signal tracing is a systematic troubleshooting protocol wherein an input stimulus is applied, and an oscilloscope or logic analyzer tracks the signal's propagation path sequentially from the input stage toward the output stage (\u0645\u0646 \u0627\u0644\u062f\u062e\u0644 \u0625\u0644\u0649 \u0627\u0644\u062e\u0631\u062c) to pinpoint the exact node where signal degradation or logic failure occurs.<br><br><b>\ud83d\udca1 Exam Trap:</b> Reversing the logical direction of tracing (from output to input instead of input to output)." },
-  { category: "Final 2024", text: "The interior of FPGAs typically contains only two elements that are programmable.", options: ["True", "False"], correctIndex: 1, explanation: "The macro-architecture of an FPGA encompasses three fundamental programmable constituents: the Logic Blocks (CLBs/LEs) for Boolean functions, the Input/Output Blocks (IOBs) for external interfacing, and the comprehensive programmable Routing Matrix (\u0645\u0635\u0641\u0648\u0641\u0629 \u0627\u0644\u062a\u0648\u062c\u064a\u0647) which establishes the interconnects between them.<br><br><b>\ud83d\udca1 Exam Trap:</b> Overlooking the Routing Matrix or I/O blocks and assuming only logic and routing are programmable." },
-  { category: "Final 2024", text: "Microprocessor is a dependent unit.", options: ["True", "False"], correctIndex: 0, explanation: "A microprocessor (MPU) constitutes solely the Central Processing Unit (CPU) core and is inherently a dependent computational unit (\u0648\u062d\u062f\u0629 \u063a\u064a\u0631 \u0645\u0633\u062a\u0642\u0644\u0629). It fundamentally requires external, discrete peripheral integrated circuits\u2014including RAM, ROM, and I/O controllers\u2014interfaced via complex system buses to form a functional computer." },
-  { category: "Final 2024", text: "The mapping in FPGA requires user constraints.", options: ["True", "False"], correctIndex: 0, explanation: "The mapping and physical implementation phases in the FPGA design flow critically depend on User Constraints Files (UCF/XDC). These constraints enforce specific geometric pin assignments, rigorous timing requirements (\u0645\u062b\u0644 Maximum Clock Frequency), and I/O electrical standards essential for the Place and Route (P&R) algorithms (\u062e\u0648\u0627\u0631\u0632\u0645\u064a\u0627\u062a \u0627\u0644\u062a\u0648\u0632\u064a\u0639 \u0648\u0627\u0644\u0631\u0628\u0637)." },
-  { category: "Final 2024", text: "APB bus is faster than AHB bus.", options: ["True", "False"], correctIndex: 1, explanation: "Within the Advanced Microcontroller Bus Architecture (AMBA), the Advanced High-performance Bus (AHB) is optimized for high-bandwidth, low-latency burst transfers directly from the CPU core or DMA to memory. Conversely, the Advanced Peripheral Bus (APB) is a secondary, unpipelined slower bus isolated via a bridge (\u062c\u0633\u0631) to minimize power and accommodate lower-speed peripherals.<br><br><b>\ud83d\udca1 Exam Trap:</b> Confusing APB (Peripheral) as faster than AHB (High-performance)." },
-  { category: "Final 2024", text: "The Verilog module can assign a reg as input.", options: ["True", "False"], correctIndex: 1, explanation: "According to the Verilog Hardware Description Language (HDL) standard, input ports are continuously driven by external signals and therefore must be inferred as structural continuous assignments. Thus, they must exclusively be declared as `wire` (or `net`) types, and cannot be declared as `reg` (\u0645\u0633\u062c\u0644\u0627\u062a) which require procedural assignment.<br><br><b>\ud83d\udca1 Exam Trap:</b> Assigning the `reg` data type to an input port, which violates Verilog structural rules." },
-  { category: "Final 2024", text: "The syntax 'module Full_adder (A,B,Cin,S, Cout);' is correct in Verilog.", options: ["True", "False"], correctIndex: 1, explanation: "In Verilog lexical conventions, identifiers\u2014including module names\u2014must consist of an unbroken alphanumeric string (with optional underscores). The presence of a space in 'Full adder' completely violates the language parser's syntactical rules (\u0642\u0648\u0627\u0639\u062f \u0627\u0644\u0635\u064a\u0627\u063a\u0629 \u0627\u0644\u0628\u0631\u0645\u062c\u064a\u0629), triggering a compilation syntax error.<br><br><b>\ud83d\udca1 Exam Trap:</b> Overlooking the invalid space character inside the module identifier 'Full adder'." },
-  { category: "Final 2024", text: "Most STM32 pins are 5V tolerant.", options: ["True", "False"], correctIndex: 0, explanation: "Despite operating fundamentally on a 3.3V core and VDD domain, the General Purpose Input/Output (GPIO) hardware within most STM32 microcontrollers incorporates specialized internal clamping mechanisms and Level Shifting architectures. This bestows specific pins with 5V tolerance (\u062a\u062d\u0645\u0644 5 \u0641\u0648\u0644\u062a), preventing catastrophic breakdown of the CMOS gate oxide." },
-  { category: "Final 2024", text: "The syntax 'wire [3:0] x1' can be considered as internal signal declaration.", options: ["True", "False"], correctIndex: 0, explanation: "The syntax `wire [3:0] x1` perfectly adheres to Verilog HDL semantics for vector declaration. It instantiates an internal multibit net (\u0646\u0627\u0642\u0644 \u0625\u0634\u0627\u0631\u0627\u062a \u062f\u0627\u062e\u0644\u064a) composed of 4 discrete bits, indexed from MSB (3) to LSB (0), thereby structurally routing parallel data streams between internal module nodes." },
-  { category: "Final 2024", text: "'A=B; C=B;' in always block infer a wire.", options: ["True", "False"], correctIndex: 1, explanation: "In Verilog semantics, any signal assigned a value within a procedural block (e.g., `always` or `initial`) must be declared as a `reg` data type. Procedural blocks simulate state retention between executions, rendering the continuous `wire` assignment syntactically invalid for Left-Hand Side (LHS) procedural operations (\u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u0623\u064a\u0633\u0631 \u0645\u0646 \u0627\u0644\u0645\u0639\u0627\u062f\u0644\u0629).<br><br><b>\ud83d\udca1 Exam Trap:</b> Assuming variables assigned inside an `always` block can be declared as `wire` instead of `reg`." },
-  { category: "Final 2024", text: "The syntax 'wire [0:5] w1' is wrong in Verilog.", options: ["True", "False"], correctIndex: 1, explanation: "While conventional hardware design strictly utilizes Big-Endian indexing like `[5:0]` (MSB to LSB), the Verilog syntax `wire [0:5] w1` is completely legal and defines a Little-Endian 6-bit vector array. This indexing simply reverses the standard positional bit weighting (\u062a\u0631\u062a\u064a\u0628 \u0627\u0644\u0628\u062a\u0627\u062a) but compiles flawlessly.<br><br><b>\ud83d\udca1 Exam Trap:</b> Assuming ascending index declarations like [0:5] are syntax errors." },
-  { category: "Final 2024", text: "We can model FF using always block.", options: ["True", "False"], correctIndex: 0, explanation: "A Flip-Flop (FF) is fundamentally a synchronous sequential logic element. In Verilog, its physical instantiation is accurately inferred using a procedural `always` block that is strictly sensitive to a clock transition, designated by `posedge clk` or `negedge clk`, thereby enforcing edge-triggered memory characteristics (\u062e\u0635\u0627\u0626\u0635 \u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0627\u0644\u0645\u062a\u0632\u0627\u0645\u0646\u0629)." },
-  { category: "Final 2024", text: "An ARM Cortex-M processor chip consists of a Cortex-M core licensed by ARM.", options: ["True", "False"], correctIndex: 0, explanation: "ARM Holdings operates purely on an Intellectual Property (IP) licensing model (\u0646\u0645\u0648\u0630\u062c \u062a\u0631\u062e\u064a\u0635 \u0627\u0644\u0645\u0644\u0643\u064a\u0629). Consequently, an ARM Cortex-M processor chip is inherently manufactured by third-party silicon vendors (such as STMicroelectronics or NXP), who integrate the licensed Cortex-M core logic with their proprietary silicon peripherals and memory." },
-  { category: "Final 2024", text: "This Exception Handler can be used in the case of external interrupts.", options: ["True", "False"], correctIndex: 0, explanation: "In the ARM Cortex-M microarchitecture, external interrupts are strictly classified as asynchronous exceptions. When asserted, the hardware preempts the active execution thread and immediately vectors the Program Counter (PC) to the designated Exception Handler (ISR - \u0631\u0648\u062a\u064a\u0646 \u062e\u062f\u0645\u0629 \u0627\u0644\u0645\u0642\u0627\u0637\u0639\u0629) located in the Vector Table to service the peripheral request." },
-  { category: "Final 2024", text: "The initial statements in Verilog run one time through entire simulation.", options: ["True", "False"], correctIndex: 0, explanation: "The `initial` procedural block in Verilog HDL is specifically engineered for simulation testbenches. It is triggered unconditionally and exclusively at simulation time t=0, executing its sequential statements exactly once to establish preliminary signal states (\u0627\u0644\u062d\u0627\u0644\u0629 \u0627\u0644\u0627\u0628\u062a\u062f\u0627\u0626\u064a\u0629 \u0644\u0644\u0625\u0634\u0627\u0631\u0627\u062a) before terminating." },
-  { category: "Final 2024", text: "STM32 microcontrollers are divided into sub-families.", options: ["True", "False"], correctIndex: 0, explanation: "STMicroelectronics strategically segments the STM32 microcontroller ecosystem into distinct sub-families\u2014such as Mainstream (STM32F1/G0), High-Performance (STM32F4/H7), and Ultra-Low-Power (STM32L4/U5)\u2014each featuring tailored silicon geometries, clock domains, and peripheral architectures optimized for targeted industrial applications (\u0627\u0644\u062a\u0637\u0628\u064a\u0642\u0627\u062a \u0627\u0644\u0635\u0646\u0627\u0639\u064a\u0629)." },
-  { category: "Final 2024", text: "Special-purpose registers have more usage restrictions than general-purpose registers.", options: ["True", "False"], correctIndex: 0, explanation: "Special-purpose registers, such as the Program Counter (PC), Stack Pointer (SP), and Link Register (LR), are physically hardwired into the CPU execution pipeline and control unit to govern critical architectural states. Consequently, they possess stringent Read/Write constraints (\u0642\u064a\u0648\u062f \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0635\u0627\u0631\u0645\u0629) compared to orthogonal General-Purpose Registers (R0-R12)." },
-  { category: "Final 2024", text: "All ARM Cortex-M exceptions priorities are not configurable.", options: ["True", "False"], correctIndex: 1, explanation: "In the ARM Cortex-M exception model, while peripheral interrupts possess programmable priority levels via the NVIC, critical system exceptions\u2014specifically Reset (Priority -3), Non-Maskable Interrupt (NMI, Priority -2), and HardFault (Priority -1)\u2014have fixed, negative priority levels that absolutely cannot be reconfigured (\u0644\u0627 \u064a\u0645\u0643\u0646 \u062a\u0639\u062f\u064a\u0644 \u0623\u0648\u0644\u0648\u064a\u062a\u0647\u0627).<br><br><b>\ud83d\udca1 Exam Trap:</b> Assuming ALL exception priorities are rigidly fixed or ALL are configurable, whereas it's a mix." },
-  { category: "Final 2024", text: "STM32 can use free tool-chain.", options: ["True", "False"], correctIndex: 0, explanation: "The STM32 ecosystem robustly supports entirely free and open-source software (FOSS) toolchains. Developers leverage GNU Compiler Collection (GCC) for ARM embedded processors, integrated seamlessly within unrestricted IDEs such as STM32CubeIDE, enabling full-scale compilation, linking, and debugging without licensing fees (\u0628\u062f\u0648\u0646 \u062a\u0643\u0627\u0644\u064a\u0641 \u062a\u0631\u0627\u062e\u064a\u0635)." },
-  { category: "Final 2024", text: "STM32 use a debugger called ST-LINK.", options: ["True", "False"], correctIndex: 0, explanation: "ST-LINK is the proprietary, dedicated in-circuit debugger and programmer interface engineered for STM32 microcontrollers. It translates high-level USB debugging commands from the IDE host into standard JTAG or Serial Wire Debug (SWD) protocol sequences, facilitating core-level state interrogation (\u0641\u062d\u0635 \u062d\u0627\u0644\u0629 \u0627\u0644\u0645\u0639\u0627\u0644\u062c) and firmware flashing." },
-  { category: "Final 2024", text: "The RHS of always block's assignments can be declared as a wire.", options: ["True", "False"], correctIndex: 0, explanation: "Within a Verilog procedural `always` block, signals declared as `wire` can be seamlessly evaluated and read on the Right-Hand Side (RHS) of an assignment. While LHS elements must be `reg`, RHS operands merely require a resolvable logic level (\u0645\u0633\u062a\u0648\u0649 \u0645\u0646\u0637\u0642\u064a \u0642\u0627\u0628\u0644 \u0644\u0644\u0642\u0631\u0627\u0621\u0629), rendering continuous nets perfectly valid for logical expression evaluation." },
-  { category: "Final 2024", text: "We can use '*' as sensitivity list of the always block.", options: ["True", "False"], correctIndex: 0, explanation: "The Verilog-2001 standard introduced the `always @(*)` syntax as an implicit sensitivity list. The compiler automatically analyzes the procedural block and infers all signals appearing on the RHS, guaranteeing functionally accurate simulation of purely combinational logic (\u0627\u0644\u062f\u0648\u0627\u0626\u0631 \u0627\u0644\u0645\u0646\u0637\u0642\u064a\u0629 \u0627\u0644\u062a\u0648\u0627\u0641\u0642\u064a\u0629) and preventing accidental latch generation." },
-  { category: "Final 2024", text: "SMD ICs have a notch to help for pin identification.", options: ["True", "False"], correctIndex: 1, explanation: "In contemporary Surface Mount Device (SMD) packaging (e.g., SOIC, TQFP), Pin 1 identification is predominantly indicated by a circular laser-etched dot, a microscopic dimple, or a chamfered (beveled) edge on the package body (\u062d\u0627\u0641\u0629 \u0645\u0634\u0637\u0648\u0641\u0629). The traditional semicircular 'notch' is a mechanical feature strictly characteristic of Through-Hole Technology (THT) Dual In-line Packages (DIP).<br><br><b>\ud83d\udca1 Exam Trap:</b> Confusing SMD Pin 1 indicators with the classic notch found strictly on through-hole DIP packages." },
-  { category: "Final 2024", text: "Polling method is more efficient than interrupt-driven in terms of power.", options: ["True", "False"], correctIndex: 1, explanation: "Interrupt-driven architectures exhibit exponentially superior power efficiency. In polling, the CPU continuously executes cyclic queries, consuming active core power (P = C V^2 f). Conversely, an interrupt mechanism allows the CPU to transition into low-power sleep modes (WFI/WFE), remaining dormant until an asynchronous hardware trigger wakes the core (\u0625\u064a\u0642\u0627\u0638 \u0627\u0644\u0645\u0639\u0627\u0644\u062c \u0639\u0646\u062f \u0627\u0644\u062d\u0627\u062c\u0629).<br><br><b>\ud83d\udca1 Exam Trap:</b> Believing polling is power-efficient because it is simple, when it actually wastes massive CPU cycles." },
-  { category: "Final 2024", text: "The execution time of an ISR should be as short as possible.", options: ["True", "False"], correctIndex: 0, explanation: "The temporal footprint (Execution Time) of an Interrupt Service Routine (ISR) must be absolutely minimized. Prolonged execution directly violates the real-time deterministic limits of the system, blocking lower or equal-priority interrupts from preemption, and significantly inflating the overall system Interrupt Latency (\u0632\u0645\u0646 \u0627\u0644\u062a\u0623\u062e\u064a\u0631 \u0644\u0644\u0645\u0642\u0627\u0637\u0639\u0629)." }
+  {
+    category: "Final 2024",
+    text: "........ display graphical signals in a format on a pair of axes, generally with Y as voltage and X as the time.",
+    options: [
+      "Multimeter",
+      "Oscilloscope",
+      "Power Supply",
+      "Function Generator"
+    ],
+    correctIndex: 1,
+    explanation: "Oscilloscopes plot voltage against time."
+  },
+  {
+    category: "Final 2024",
+    text: "........ is able to generate waveforms with common shapes.",
+    options: [
+      "Power Supply",
+      "Multimeter",
+      "Oscilloscope",
+      "Function Generator"
+    ],
+    correctIndex: 3,
+    explanation: "A function generator creates standard waveforms."
+  },
+  {
+    category: "Final 2024",
+    text: "........ measure both AC and DC voltage and current as well as resistance.",
+    options: [
+      "Power Supply",
+      "Oscilloscope",
+      "Multimeter",
+      "Function Generator"
+    ],
+    correctIndex: 2,
+    explanation: "A multimeter measures voltage, current, and resistance."
+  },
+  {
+    category: "Final 2024",
+    text: "The..... package have contacts embedded in the bottom of the package.",
+    options: [
+      "FBGA",
+      "PLCC",
+      "SOP",
+      "QFP"
+    ],
+    correctIndex: 0,
+    explanation: "Fine-pitch Ball Grid Array (FBGA) uses an array of solder balls on the bottom."
+  },
+  {
+    category: "Final 2024",
+    text: "The most common type of through-hole package is the.......",
+    options: [
+      "PLCC",
+      "DIP",
+      "QFP",
+      "SSOP"
+    ],
+    correctIndex: 1,
+    explanation: "Dual In-line Package (DIP) is the most standard through-hole."
+  },
+  {
+    category: "Final 2024",
+    text: "..... is used to provide fixed position for solder paste printing.",
+    options: [
+      "PCB",
+      "Solder paste",
+      "SMC",
+      "Stencil"
+    ],
+    correctIndex: 3,
+    explanation: "Stencils provide the mask for applying solder paste accurately."
+  },
+  {
+    category: "Final 2024",
+    text: "At....... stage, the electrical solder connections are formed between the components and PCB by heating the assembly to a sufficient temperature.",
+    options: [
+      "Reflow soldering",
+      "Solder paste printing",
+      "SMC placement",
+      "None of above"
+    ],
+    correctIndex: 0,
+    explanation: "Reflow soldering melts the paste to form connections."
+  },
+  {
+    category: "Final 2024",
+    text: "SMD resistor with label '474' has a resistance of ........ Ω.",
+    options: [
+      "4704",
+      "470",
+      "470 K",
+      "47.4"
+    ],
+    correctIndex: 2,
+    explanation: "47 * 10^4 = 470,000 Ω or 470 KΩ."
+  },
+  {
+    category: "Final 2024",
+    text: "Includes lot of power saving features ........",
+    options: [
+      "Microprocessor",
+      "Microcontroller"
+    ],
+    correctIndex: 1,
+    explanation: "Microcontrollers usually feature deep sleep and power-saving modes."
+  },
+  {
+    category: "Final 2024",
+    text: "To generate the final combined executable image, a separate .....process is required.",
+    options: [
+      "compilation",
+      "assembler",
+      "linking",
+      "None of above"
+    ],
+    correctIndex: 2,
+    explanation: "The linker combines object files into the final executable."
+  },
+  {
+    category: "Final 2024",
+    text: "you can check the program execution status and results by outputting information via various I/O mechanisms such as a .....interface.",
+    options: [
+      "Flash memory",
+      "bootloader",
+      "UART",
+      "None of above"
+    ],
+    correctIndex: 2,
+    explanation: "UART allows printing text output for debugging."
+  },
+  {
+    category: "Final 2024",
+    text: "Arbitrary Waveform Generator (AWG) is a programmable Oscilloscope.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "An AWG generates waveforms; an oscilloscope measures them."
+  },
+  {
+    category: "Final 2024",
+    text: "The weakness of physical contact to PCB is considered as one of SMD disadvantages.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 0,
+    explanation: "SMD solder joints bear the mechanical stress, making them weaker than through-hole."
+  },
+  {
+    category: "Final 2024",
+    text: "The BJT transistor can be checked with some types of multimeters.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 0,
+    explanation: "Many multimeters have hFE or diode test modes for BJT testing."
+  },
+  {
+    category: "Final 2024",
+    text: "SMD More reliable at high speed.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 0,
+    explanation: "Surface Mount Devices (SMDs) exhibit significantly superior high-frequency response due to the minimization of parasitic inductance (L_p) and parasitic capacitance (C_p) inherent in their extremely short lead lengths, thereby reducing signal reflection and impedance mismatching (عدم تطابق الممانعة) during high-speed signal propagation."
+  },
+  {
+    category: "Final 2024",
+    text: "SMD resistors with 2% tolerance contain 4 digits as value.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "In Electronic Industries Alliance (EIA) standards for SMD resistors, a 3-digit coding scheme is universally employed for tolerances of 2%, 5%, and 10% (where the 3rd digit is the multiplier), whereas 1% or tighter precision resistors necessitate a 4-digit code (or EIA-96 standard) to accommodate the required precision (الدقة العالية).<br><br><b>💡 Exam Trap:</b> Assuming 4 digits means 2% tolerance, while it actually indicates 1% or tighter."
+  },
+  {
+    category: "Final 2024",
+    text: "Each SMD component is picked from its packaging using either a vacuum or gripper nozzle.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 0,
+    explanation: "Automated Surface Mount Technology (SMT) assembly utilizes computer numerical control (CNC) Pick-and-Place robotic systems equipped with pneumatic vacuum nozzles (فوهات الشفط الفراغي) or mechanical grippers to precisely extract components from tape-and-reel packaging and place them onto the PCB solder paste."
+  },
+  {
+    category: "Final 2024",
+    text: "Label of '100R' means 100 Kohm in SMD resistor.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "According to standard alphanumeric SMD coding conventions, the character 'R' represents the decimal point location for resistive values. Consequently, '100R' unequivocally designates a resistance of 100 Ohms exactly, not 100 kOhms (والتي كانت ستُكتب 104 أو 1003).<br><br><b>💡 Exam Trap:</b> Confusing the 'R' character (decimal point) with 'k' or assuming the 0 is a multiplier."
+  },
+  {
+    category: "Final 2024",
+    text: "SMD ICs have a notch to help for pin identification.",
+    options: [
+      "True",
+      "False"
+    ],
+    correctIndex: 1,
+    explanation: "In contemporary Surface Mount Device (SMD) packaging (e.g., SOIC, TQFP), Pin 1 identification is predominantly indicated by a circular laser-etched dot, a microscopic dimple, or a chamfered (beveled) edge on the package body (حافة مشطوفة). The traditional semicircular 'notch' is a mechanical feature strictly characteristic of Through-Hole Technology (THT) Dual In-line Packages (DIP).<br><br><b>💡 Exam Trap:</b> Confusing SMD Pin 1 indicators with the classic notch found strictly on through-hole DIP packages."
+  }
 ];
 
 
