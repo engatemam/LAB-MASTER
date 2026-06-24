@@ -3,7 +3,11 @@
 <link rel="icon" href="favicon.png" type="image/png">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f111a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>LAB Course Mastering - 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -50,10 +54,11 @@
     <!-- MOBILE OVERLAY -->
     <div id="mobile-overlay" class="mobile-overlay"></div>
 
-    <!-- MOBILE MENU BUTTON -->
-    <button id="mobile-menu-btn" class="mobile-menu-btn">
-        ☰
-    </button>
+    <!-- MOBILE TOP BAR -->
+    <div class="mobile-top-bar">
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+        <span class="mobile-title">LAB Course</span>
+    </div>
 
     <div class="app-container">
         <!-- LEFT SIDEBAR -->

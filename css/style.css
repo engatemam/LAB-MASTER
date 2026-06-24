@@ -104,11 +104,18 @@ body {
     background: var(--bg-gradient);
     color: var(--text-primary);
     height: 100vh;
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
     overflow: hidden;
+}
+
+.mermaid {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
 }
 
 /* --- DYNAMIC BACKGROUND --- */
@@ -1403,22 +1410,9 @@ input[type=number] { -moz-appearance: textfield; }
         font-size: 2rem !important;
     }
 }
-/* Mobile Menu Button */
-.mobile-menu-btn {
+/* Mobile Top Bar */
+.mobile-top-bar {
     display: none;
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 1000;
-    background: rgba(13, 17, 23, 0.8);
-    border: 1px solid var(--glass-border);
-    color: var(--accent);
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 1.5rem;
-    backdrop-filter: blur(10px);
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .mobile-overlay {
@@ -1440,15 +1434,46 @@ input[type=number] { -moz-appearance: textfield; }
     body {
         padding: 10px;
         height: auto;
+        min-height: 100dvh;
         overflow-y: auto;
     }
 
-    .mobile-menu-btn {
+    .mobile-top-bar {
         display: none;
     }
 
-    body.mode-active .mobile-menu-btn {
-        display: block;
+    body.mode-active .mobile-top-bar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: rgba(13, 17, 23, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 900;
+        align-items: center;
+        padding: 0 15px;
+        border-bottom: 1px solid var(--glass-border);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .mobile-menu-btn {
+        background: transparent;
+        border: none;
+        color: var(--accent);
+        font-size: 1.8rem;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    .mobile-title {
+        color: var(--text-primary);
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin-left: 15px;
+        letter-spacing: 0.5px;
     }
 
     .app-container {
@@ -1553,7 +1578,7 @@ input[type=number] { -moz-appearance: textfield; }
 
     .study-opt, .options-grid div {
         font-size: 0.95rem;
-        padding: 12px;
+        padding: 16px;
     }
 
     .custom-toggle-label {

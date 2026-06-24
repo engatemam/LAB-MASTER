@@ -479,12 +479,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     modeRadios.forEach(radio => {
         radio.addEventListener('change', (e) => {
+            const warningEl = document.getElementById('mode-warning');
+            if (warningEl) warningEl.style.display = 'none';
+            
             const mode = e.target.value;
             const selectedCats = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
             
             if (mode === 'search') {
+                if (typeof closeMobileMenu === 'function') closeMobileMenu();
                 switchScreen('search');
-                return; // Search doesn't need categories
+                return;
             }
 
             if (selectedCats.length === 0) {
@@ -495,15 +499,22 @@ document.addEventListener('DOMContentLoaded', () => {
             
             updateActiveQuestions();
             
+            if (activeQuestions.length === 0) {
+                customAlert("No questions found for the selected categories.");
+                e.target.checked = false;
+                return;
+            }
+
+            if (typeof closeMobileMenu === 'function') closeMobileMenu();
+
             if (mode === 'mistakes') {
-                // Filter active questions to ONLY include mistakes
                 activeQuestions = activeQuestions.filter(q => labMistakes.includes(q.text));
                 if (activeQuestions.length === 0) {
-                    customAlert("Great job! You don't have any mistakes in the selected categories. ??");
+                    customAlert("Great job! You don't have any mistakes in the selected categories. 🎉");
                     e.target.checked = false;
                     return;
                 }
-                switchScreen('study'); // Use study mode for review
+                switchScreen('study');
                 studyCurrentPage = 1;
                 renderStudyPage();
             } else if (mode === 'study') {
@@ -556,7 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
         survival: document.getElementById('survival-screen')
     };
 
-    function switchScreen(screenName) {
+    function switchScreen(screenName, isLectureSelected = false) {
         Object.values(screens).forEach(s => {
             if (s) s.classList.remove('active');
         });
@@ -564,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update mobile layout state when switching screens
         if (typeof updateMobileModeState === 'function') {
-            updateMobileModeState(screenName);
+            updateMobileModeState(screenName, isLectureSelected);
         }
     }
 
@@ -584,19 +595,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- DASHBOARD LOGIC ---
     document.getElementById('exam-start-btn')?.addEventListener('click', () => {
-        const selectedCats = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
-        if (selectedCats.length === 0) {
-            customAlert('Please select at least one category to start the exam.');
-            return;
-        }
-
-        activeQuestions = rawQuestions.filter(q => selectedCats.includes(q.category));
-
-        if (activeQuestions.length === 0) {
-            customAlert("No questions found for the selected categories.");
-            return;
-        }
-
         switchScreen('exam');
         initExamMode();
     });
@@ -1069,25 +1067,30 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // Work phase: Mode is active, Sidebar becomes hamburger menu
             document.body.classList.add('mode-active');
+            
+            const titleEl = document.querySelector('.mobile-title');
+            if(titleEl) {
+                if(screenName === 'notes') titleEl.innerText = 'Explanations';
+                else if(screenName === 'examConfig') titleEl.innerText = 'Exam Settings';
+                else if(screenName === 'exam') titleEl.innerText = 'Simulator';
+                else if(screenName === 'study') titleEl.innerText = 'Study Mode';
+                else if(screenName === 'survival') titleEl.innerText = 'Survival Mode';
+                else if(screenName === 'results') titleEl.innerText = 'Results';
+                else titleEl.innerText = 'LAB Course';
+            }
         }
     }
 
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleMobileMenu);
     if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileMenu);
 
-    // Close menu when a mode starts
-    document.querySelectorAll('input[name="mode"]').forEach(r => {
-        r.addEventListener('change', () => {
-            closeMobileMenu();
-        });
-    });
+    // (Auto-close menu when mode starts removed, now handled by Start button)
     
     lectureItems.forEach(item => {
         item.addEventListener('click', () => {
             // Lecture selected, switch to mode-active to read it
-            updateMobileModeState('notes', true);
-            closeMobileMenu();
-            switchScreen('notes'); // Route to the screen!
+            if (typeof closeMobileMenu === 'function') closeMobileMenu();
+            switchScreen('notes', true); // Route to the screen!
             // Original logic continues
             lectureItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
