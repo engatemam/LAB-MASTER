@@ -1119,13 +1119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     html += `<div class="note-content arabic-text">${section.content}</div>`;
                 }
 
-                // 2. Technical Deep Dive (English accordion)
-                if (section.technicalDeepDive) {
-                    html += `<details>
-                                <summary>Technical Deep Dive</summary>
-                                <div class="note-content" style="margin-top:10px;">${section.technicalDeepDive}</div>
-                             </details>`;
-                }
+
 
                 // 3. Professor's Focus (Arabic callout + quote)
                 if (section.profFocus) {
