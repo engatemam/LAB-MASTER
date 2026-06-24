@@ -266,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof examMidterm2024 !== 'undefined') rawQuestions.push(...examMidterm2024);
     if (typeof examMidtermSummer2025 !== 'undefined') rawQuestions.push(...examMidtermSummer2025);
     if (typeof examQuiz2026 !== 'undefined') rawQuestions.push(...examQuiz2026);
+    if (typeof examMidterm2026 !== 'undefined') rawQuestions.push(...examMidterm2026);
 
     // Normalize schema and clean options
     rawQuestions = rawQuestions.map(q => {
@@ -321,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "Lecture 01", "Lecture 02", "Lecture 03", 
         "Lecture 04", "Lecture 05", "Lecture 06",
         "Final 2024", "Midterm 2024", 
-        "Midterm Summer 2025", "Quiz 2026"
+        "Midterm Summer 2025", "Midterm 2026", "Quiz 2026"
     ];
 
     categories.sort((a, b) => {
@@ -1267,26 +1268,58 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- NATIVE KEYBOARD SHORTCUTS ---
         const studyScreen = document.getElementById('study-screen');
         const examScreen = document.getElementById('exam-screen');
+        const survivalScreen = document.getElementById('survival-screen');
         
+        let activeOptionsSelector = '';
         if (studyScreen && studyScreen.classList.contains('active')) {
             if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('study-next')?.click(); }
             if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('study-prev')?.click(); }
-            
-            const options = document.querySelectorAll('#study-options .study-opt');
-            if ((e.key === '1' || e.key === 'a' || e.key === 'A') && options[0]) options[0].click();
-            if ((e.key === '2' || e.key === 'b' || e.key === 'B') && options[1]) options[1].click();
-            if ((e.key === '3' || e.key === 'c' || e.key === 'C') && options[2]) options[2].click();
-            if ((e.key === '4' || e.key === 'd' || e.key === 'D') && options[3]) options[3].click();
+            activeOptionsSelector = '.study-options .study-opt';
+        } else if (examScreen && examScreen.classList.contains('active')) {
+            if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('exam-next-btn')?.click(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('exam-prev-btn')?.click(); }
+            activeOptionsSelector = '#exam-options .study-opt';
+        } else if (survivalScreen && survivalScreen.classList.contains('active')) {
+            activeOptionsSelector = '#survival-options .study-opt';
         }
         
-        if (examScreen && examScreen.classList.contains('active')) {
-            if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('exam-next-btn')?.click(); }
-            
-            const options = document.querySelectorAll('#exam-options .study-opt');
-            if ((e.key === '1' || e.key === 'a' || e.key === 'A') && options[0]) options[0].click();
-            if ((e.key === '2' || e.key === 'b' || e.key === 'B') && options[1]) options[1].click();
-            if ((e.key === '3' || e.key === 'c' || e.key === 'C') && options[2]) options[2].click();
-            if ((e.key === '4' || e.key === 'd' || e.key === 'D') && options[3]) options[3].click();
+        if (activeOptionsSelector) {
+            const options = Array.from(document.querySelectorAll(activeOptionsSelector));
+            if (options.length > 0) {
+                // 1, 2, 3, 4 or a, b, c, d selection
+                if ((e.key === '1' || e.key === 'a' || e.key === 'A') && options[0]) options[0].click();
+                if ((e.key === '2' || e.key === 'b' || e.key === 'B') && options[1]) options[1].click();
+                if ((e.key === '3' || e.key === 'c' || e.key === 'C') && options[2]) options[2].click();
+                if ((e.key === '4' || e.key === 'd' || e.key === 'D') && options[3]) options[3].click();
+                
+                // Up/Down selection
+                if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'Enter') {
+                    e.preventDefault();
+                    let currentIndex = options.findIndex(opt => opt.classList.contains('focused-opt'));
+                    
+                    if (e.key === 'ArrowDown') {
+                        if (currentIndex < options.length - 1) currentIndex++;
+                        else currentIndex = 0;
+                    } else if (e.key === 'ArrowUp') {
+                        if (currentIndex > 0) currentIndex--;
+                        else currentIndex = options.length - 1;
+                    } else if (e.key === 'Enter') {
+                        if (currentIndex !== -1) {
+                            options[currentIndex].click();
+                        }
+                        return;
+                    }
+                    
+                    options.forEach(o => o.classList.remove('focused-opt'));
+                    if (currentIndex !== -1) {
+                        options[currentIndex].classList.add('focused-opt');
+                        options[currentIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                    } else if (e.key !== 'Enter') {
+                        options[0].classList.add('focused-opt');
+                        options[0].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                    }
+                }
+            }
         }
         
 
