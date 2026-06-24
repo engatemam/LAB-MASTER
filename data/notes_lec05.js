@@ -33,19 +33,19 @@ const notesLec05 = [
     "title": "5.1 النمط التاريخي 13-بت (Mode 0)",
     "conceptOverview": "النمط Mode 0 هو نمط 13-بت. في هذا النمط، لا يستخدم المتحكم سعة 16-بت بالكامل، بل يستخدم 8 بتات من مسجل TH و 5 بتات فقط من مسجل TL. هذا النمط موجود بشكل أساسي لأسباب تاريخية (Historical Compatibility) ليتوافق مع متحكمات إنتل القديمة جداً مثل 8048 التي كانت تحتوي على تايمر 13-بت. حالياً، نادراً جداً ما يتم استخدامه في التطبيقات الحديثة، ولكن يجب معرفته نظرياً.",
     "profFocus": "أوضح الدكتور في شرحه للأنماط: 'Mode 0 ده 13-bit timer mode، مش بنستخدمه دلوقتي خالص في أي تطبيقات عملية، موجود بس عشان التوافقية القديمة، التركيز الأساسي كله في المسائل والتطبيقات هيكون على Mode 1 للتأخيرات الزمنية، و Mode 2 للـ Auto-reload'.",
-    "mermaidCode": "graph TD\n    A[\"Clock Input\"] --> B[\"TL Register Lower 5 bits\"]\n    B --> C[\"TH Register All 8 bits\"]\n    C --> D{\"Overflow at 1FFFH 8191\"}\n    D -->|\"Rollover to 0000\"| E[\"TF Flag Set\"]"
+    "mermaidCode": "graph TD\n    A[\"Clock Input\"] --> B[\"TL Register Lower 5 bits\"]\n    B --> C[\"TH Register All 8 bits\"]\n    C --> D{\"Overflow at 1FFFH 8191\"}\n    D --> E[\"TF Flag Set\"]"
   },
   {
     "title": "6. برمجة العدادات (Counter Programming) وعد النبضات الخارجية",
     "conceptOverview": "بجانب استخدام التايمر لحساب الوقت، يمكن تحويله ليعمل كـ 'عداد' (Counter) للأحداث الخارجية. لفعل ذلك، نغير قيمة بت C/T في مسجل TMOD إلى 1 (C/T=1). بمجرد تفعيل هذا البت، التايمر يفصل نفسه عن ساعة المعالج الداخلية، ويبدأ في استقبال النبضات من العالم الخارجي عبر دبابيس (Pins) محددة: طرف T0 (بين 14 أو P3.4) لتايمر 0، وطرف T1 (بين 15 أو P3.5) لتايمر 1. هنا نستخدم التايمر لعد أشياء ملموسة (مثال: عدد المنتجات على سير مصنع، عدد دورات موتور).",
     "profFocus": "الدكتور وضع مقارنة صريحة: 'إيه الفرق بينهم؟ الكاونتر بياخد النبضات من البنا الخارجية T0 أو T1... لكن التايمر بيحسب على الماشين سايكل الداخلية. عشان كدا الكود أو الحسابات بتاعة الكاونتر أسهل بكتير لأننا مبنحسبش ماشين سايكل ومبنقسمش على 12، إحنا بنعد أحداث خارجية مباشرة، نبضة بتيجي يزود العداد بواحد'.",
-    "mermaidCode": "graph LR\n    A[\"External Sensor\"] -->|\"Pulses\"| B[\"Pin T0 P3.4 or T1 P3.5\"]\n    B --> C[\"Falling Edge Detector 1 to 0\"]\n    C --> D[\"Increment TL TH Register\"]\n    D --> E[\"TF Flag Sets on Overflow\"]"
+    "mermaidCode": "graph LR\n    A[\"External Sensor\"] --> B[\"Pin T0 P3.4 or T1 P3.5\"]\n    B --> C[\"Falling Edge Detector 1 to 0\"]\n    C --> D[\"Increment TL TH Register\"]\n    D --> E[\"TF Flag Sets on Overflow\"]"
   },
   {
     "title": "7. التحكم العتادي بالمؤقت (Hardware Control using GATE)",
     "conceptOverview": "البت الأخير في إعدادات TMOD هو بت GATE. هذا البت يُحدد 'من يملك السلطة' لبدء وإيقاف التايمر. إذا كان GATE=0 (وهو الافتراضي)، فالسلطة بالكامل في يد السوفت وير من خلال بت TR. لكن إذا تم ضبط GATE=1، يتم تفعيل نظام أمني مزدوج (Hardware Interlock). في هذه الحالة، لن يعمل التايمر إلا إذا تحقق شرطان معاً: الأول أن يكون TR=1 في الكود، والثاني أن تكون الإشارة القادمة من الطرف الخارجي الخاص بالانترابت (INT0 لتايمر 0 أو INT1 لتايمر 1) إشارة عالية (HIGH). هذا النظام رائع جداً لقياس عرض النبضات (Pulse Width) الواردة من الحساسات بدقة هاردويرية دون تأخير السوفت وير.",
     "profFocus": "سؤال الدكتور التوضيحي في المحاضرة كان محورياً: 'لو خليت الجيت بواحد يبقى الأوتبوت بتاع التايمر معتمد على مين؟ معتمد على الانترابت... يبقى إنت عشان التايمر يشتغل لازم TR يكون بواحد وكمان الانترابت الخارجي (البنا من برة) يكون عليها واحد، يعني مستني الانترابت هو اللي يشغله ويوقفه'.",
-    "mermaidCode": "graph TD\n    A[\"External INTx Pin P3.2 or P3.3\"] --> B[\"OR Gate with inverted GATE bit\"]\n    C[\"GATE Bit 1 Inverted to 0\"] --> B\n    B --> D[\"AND Gate\"]\n    E[\"TRx Bit Software 1\"] --> D\n    D -->|\"Enable Counting\"| F[\"Timer Internal Counter\"]\n    style D fill:#f96,stroke:#333,stroke-width:2px"
+    "mermaidCode": "graph TD\n    A[\"External INTx Pin P3.2 or P3.3\"] --> B[\"OR Gate with inverted GATE bit\"]\n    C[\"GATE Bit 1 Inverted to 0\"] --> B\n    B --> D[\"AND Gate\"]\n    E[\"TRx Bit Software 1\"] --> D\n    D --> F[\"Timer Internal Counter\"]\n    style D fill:#f96,stroke:#333,stroke-width:2px"
   },
   {
     "title": "🧠 من عقل الدكتور عماد (Professor's Perspective)",
