@@ -1,178 +1,352 @@
 const lec02Data = [
   {
     category: "Lecture 02",
-    text: "How long does it typically take to erase an 8751 microcontroller equipped with a UV-EPROM?",
-    options: ["20 minutes", "5 minutes", "1 hour", "10 seconds"],
-    correctIndex: 0,
-    explanation: "The 8751 microcontroller utilizes an Ultra-Violet Erasable Programmable Read-Only Memory (UV-EPROM) architecture. The floating-gate MOSFETs within the memory array rely on a phenomenon called Fowler-Nordheim tunneling to hold charge. Exposing the quartz window to high-energy UV-C photons (~254 nm) supplies enough kinetic energy to the trapped electrons to escape the potential barrier, a photo-electric discharge process that typically spans 20 minutes to clear all memory cells. <br>في ميكروكنترولر 8751، تُستخدم ذاكرة UV-EPROM، حيث تتطلب فوتونات الأشعة فوق البنفسجية حوالي 20 دقيقة لمنح الإلكترونات المحتبسة طاقة كافية للتحرر من البوابة العائمة (Floating Gate) ومسح الذاكرة."
+    text: "In a computer system, the phase where an instruction is read from memory and decoded is called the ........ phase.",
+    options: ["Execute", "Fetch", "Write-back", "Interpret"],
+    correctIndex: 1,
+    explanation: "المعالج يمر بدورتين أساسيتين: Fetch (لجلب التعليمة من الذاكرة وفك شفرتها) و Execute (لتنفيذها)."
   },
   {
     category: "Lecture 02",
-    text: "........ pin is provided to allow or disallow the internal memory, and it is pulled high if internal program memory is to be used.",
-    options: ["EA", "ALE", "PSEN", "RST"],
+    text: "System software and application software are the two major categories of software used in computers.",
+    options: ["True", "False"],
     correctIndex: 0,
-    explanation: "The EA (External Access) pin determines the program fetch vector mapping for the 8051. When EA is strapped to Vcc (Logic High), the internal Program Counter resolves opcode fetches starting from the internal ROM (0000H to 0FFFH in 8051). If pulled low (GND), the architecture unconditionally forces all instruction fetches to address the external memory subsystem via Ports 0 and 2. <br>طرف الـ EA (External Access) يحدد مسار قراءة التعليمات البرمجية؛ فعند توصيله بجهد عالٍ (High) يعتمد المعالج على ذاكرته الداخلية (ROM)، وعند توصيله بالأرضي ينتقل للقراءة من الذاكرة الخارجية."
+    explanation: "السوفتوير ينقسم لنوعين رئيسيين: System (مثل أنظمة التشغيل) و Application (مثل البرامج العادية كالوورد)."
   },
   {
     category: "Lecture 02",
-    text: "For systems using serial communications facilities, a crystal of frequency ........ MHz is more appropriate as the standard baud rates may easily be generated.",
-    options: ["11.0592", "12.0000", "16.0000", "8.0000"],
-    correctIndex: 0,
-    explanation: "The 11.0592 MHz oscillator frequency is mathematically integral for asynchronous serial communication (UART). Since the 8051 machine cycle divides the crystal frequency by 12, the internal UART timer resolves to 11.0592 MHz / 12 = 921.6 kHz. Further dividing by 32 yields precisely 28,800 Hz, allowing Timer 1 to flawlessly derive standard baud rates (e.g., 28,800 / 3 = 9600 baud) with absolute zero percent quantization error. <br>تردد 11.0592 ميجاهرتز ضروري لأن قسمته رياضياً على دورة الآلة والمؤقتات يُنتج ترددات مطابقة تماماً لمعدلات نقل البيانات القياسية (Baud rates) كـ 9600 بت/ثانية بدون أي نسبة خطأ."
-  },
-  {
-    category: "Lecture 02",
-    text: "True or False: In Von-Neumann architecture, separate data bus and instruction bus are used, allowing data transfer and program fetching to occur simultaneously.",
+    text: "The ALU is the part of the processor that handles memory fetching.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "The Von-Neumann microarchitecture employs a unified bus multiplexing scheme, sharing a single contiguous address and data space for both opcodes and variables. This creates a systemic bottleneck known as the Von-Neumann bottleneck, restricting simultaneous fetching and execution. Conversely, the Harvard architecture operates dual distinct buses (Code and Data), enabling true concurrent memory operations critical for high-speed DSPs. <br>معمارية فون-نيومان تشترك في ناقل (Bus) واحد للبيانات والتعليمات مما يسبب اختناقاً في الأداء، بينما تستخدم معمارية هارفارد نواقل منفصلة لتسريع عملية القراءة والتنفيذ المتزامن."
+    explanation: "الـ ALU (Arithmetic Logic Unit) مخصصة فقط للعمليات الحسابية والمنطقية، وليس لجلب الذاكرة."
   },
   {
     category: "Lecture 02",
-    text: "The AT89C51 microcontroller requires ........ clocks per machine cycle.",
-    options: ["12", "6", "4", "1"],
+    text: "In the memory hierarchy, which cache level usually consists of separated instruction and data caches?",
+    options: ["L1 cache", "L2 cache", "L3 cache", "Main memory"],
     correctIndex: 0,
-    explanation: "The canonical MCS-51 architecture, inherited by the Atmel AT89C51, fundamentally utilizes a fixed 12-clock-cycle state machine execution model. Internally, a machine cycle consists of six distinct states (S1-S6), with each state sub-divided into two oscillator clock phases (P1, P2). Thus, an instruction operating at 12 MHz precisely mandates a 1-microsecond execution time per machine cycle. <br>ميكروكنترولر AT89C51 يعتمد معمارية كلاسيكية تتطلب 12 نبضة ساعة لإتمام دورة آلة (Machine Cycle) واحدة، وهي مقسمة داخلياً لست حالات منطقية للتحكم الدقيق في التوقيت."
+    explanation: "الكاش من المستوى الأول (L1) ينقسم عادة إلى جزء مخصص للتعليمات (Instruction) وجزء للبيانات (Data)."
   },
   {
     category: "Lecture 02",
-    text: "The 8052 microcontroller features ........ bytes of on-chip ROM and ........ bytes of RAM.",
-    options: ["8K, 256", "4K, 128", "16K, 512", "32K, 1024"],
+    text: "The L2 on-chip cache is typically shared by both instructions and data.",
+    options: ["True", "False"],
     correctIndex: 0,
-    explanation: "The 8052 microcontroller is a superset extension of the core 8051 silicon die. It expands the internal embedded structures by doubling the on-chip non-volatile Program ROM to 8K bytes (0000H to 1FFFH) and supplementing the internal volatile SRAM to 256 bytes (00H to FFH). The upper 128 bytes of RAM use indirect addressing logic to differentiate from the SFR memory space map. <br>النسخة 8052 تعد تطويراً لـ 8051، حيث تتضمن ضعف الذاكرة: 8 كيلوبايت لذاكرة القراءة (ROM) لتخزين البرنامج، و 256 بايت لذاكرة الوصول العشوائي (RAM) لمعالجة البيانات الإضافية والمكدس."
+    explanation: "على عكس الـ L1، فإن الـ L2 تكون ذاكرة مشتركة للاثنين."
   },
   {
     category: "Lecture 02",
-    text: "........ stands for Program Store Enable, and in an 8031-based system it is connected to the ........ pin of the external ROM.",
-    options: ["PSEN, OE", "ALE, CE", "EA, VCC", "RST, GND"],
-    correctIndex: 0,
-    explanation: "The PSEN (Program Store Enable) is an active-low control signal explicitly synthesized by the 8051's internal state machine during opcode fetches from external memory. By physically strapping PSEN to the OE (Output Enable) pin of an external ROM or EPROM chip, it unconditionally governs the precise temporal activation of the memory's tri-state output buffers, preventing bus contention on Port 0. <br>إشارة PSEN مسؤولة عن تفعيل القراءة من الذاكرة الخارجية للبرنامج، وتُوصل دائماً بطرف الـ OE (Output Enable) في الذاكرة لتشغيل بوابات الخرج وإرسال البيانات للناقل."
+    text: "The ........ is an abstract interface between the hardware and the lowest-level software that encompasses instructions, registers, and memory access.",
+    options: ["ALU", "Operating System", "Instruction Set Architecture (ISA)", "I/O Interface"],
+    correctIndex: 2,
+    explanation: "الـ ISA هي حلقة الوصل (الوسيط) بين الهاردوير والسوفتوير، وتحدد كيف سيفهم المعالج لغة الآلة (Assembly)."
   },
   {
     category: "Lecture 02",
-    text: "In the 8051 microcontroller, the RESET pin must have a high pulse for a minimum duration of ........ before it is allowed to go low.",
-    options: ["2 machine cycles", "12 clock cycles", "1 instruction cycle", "4 machine cycles"],
-    correctIndex: 0,
-    explanation: "The hard-reset logic initialization sequence in the 8051 mandates that the RST pin is held at a logic High (Vcc) for an exact threshold of at least two complete machine cycles (i.e., 24 continuous oscillator clock periods) while the oscillator is successfully running. This stringent latency permits the internal Flip-Flops, Program Counter, and SFRs to deterministically clear and settle at default states. <br>لإعادة تشغيل النظام (Reset)، يتطلب المعالج استمرار الجهد العالي على طرف RST لفترة لا تقل عن دورتي آلة (2 Machine cycles) لضمان تصفير جميع السجلات الداخلية وعداد البرنامج بشكل كامل."
-  },
-  {
-    category: "Lecture 02",
-    text: "True or False: Port 0 ( P0 ) can be used for input or output, and each pin must be connected externally to a 10K ohm pull-down resistor due to its open drain structure.",
+    text: "The 8051 microcontroller was originally introduced by Atmel in 1981.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "Port 0 (P0) within the 8051 is uniquely fabricated utilizing an open-drain Field-Effect Transistor (FET) architecture completely devoid of internal pull-up logic. Consequently, to interface securely with logic-high digital thresholds, the drain terminals mandate an external 10 kΩ pull-up resistor network mapped to Vcc, facilitating sourcing current for connected loads. <br>المنفذ (Port 0) صُمم كـ Open-Drain ولا يحتوي على مقاومات رفع داخلية؛ لذا عند استخدامه كمنفذ إدخال/إخراج عام، يجب توصيل مقاومات رفع خارجية (Pull-UP) بقيمة 10 كيلو أوم لضمان تيار كافٍ للجهد العالي (Logic 1)."
+    explanation: "تم ابتكار الـ 8051 بواسطة شركة Intel وليس Atmel (رغم أن Atmel تصنع نسخاً منه الآن مثل AT89C51)."
   },
   {
     category: "Lecture 02",
-    text: "The internal data memory of the 8051 is divided into three parts. The register banks are located from address ........ to ........",
-    options: ["00H, 1FH", "20H, 2FH", "30H, 7FH", "80H, FFH"],
-    correctIndex: 0,
-    explanation: "The lower 32 bytes of the internal SRAM (Addresses 00H through 1FH) constitute the hardware context-switching registers. This segment is rigidly partitioned into four distinct Register Banks (Bank 0 to Bank 3), each housing eight working registers (R0-R7). The active bank is synchronously multiplexed by asserting bits RS0 and RS1 located in the Program Status Word (PSW). <br>أول 32 بايت من ذاكرة الـ RAM الداخلية مقسمة إلى أربعة بنوك للسجلات، يبدأ كل منها بثمانية سجلات من R0 إلى R7 وتستخدم لتسريع معالجة البيانات وتبديل المهام."
+    text: "The original MCS-51 (8051) features ........ of on-chip ROM.",
+    options: ["128 bytes", "4K bytes", "64K bytes", "8K bytes"],
+    correctIndex: 1,
+    explanation: "النسخة القياسية من 8051 تمتلك 4KB من ذاكرة الـ ROM الداخلية، و 128 Bytes للـ RAM."
   },
   {
     category: "Lecture 02",
-    text: "Out of the four register banks in the 8051, Bank ........ uses the exact same RAM space as the stack.",
-    options: ["1", "0", "2", "3"],
-    correctIndex: 0,
-    explanation: "Upon internal reset execution, the 8051's Stack Pointer (SP) is automatically initialized to address 07H. This hardware default dictates that primary PUSH and CALL stack operations increment directly into the 08H-0FH segment, which absolutely geographically overlaps with Register Bank 1. Thus, utilizing Bank 1 while neglecting to re-vector the Stack Pointer provokes fatal memory corruption. <br>عند تشغيل المعالج، يبدأ مؤشر المكدس (Stack Pointer) من العنوان 07H ليتم الحفظ في العنوان 08H وهو نفس النطاق المخصص للبنك الأول (Bank 1)، مما قد يسبب تعارضاً وتدميراً للبيانات إذا لم يُنقل المكدس لمكان آخر."
+    text: "How many interrupt sources does the standard 8051 have?",
+    options: ["2", "4", "5", "6"],
+    correctIndex: 3,
+    explanation: "عدد مصادر المقاطعة في الـ 8051 القياسي هو 6."
   },
   {
     category: "Lecture 02",
-    text: "True or False: An off-chip cache is one that is fabricated directly in the CPU chip to maximize processing speed.",
+    text: "The 8751 microcontroller version uses a Flash memory that can be erased electrically in seconds.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "In advanced microprocessor hierarchy, Cache Memory bridges the tremendous latency gap between the high-frequency CPU ALUs and slower bulk main memory. L1 (On-chip) cache is directly lithographed onto the same physical CPU silicon die functioning at core operational frequencies, whereas L2/L3 (Off-chip) cache operates via external bus structures with higher propagation delay penalties. <br>ذاكرة الكاش الداخلية (On-chip) تُدمج في شريحة المعالج ذاتها لتعمل بنفس سرعته وتقليل التأخير، بينما الكاش الخارجية (Off-chip) تكون خارج الشريحة وتتطلب نواقل للاتصال."
+    explanation: "إصدار 8751 يستخدم UV-EPROM والتي تتطلب التعرض للأشعة فوق البنفسجية لمدة 20 دقيقة لمسحها. بينما الـ AT89C51 هو الذي يستخدم الـ Flash memory."
   },
   {
     category: "Lecture 02",
-    text: "........ indicates whether Port 0 has an address or data during external memory interfacing.",
-    options: ["ALE", "PSEN", "EA", "WR"],
-    correctIndex: 0,
-    explanation: "The Address Latch Enable (ALE) governs the temporal multiplexing of Port 0. Because Port 0 transmits both the low-order address byte (A0-A7) and data byte (D0-D7), ALE strobes high to trigger an external octal D-type transparent latch (e.g., 74HC373). This captures and stabilizes the physical address vector right before the same pins transition to reading/writing data. <br>بما أن المنفذ (Port 0) يدمج إشارات العناوين والبيانات معاً، تصدر إشارة (ALE) بنبضة عالية لفتح مزلاج خارجي (Latch) وتثبيت العنوان مؤقتاً قبل أن يعود المنفذ لنقل البيانات."
-  },
-  {
-    category: "Lecture 02",
-    text: "True or False: When ALE=0, it indicates that Port 0 has address A0-A7, and when ALE=1, it provides data D0-D7.",
+    text: "AT89C51 from Atmel Corporation features UV-EPROM memory.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "Under the stringent time-division multiplexing sequence of the MCS-51 external bus cycle, the logical state of ALE dictates the current pin vector meaning. ALE = 1 asserts the lower 8 bits of the physical address bus (A0-A7) to be latched. Once safely stored, ALE gracefully transitions to 0, completely reassigning the bus topography for bi-directional data flow (D0-D7). <br>عندما تكون إشارة ALE في حالة (1)، ينقل المنفذ العناوين (A0-A7) لتخزينها. وعندما تنخفض لحالة (0)، يتحول المنفذ لنقل واستقبال البيانات ضمن دورة القراءة أو الكتابة."
+    explanation: "كما وضحنا، شريحة Atmel (حرف C يعبر عن CMOS و Flash) تستخدم Flash memory وتُمسح كهربياً قبل الكتابة."
   },
   {
     category: "Lecture 02",
-    text: "The 8051 can access up to ........ bytes of opcode since the program counter is a 16-bit register.",
-    options: ["64K", "32K", "16K", "256K"],
+    text: "The most common package for the 8051 microcontroller provides ........ pins.",
+    options: ["20", "28", "32", "40"],
+    correctIndex: 3,
+    explanation: "الشريحة القياسية للـ 8051 تأتي بـ 40 طرفاً (Pins) في شكل DIP أو QFP."
+  },
+  {
+    category: "Lecture 02",
+    text: "The RESET pin of the 8051 is an active ........ input.",
+    options: ["High", "Low", "Falling edge", "Rising edge"],
     correctIndex: 0,
-    explanation: "The architectural boundary of program execution space in the 8051 is mathematically bounded by its 16-bit physical addressing capability. Through combinatorics, a 16-bit Program Counter yields exactly 2^16 = 65,536 unique addressing vectors (64 KiloBytes), representing the absolute supremum of executable memory available via the external code fetching logic. <br>الـ 8051 مزود بعداد برنامج (Program Counter) بحجم 16 بت، مما يتيح للمعالج توليد 65,536 عنوان مختلف رياضياً، لتصل مساحة ذاكرة البرنامج المتاحة للاستخدام إلى 64 كيلوبايت."
+    explanation: "طرف الـ RESET في الـ 8051 يعمل عند تطبيق جهد عالي (Active High)."
   },
   {
     category: "Lecture 02",
-    text: "The bit-addressable area in the 8051 internal RAM has addresses ranging from ........ to ........",
-    options: ["20H, 2FH", "00H, 1FH", "30H, 7FH", "80H, FFH"],
+    text: "For the RESET input to be effective, the high pulse must be maintained for a minimum of ........",
+    options: ["1 machine cycle", "2 machine cycles", "4 clock cycles", "12 clock cycles"],
+    correctIndex: 1,
+    explanation: "من التريكات الهامة جداً؛ يجب أن يستمر النبض العالي لدورتي آلة (2 Machine cycles) على الأقل لعمل إعادة ضبط (Reset)."
+  },
+  {
+    category: "Lecture 02",
+    text: "The EA (External Access) pin must be connected to ........ if the internal program ROM is to be used.",
+    options: ["Ground (Low)", "VCC (High)", "ALE", "PSEN"],
+    correctIndex: 1,
+    explanation: "طرف الـ EA يجب أن يُرفع للـ VCC (High) لتفعيل استخدام الـ ROM الداخلية. إذا وُصل بالأرضي (Low) سيتجاهل الذاكرة الداخلية ويبحث عن خارجية."
+  },
+  {
+    category: "Lecture 02",
+    text: "........ stands for Program Store Enable and is connected to the OE pin of an external ROM.",
+    options: ["EA", "ALE", "PSEN", "TXD"],
+    correctIndex: 2,
+    explanation: "طرف الـ PSEN (Program Store Enable) يُستخدم لتمكين قراءة كود البرنامج من الـ ROM الخارجية."
+  },
+  {
+    category: "Lecture 02",
+    text: "The ALE (Address Latch Enable) signal is used to de-multiplex the address and data lines of ........",
+    options: ["Port 0", "Port 1", "Port 2", "Port 3"],
     correctIndex: 0,
-    explanation: "A highly specialized sub-block of the 8051 SRAM lies between byte vectors 20H and 2FH. This precisely yields 16 bytes, functioning as a unique bit-addressable topography yielding exactly 128 discrete Boolean variables (addresses 00H to 7FH). This intricate hardware boolean-processor capability radically accelerates complex logic flag manipulations critical to real-time embedded systems. <br>تم تخصيص نطاق العناوين من 20H إلى 2FH كذاكرة قابلة للوصول على مستوى البت الواحد (Bit-addressable)، وهي توفر 128 بتاً منفرداً لتسريع معالجة العمليات المنطقية والأعلام (Flags)."
+    explanation: "منفذ Port 0 وظيفته مزدوجة (يحمل العناوين A0-A7 والبيانات D0-D7). طرف ALE هو الذي يفصل بينهما."
   },
   {
     category: "Lecture 02",
-    text: "True or False: All widely used registers in the 8051 are 8-bit, except the DPTR and Accumulator which are 16-bit.",
+    text: "When ALE = 0, Port 0 provides the lower 8 bits of the address (A0-A7).",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "The internal ALU architecture of the 8051 is inherently 8-bit, hence core computational registers like the Accumulator (A) and B register strictly accommodate 8-bit operand manipulations. Conversely, the Data Pointer (DPTR) and Program Counter (PC) are structurally constructed as wide 16-bit registers specifically to span the sprawling 64 KB memory maps for external variables and instruction fetching. <br>معمارية المعالج ذات 8 بت ولذلك المُراكم (Accumulator) حجمه 8 بت فقط، بينما سجلات العناوين كمؤشر البيانات (DPTR) وعداد البرنامج (PC) تتطلب 16 بت لتغطية عناوين الذاكرة الخارجية الشاسعة."
+    explanation: "تريكة امتحانات! عندما ALE=0، فإن Port 0 يوفر 'البيانات' D0-D7. وعندما ALE=1، يوفر 'العنوان' A0-A7."
   },
   {
     category: "Lecture 02",
-    text: "Out of the 128 bytes reserved for Special Function Registers (SFRs) in MCS-51, only ........ locations are actually used.",
-    options: ["21", "128", "64", "48"],
-    correctIndex: 0,
-    explanation: "Within the heavily partitioned Special Function Register (SFR) address geography scaling from 80H to FFH (128 possible spaces), the foundational standard 8051 physically implements merely 21 explicit hardware registers (e.g., TMOD, SCON, PSW). Addressing unimplemented interstitial zones within this SFR range provokes undefined silicon behavior and arbitrary system crashing. <br>في مساحة الـ SFR المخصصة للتحكم بالمعالج (من 80H لـ FFH)، توجد 21 وظيفة فعالة فقط مستخدمة لمؤقتات ومنافذ ومقاطعات المعالج، وباقي العناوين غير مستخدمة وتُعتبر محجوزة."
+    text: "The recommended crystal frequency for 8051 systems requiring standard serial baud rates (e.g., 9600 bps) is ........",
+    options: ["12.000 MHz", "11.0592 MHz", "16.000 MHz", "8.000 MHz"],
+    correctIndex: 1,
+    explanation: "الرقم 11.0592 مهم جداً لأنه يقبل القسمة للحصول على معدل نقل بيانات (Baud rate) قياسي وخالي من أخطاء النقل في الـ Serial Communication."
   },
   {
     category: "Lecture 02",
-    text: "During the ........ phase, an instruction is read from memory and decoded by the instruction decoder.",
-    options: ["fetch", "execute", "decode", "store"],
-    correctIndex: 0,
-    explanation: "In standard cyclical machine instruction execution, the highly deterministic FETCH sequence drives the Program Counter onto the memory bus, subsequently loading the fetched machine-code byte securely into the Instruction Register (IR). The embedded decoding combinatorial logic matrix instantaneously parses the opcode bits, configuring ALU multiplexers and dispatching immediate control signals for subsequent execution phase resolution. <br>في مرحلة الجلب (Fetch)، يقوم المعالج بإرسال عنوان التعليمات للذاكرة ثم قراءة الشفرة (Opcode) وتخزينها في مسجل التعليمات (IR)، ليتم تحليلها وفك تشفيرها بواسطة وحدة التحكم المنطقية لتنفيذ الأمر."
+    text: "Which of the following registers in the 8051 is a 16-bit register?",
+    options: ["Accumulator (A)", "R0", "B register", "DPTR (Data Pointer)"],
+    correctIndex: 3,
+    explanation: "جميع مسجلات الـ 8051 حجمها 8 بت، باستثناء مسجلين هما الـ DPTR والـ PC (حجمهما 16 بت)."
   },
   {
     category: "Lecture 02",
-    text: "True or False: In an 8031/51-based system with external memory, Port 1 is used to provide the upper 8 bits of the 16-bit address (A8-A15).",
+    text: "The Program Counter (PC) is an 8-bit register.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "When the 8031/8051 resolves a 16-bit address access constraint (e.g., executing a MOVC or reading a 64K RAM matrix), Port 0 is dynamically multiplexed for A0-A7 and D0-D7. Geographically, Port 2 systematically drives the upper order address byte natively (A8-A15), bypassing Port 1 entirely, allowing Port 1 to freely serve purely as an unencumbered general-purpose I/O GPIO matrix. <br>عند ربط المعالج بذاكرة خارجية تحتاج 16 بت للعنونة، يُستخدم المنفذ الثاني (Port 2) حصراً لتوفير البايت العلوي من العناوين (A8-A15)، ليبقى المنفذ الأول (Port 1) متاحاً كمنفذ إدخال وإخراج عام."
+    explanation: "الـ PC في الـ 8051 هو 16-bit register ليستطيع العنونة حتى 64 كيلو بايت (من 0000H إلى FFFFH)."
   },
   {
     category: "Lecture 02",
-    text: "The 8051 microcontroller provides ........ interrupt sources.",
-    options: ["6", "8", "4", "5"],
-    correctIndex: 0,
-    explanation: "The interrupt control unit of the standard 8051 oversees six discrete vectors: two external hardware interrupt pins (INT0 and INT1), two embedded timer overflow triggers (Timer 0 and Timer 1), a serial UART communication vector (combining TX/RX), and a fundamental systemic Reset interrupt. They are mediated through the Interrupt Enable (IE) and Interrupt Priority (IP) special function registers. <br>يعتمد ميكروكنترولر 8051 على نظام مقاطعات قوي يحتوي على 6 مصادر محددة: مقاطعتين خارجيتين، مقاطعتي مؤقتات، مقاطعة اتصال تسلسلي، بالإضافة إلى مقاطعة إعادة التشغيل (Reset)."
+    text: "The 8051 family can access a maximum of ........ bytes of program memory (ROM).",
+    options: ["4K", "16K", "32K", "64K"],
+    correctIndex: 3,
+    explanation: "لأن عداد البرنامج (PC) حجمه 16 بت، فإن أقصى ذاكرة يمكن الوصول إليها هي 2 أس 16 = 65,536 بايت = 64KB."
   },
   {
     category: "Lecture 02",
-    text: "True or False: Port 3 requires external 10K ohm pull-up resistors to function properly as input or output.",
+    text: "Some versions of the 8051, like the 8052, offer ........ bytes of internal data memory (RAM).",
+    options: ["128", "256", "512", "1024"],
+    correctIndex: 1,
+    explanation: "في حين أن الـ 8051 القياسي به 128 بايت، فإن عائلة 8052 المحدثة تمتلك 256 بايت."
+  },
+  {
+    category: "Lecture 02",
+    text: "The 128 bytes of internal RAM in the 8051 are divided into three main functional parts: Register banks, Bit-addressable area, and ........",
+    options: ["Flash memory", "Scratch-pad area", "SFR area", "Stack pointer area"],
+    correctIndex: 1,
+    explanation: "الجزء الثالث هو الـ Scratch-pad (من 30H لآخر الذاكرة 7FH) ويستخدم للاستخدامات العامة وتخزين المتغيرات."
+  },
+  {
+    category: "Lecture 02",
+    text: "The Register Banks area in the 8051 RAM spans from address ........",
+    options: ["00H to 0FH", "00H to 1FH", "20H to 2FH", "30H to 7FH"],
+    correctIndex: 1,
+    explanation: "مساحة البنوك تأخذ 32 بايت (من 00H حتى 1FH)."
+  },
+  {
+    category: "Lecture 02",
+    text: "The 8051 has ........ Register Banks.",
+    options: ["2", "4", "8", "16"],
+    correctIndex: 1,
+    explanation: "يحتوي على 4 بنوك (Bank 0, Bank 1, Bank 2, Bank 3)، وكل بنك يحتوي على 8 مسجلات من R0 إلى R7."
+  },
+  {
+    category: "Lecture 02",
+    text: "In the 8051, multiple register banks can be selected to be active at the exact same time.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "Unlike the open-drain topology inherent in Port 0, Port 3 integrates physically embedded internal pull-up field-effect resistors. This sophisticated internal buffering allows Port 3 pins to alternate between their Alternate Functions (such as RXD, TXD, INT0, WR) and generic logic functions seamlessly, without ever demanding the spatial burden of an external resistor network. <br>المنفذ الثالث (Port 3) يتميز باحتوائه على مقاومات رفع داخلية مدمجة بالسيليكون (Internal Pull-up)، وبالتالي لا يحتاج لأي مقاومات خارجية عند برمجته كمدخل أو مخرج للوظائف الإضافية."
+    explanation: "بنك واحد فقط هو الذي يكون 'نشطاً' (Active) في المرة الواحدة، ويتم اختياره عبر مسجل الـ PSW."
   },
   {
     category: "Lecture 02",
-    text: "The 8031 microcontroller has exactly ........ bytes of on-chip program ROM space.",
-    options: ["0K", "4K", "8K", "16K"],
+    text: "Which register bank uses the exact same RAM space that is initially designated for the Stack?",
+    options: ["Bank 0", "Bank 1", "Bank 2", "Bank 3"],
+    correctIndex: 1,
+    explanation: "الـ Stack Pointer (SP) يبدأ افتراضياً بـ 07H وبالتالي التخزين يبدأ من 08H، وهو نفس العنوان الذي يبدأ منه Bank 1. لذلك يحدث تداخل إذا لم يغير المبرمج مكان الـ Stack."
+  },
+  {
+    category: "Lecture 02",
+    text: "The Bit-Addressable area in the 8051 RAM starts at address ........ and ends at 2FH.",
+    options: ["00H", "10H", "20H", "30H"],
+    correctIndex: 2,
+    explanation: "المساحة المخصصة للعنونة بالبت (Bit-addressable) تقع بين العناوين 20H إلى 2FH."
+  },
+  {
+    category: "Lecture 02",
+    text: "The Bit-Addressable area allows for economical usage of system memory when storing Boolean variables.",
+    options: ["True", "False"],
     correctIndex: 0,
-    explanation: "The 8031 is a strategic architectural deviation from the 8051 die that is strictly 'ROM-less' (possessing precisely 0 KB of internal program memory). This necessitates permanently strapping the EA (External Access) pin to ground logic (0V), forcing the absolute entirety of execution vectors to be fetched invariably from an external ROM EPROM circuit via the Port 0/2 multiplex bus architecture. <br>المعالج 8031 هو نسخة خالية من ذاكرة البرنامج الداخلية (0K ROM)، مما يُجبر المصمم على إضافة شريحة ذاكرة خارجية وربط طرف (EA) بالأرضي لضمان عمل المعالج وسحب التعليمات من الخارج."
+    explanation: "نعم، لأنك بدلاً من حجز 'بايت' كامل لتخزين متغير قيمته (0 أو 1)، يمكنك حجز 'بت' واحد فقط."
   },
   {
     category: "Lecture 02",
-    text: "True or False: The P89C54X2 from Philips requires 12 clocks per machine cycle, similar to the AT89C51.",
+    text: "The Special Function Registers (SFRs) are located in the upper 128 bytes of RAM space in 8052 (from 80H to FFH). Out of these 128 locations, only ........ locations are used in MCS-51.",
+    options: ["16", "21", "32", "64"],
+    correctIndex: 1,
+    explanation: "برغم تخصيص 128 بايت للـ SFRs، الـ 8051 الأصلي يستخدم منها 21 مكاناً فقط (مثل A, B, PSW, TMOD, SCON... إلخ)."
+  },
+  {
+    category: "Lecture 02",
+    text: "Port 0 requires an external ........ resistor network when used as an input/output port.",
+    options: ["10K ohm pull-down", "10K ohm pull-up", "1K ohm pull-up", "Capacitor"],
+    correctIndex: 1,
+    explanation: "منفذ P0 مُصمم داخلياً كـ (Open Drain)، لذا لابد من إضافة مقاومة سحب لأعلى (Pull-up Resistor) بقيمة 10K أوم ليعمل بشكل سليم كـ I/O."
+  },
+  {
+    category: "Lecture 02",
+    text: "Port 1 is the only port in the 8051 that does not have an alternate (dual) function.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "P0 و P2 يستخدمان للذاكرة الخارجية، و P3 يستخدم للمقاطعات والسيريال، بينما P1 مخصص فقط للـ I/O العادي."
+  },
+  {
+    category: "Lecture 02",
+    text: "Port 2 requires an external pull-up resistor to function properly as an I/O port.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "The Philips/NXP P89C54X2 represents a massive generational leap, structurally re-engineering the archaic MCS-51 core logic to execute fundamentally on a 6-clock cycle basis. This precisely halves the oscillator divider sequence, directly doubling the processor's MIPS (Millions of Instructions Per Second) throughput given an identical quartz crystal frequency relative to standard 12-clock Atmel variants. <br>معالجات سلسلة X2 مثل P89C54X2 طورت لتعمل بسرعة مضاعفة، حيث تقلصت دورة الآلة من 12 نبضة إلى 6 نبضات ساعة فقط، مما ضاعف كفاءة وسرعة تنفيذ البرامج دون زيادة تردد الكريستالة."
+    explanation: "Port 0 هو الوحيد الذي يحتاج لمقاومة خارجية. Port 1 و Port 2 و Port 3 يمتلكون مقاومات Pull-up داخلية (Internal Pull-up)."
   },
   {
     category: "Lecture 02",
-    text: "........ is the specific units, their design and organization inside a single integrated circuit like a microprocessor.",
-    options: ["Architecture", "System Software", "Peripherals", "Instruction Set"],
+    text: "In an 8051-based system with external memory connections, which port provides the upper 8 bits of the 16-bit address (A8 – A15)?",
+    options: ["Port 0", "Port 1", "Port 2", "Port 3"],
+    correctIndex: 2,
+    explanation: "عند توصيل ذاكرة خارجية، P0 يوفر (A0-A7 مع D0-D7)، بينما P2 يوفر (A8-A15) ولا يمكن استخدامه كـ I/O عادي حينها."
+  },
+  {
+    category: "Lecture 02",
+    text: "Port 3 has an additional function of providing important signals such as Interrupts, Timers, and Serial communications.",
+    options: ["True", "False"],
     correctIndex: 0,
-    explanation: "In advanced electronics engineering, Microprocessor Architecture signifies the fundamental blueprint of the silicon ecosystem. It encompasses the meticulous layout of the Arithmetic Logic Units (ALUs), memory multiplexing matrices, hardware register configurations, and decoding control systems, essentially formulating the ISA (Instruction Set Architecture) dictating the computational behavior of the hardware substrate. <br>معمارية المعالج (Architecture) تعبر عن التصميم الداخلي للشريحة من حيث تنظيم وحدات الحساب والمنطق، السجلات، وناقلات البيانات والتعليمات التي تشكل أداء وعقل النظام المدمج."
+    explanation: "P3 يعتبر المنفذ 'الجوكر' لأنه يحمل أطراف الـ RXD, TXD, INT0, INT1, T0, T1 بالإضافة لـ WR و RD."
+  },
+  {
+    category: "Lecture 02",
+    text: "If you want to interface an external ROM and external RAM to an 8051, which combination of pins will definitely lose their simple I/O functionality?",
+    options: ["P1 and P3", "P0 and P2", "P0 and P1", "P2 and P3"],
+    correctIndex: 1,
+    explanation: "P0 و P2 سيتم استخدامهما بالكامل لنقل العناوين والبيانات (Address/Data bus) للذاكرة الخارجية ولن تستطيع استخدامهما لتوصيل ليدات أو أزرار."
+  },
+  {
+    category: "Lecture 02",
+    text: "The CPU cache memory size is significantly larger than the main RAM size, which makes it faster.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "حجم الـ Cache 'أصغر' بكثير جداً من الـ RAM، ولكنه 'أسرع' لاقترابه من الـ CPU واستخدام تقنية SRAM بدلاً من DRAM."
+  },
+  {
+    category: "Lecture 02",
+    text: "The Scratch-pad area in the internal RAM of the 8051 starts at address ........",
+    options: ["00H", "20H", "30H", "80H"],
+    correctIndex: 2,
+    explanation: "مساحة الـ Scratch-pad تبدأ من 30H وتمتد حتى آخر الـ RAM عند 7FH."
+  },
+  {
+    category: "Lecture 02",
+    text: "In the 8051, to reset the microcontroller, the RESET pin must receive a low pulse.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "الدكتور يحب هذه التريكة. الـ RESET هو Active HIGH (يحتاج لنبضة High) وليس Low."
+  },
+  {
+    category: "Lecture 02",
+    text: "What is the status of the ALE pin when the 8051 is outputting address A0-A7 on Port 0?",
+    options: ["ALE = 0", "ALE = 1", "High-Impedance", "Floating"],
+    correctIndex: 1,
+    explanation: "لكي يلتقط الـ Latch الخارجي العنوان (Address)، يجب أن تكون النبضة ALE = 1."
+  },
+  {
+    category: "Lecture 02",
+    text: "The 8051 microcontroller is inherently a Von Neumann architecture device.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "الـ 8051 مبني على معمارية هارفارد (Harvard) حيث توجد ذاكرتين منفصلتين للكود والبيانات."
+  },
+  {
+    category: "Lecture 02",
+    text: "During the Execute phase of a CPU cycle, the processor ........",
+    options: ["Reads instruction from memory", "Decodes the instruction", "Carries out the operations specified by the instruction", "Reboots the system"],
+    correctIndex: 2,
+    explanation: "في مرحلة التنفيذ (Execute) يقوم المعالج بإجراء العملية الحسابية أو نقل البيانات بناءً على التعليمة التي تم جلبها (Fetch)."
+  },
+  {
+    category: "Lecture 02",
+    text: "The 8051 has 4 I/O ports, meaning it has a total of 16 I/O pins.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "كل منفذ (Port) يحتوي على 8 أطراف. 4 منافذ × 8 أطراف = 32 طرف (32 pins)."
+  },
+  {
+    category: "Lecture 02",
+    text: "To use external program memory instead of the 4KB internal ROM in an 8051, the EA pin must be ........",
+    options: ["Left unconnected", "Tied to VCC", "Tied to Ground", "Connected to ALE"],
+    correctIndex: 2,
+    explanation: "لتعطيل الـ ROM الداخلي وإجبار المتحكم على القراءة من ذاكرة خارجية دائماً، نصل الـ EA بالأرضي (External Access)."
+  },
+  {
+    category: "Lecture 02",
+    text: "Which register is specifically utilized along with the Accumulator for 'Multiplication' and 'Division'?",
+    options: ["R0", "PSW", "DPTR", "B register"],
+    correctIndex: 3,
+    explanation: "مسجل الـ B لا يُستخدم إلا كمساعد مع الـ A في عمليتي MUL AB و DIV AB."
+  },
+  {
+    category: "Lecture 02",
+    text: "The Bit-Addressable area (20H to 2FH) contains exactly ........ individually addressable bits.",
+    options: ["16", "32", "64", "128"],
+    correctIndex: 3,
+    explanation: "المساحة تتكون من 16 بايت (من 20H لـ 2FH). وكل بايت فيه 8 بت. 16 × 8 = 128 بت."
+  },
+  {
+    category: "Lecture 02",
+    text: "The L3 cache is always placed 'on-chip' inside the CPU in older systems.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "تاريخياً، الـ L3 cache تكون Off-chip (خارج الشريحة)، بينما الـ L1 والـ L2 غالباً On-chip."
+  },
+  {
+    category: "Lecture 02",
+    text: "In an 8051 microcontroller, the Program Counter (PC) stores the data address of the currently executing arithmetic operation.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "الـ PC مسؤوليته فقط تخزين عنوان 'التعليمة' القادمة في الـ ROM، ولا علاقة له بعناوين البيانات في الـ RAM."
+  },
+  {
+    category: "Lecture 02",
+    text: "When port 0 is used as a simple output port (without external memory), why must you add a 10K ohm pull-up resistor?",
+    options: ["To prevent short circuits", "Because P0 is an open-drain and cannot output a Logic 1 on its own", "To reduce the clock frequency", "To activate the ALE signal"],
+    correctIndex: 1,
+    explanation: "تصميم الترانزستورات داخل P0 هو من نوع (Open Drain) وبالتالي يفتقر للترانزستور المسئول عن إخراج الجهد العالي (Logic 1)، لذلك نحتاج المقاومة لتوفير هذا الجهد من الـ VCC."
   }
 ];
-

@@ -1,177 +1,352 @@
 const lec06Data = [
-    {
-        category: "Lecture 06",
-        text: "........ is an 8-bit register used solely for serial communication.",
-        options: ["SBUF", "SCON", "TMOD", "TCON"],
-        correctIndex: 0,
-        explanation: "في معمارية المتحكم 8051، يُعد مسجل SBUF (Serial Buffer) مسجلاً بثمانية بتات مخصصاً بالكامل لإدارة تدفق البيانات في الاتصال التسلسلي (UART). هندسياً، يتكون SBUF من مسجلين فيزيائيين منفصلين يحملان نفس العنوان: أحدهما للإرسال (Transmit Buffer، يُكتب إليه) والآخر للاستقبال (Receive Buffer، يُقرأ منه)، مما يسمح بالتشغيل التزامني المزدوج (Full-Duplex Operation)."
-    },
-    {
-        category: "Lecture 06",
-        text: "In asynchronous serial communication, the start bit is always a ........ and the stop bit is ........",
-        options: ["0 (low), 1 (high)", "1 (high), 0 (low)", "0 (high), 1 (low)", "1 (low), 0 (high)"],
-        correctIndex: 0,
-        explanation: "في بروتوكول الاتصال التسلسلي غير المتزامن (Asynchronous UART Protocol)، يكون خط النقل في حالة الخمول المنطقي المرتفع (Idle High/Mark state). لتهيئة المستقبل لاستقبال حزمة بيانات (Frame Synchronization)، يتم إرسال بت البداية (Start Bit) بمستوى منطقي منخفض (Low/0). بعد نقل بتات البيانات، يُختتم الإطار ببت التوقف (Stop Bit) الذي يجب أن يكون بمستوى منطقي مرتفع (High/1) لضمان فصل الإطارات بوضوح وإعادة الخط لحالة الخمول."
-    },
-    {
-        category: "Lecture 06",
-        text: "The TMOD register is loaded with the value ........ to indicate the use of timer 1 in mode 2 for setting the baud rate.",
-        options: ["20H", "02H", "50H", "05H"],
-        correctIndex: 0,
-        explanation: "لتوليد معدل الباود (Baud Rate Generation) للاتصال التسلسلي، تعتمد وحدة UART في الـ 8051 على نبضات فيضان Timer 1. لضمان تردد باود ثابت ومستمر، يجب تشغيل Timer 1 في النمط 2 ذو إعادة التحميل التلقائي بـ 8 بتات (8-bit Auto-reload Mode 2). للقيام بذلك برمجياً، نُخصص الجزء العلوي من مسجل TMOD لـ Timer 1 ونعطيه القيمة 0010 (M1=1, M0=0)، وبفرض تصفير الجزء السفلي لـ Timer 0، نحصل على القيمة 0x20."
-    },
-    {
-        category: "Lecture 06",
-        text: "To program the start bit, stop bit, and data bits of data framing, the ........ register is used.",
-        options: ["SCON", "SBUF", "TMOD", "PCON"],
-        correctIndex: 0,
-        explanation: "مسجل التحكم التسلسلي SCON (Serial Control Register) هو واجهة التحكم الأساسية التي تبرمج المكونات المنطقية لوحدة UART. من خلال بتات SM0 و SM1 في هذا المسجل، يحدد المهندس نمط الاتصال (على سبيل المثال، النمط 1 للاتصال غير المتزامن بـ 8 بتات مع بتات بداية ونهاية). كما يحتوي على بت التحكم بالاستقبال REN وإعلامات الانتهاء (Flags) TI و RI."
-    },
-    {
-        category: "Lecture 06",
-        text: "True or False: The TI flag bit is set by software at the beginning of the stop bit in mode 1.",
-        options: ["True", "False"],
-        correctIndex: 1,
-        explanation: "بت إعلام الإرسال TI (Transmit Interrupt) يُرفع عتادياً (Hardware Set) بواسطة دارات التحكم التسلسلي في 8051. تحديداً، في النمط 1، بمجرد أن يقوم مسجل الإزاحة (Shift Register) بإرسال بت التوقف (Stop Bit) بشكل كامل إلى طرف TxD، تقوم الدوائر الصلبة بتعيين TI إلى 1 كإشارة لوحدة المعالجة أن الإطار قد نُقل وأن SBUF جاهز لبيانات جديدة. ومع ذلك، يجب تصفيره برمجياً (Software Cleared) استعداداً للعملية التالية."
-    },
-    {
-        category: "Lecture 06",
-        text: "Which of the following describes Serial Mode 1?",
-        options: ["8-bit data, 1 stop bit, 1 start bit", "8-bit auto-reload", "9-bit data, 1 stop bit, 1 start bit", "13-bit timer mode"],
-        correctIndex: 0,
-        explanation: "النمط التسلسلي 1 (Serial Mode 1) هو التكوين الأكثر استخداماً للاتصال بمنفذ COM/UART القياسي (RS-232). في هذا النمط، يتم توضيب البيانات في إطار من 10 بتات (10-bit Frame): بت بداية واحد (منطقي 0)، متبوعاً بـ 8 بتات تحمل البيانات الفعلية (LSB first)، ويُختتم ببت توقف واحد (منطقي 1). يعتمد معدل النقل (Baud Rate) في هذا النمط بشكل ديناميكي على معدل فيضان المؤقت."
-    },
-    {
-        category: "Lecture 06",
-        text: "For a baud rate of 9600, the TH1 register should be loaded with the decimal value ........",
-        options: ["-3", "-6", "-12", "-24"],
-        correctIndex: 0,
-        explanation: "يرتبط حساب TH1 بتردد الكريستالة. عند استخدام XTAL = 11.0592 MHz، يكون تردد دورة الآلة (Oscillator / 12) = 921.6 kHz. تقسم وحدة UART هذا التردد افتراضياً على 32، ليصبح تردد ساعة UART = 28800 Hz. للحصول على باود مقداره 9600، نقسم 28800 / 9600 فنجد أننا نحتاج إلى 3 دورات عد للمؤقت. بما أن المؤقت يعمل تصاعدياً (Auto-reload)، فإن القيمة الابتدائية يجب أن تكون 256 - 3 = 253 أو FD بالهيكس، وهو ما يعادل -3 في التكميل الثنائي (Two's Complement)."
-    },
-    {
-        category: "Lecture 06",
-        text: "True or False: Asynchronous serial data communication is widely used for block-oriented transmissions.",
-        options: ["True", "False"],
-        correctIndex: 1,
-        explanation: "الاتصال غير المتزامن (Asynchronous) مصمم هندسياً للتعامل مع البيانات حرفاً بحرف (Character-oriented) مثل مدخلات لوحة المفاتيح والاتصال التسلسلي البسيط، حيث يُغلف كل حرف ببتات التحكم الخاصة به (Start/Stop). في المقابل، العمليات الموجهة للكتل (Block-oriented) تعتمد على البروتوكولات المتزامنة (Synchronous) حيث يتم نقل كتل كبيرة من البيانات دفعة واحدة استناداً إلى إشارة ساعة مشتركة لزيادة كفاءة وعرض النطاق الترددي (Bandwidth)."
-    },
-    {
-        category: "Lecture 06",
-        text: "The UART frequency divider divides the machine cycle frequency by ........ to set the baud rate.",
-        options: ["32", "12", "1", "16"],
-        correctIndex: 0,
-        explanation: "وفقاً للتصميم الداخلي للمتحكم 8051، تتضمن الدائرة المسؤولة عن معالجة نبضات المؤقت للاتصال التسلسلي في الأنماط المتغيرة مقسماً عتادياً إضافياً ثابتاً. بعد أن يُصدر Timer 1 إشارة فيضان (Overflow rate)، يتم تقسيم هذه الإشارة افتراضياً على 32 (حالة البت SMOD=0 في مسجل PCON) قبل استخدامها كنبضات إزاحة فعلية (Shift Clock) لدفع البيانات خارج أو داخل منفذ UART."
-    },
-    {
-        category: "Lecture 06",
-        text: "True or False: The instruction JNB TI, xx is used to see if the character has been received completely.",
-        options: ["True", "False"],
-        correctIndex: 1,
-        explanation: "إشارة الانتهاء TI (Transmit Interrupt) مخصصة فقط لعمليات الإرسال. التعليمة 'JNB TI, xx' (Jump if Not Bit) تقوم بإنشاء حلقة مراقبة لانتظار اكتمال عملية إرسال بايت خارج المتحكم عبر طرف TxD. للتحقق من الاستقبال (Reception)، يجب استقصاء البت RI (Receive Interrupt)، والذي يتم رفعه عندما يقوم المتحكم بتلقي البيانات بالكامل عبر طرف RxD."
-    },
-    {
-        category: "Lecture 06",
-        text: "In the context of 8051 serial communication, what does framing refer to?",
-        options: ["Placing each character between start and stop bits", "Dividing the crystal frequency by 12", "Setting the baud rate using Timer 1", "Connecting TxD and RxD pins"],
-        correctIndex: 0,
-        explanation: "عملية التأطير (Framing) في الاتصالات الرقمية هي عملية تغليف البيانات المجردة بمعلومات بروتوكولية لتمكين المزامنة واكتشاف الأخطاء. في الـ UART، يتم التأطير عن طريق إضافة بت بداية (Start Bit = 0) في مقدمة البتات الثمانية للبيانات، وبت توقف (Stop Bit = 1) في نهايتها. هذا الهيكل المنطقي يُعلم المستقبل الدقيق ببدء الإطار ونهايته، لضمان صحة توقيت استخراج البيانات (Data Sampling)."
-    },
-    {
-        category: "Lecture 06",
-        text: "If SCON is loaded with 50H, what is the state of the REN bit?",
-        options: ["1 (Reception enabled)", "0 (Reception disabled)", "1 (Transmission enabled)", "0 (Transmission disabled)"],
-        correctIndex: 0,
-        explanation: "القيمة الست عشرية 50H تُترجم إلى الثنائي 01010000. بوضعها في مسجل SCON، يكون التوزيع المنطقي للبتات: SM0=0، SM1=1، SM2=0، REN=1، وبقية البتات (TB8, RB8, TI, RI) كلها صفر. بت تمكين الاستقبال (Receive Enable - REN) هو البت الرابع (Bit 4). رفع هذا البت إلى 1 (Logic High) ضروري لتفعيل دوائر الاستقبال الداخلية والسماح للمتحكم بتلقي وإزاحة البيانات الواردة عبر RxD."
-    },
-    {
-        category: "Lecture 06",
-        text: "True or False: In mode 2 (8-bit auto-reload), THx holds a value which is to be reloaded into TLx each time it underflows.",
-        options: ["True", "False"],
-        correctIndex: 1,
-        explanation: "المؤقتات في عائلة 8051 هي عدادات تصاعدية صلبة (Hardware Up-counters) في جميع أنماطها. بناءً على ذلك، يتم إعادة تحميل قيمة THx إلى TLx عند حدوث عملية فيضان للحد الأقصى (Overflow - تجاوز القيمة FFH للعودة إلى 00H)، وليس عند حدوث تدفق سفلي (Underflow)، لأن العداد لا يعد تنازلياً (Down-counting)."
-    },
-    {
-        category: "Lecture 06",
-        text: "The simplest connection between a PC and a microcontroller requires a minimum of three pins: TxD, RxD, and ........",
-        options: ["ground", "VCC", "DTR", "CTS"],
-        correctIndex: 0,
-        explanation: "لإنشاء قناة اتصال تسلسلي (RS-232/UART Communication) قابلة للعمل بشكل كامل (Full-Duplex)، يُشترط هندسياً توفر خط لنقل البيانات (TxD)، خط لاستقبال البيانات (RxD)، والأهم هو الخط الأرضي المشترك (Common Ground/GND). بدون الأرضي المشترك، لا يوجد مستوى مرجعي لفرق الجهد (Voltage Reference Level) لمقارنة الإشارات المنطقية، مما يجعل اكتشاف النبضات (0 و 1) مستحيلاً أو عرضة للتشويش الشديد (Signal Noise/Floating Ground)."
-    },
-    {
-        category: "Lecture 06",
-        text: "True or False: To transfer the next byte serially, TI must be cleared by hardware.",
-        options: ["True", "False"],
-        correctIndex: 1,
-        explanation: "يتولى العتاد الداخلي (Hardware) رفع بت TI (إعلام الإرسال) إلى 1 بمجرد خروج بت التوقف إلى خط النقل. لكن، المعمارية تتطلب تدخلاً برمجياً (Software Intervention) لمسح البت (TI = 0). إذا لم يقم المبرمج بتصفير البت، سيُعتبر أن عملية الإرسال مستمرة أو معلقة، ولن تتمكن وحدة UART من استئناف دورة العمل لإرسال البايت التالي أو لن تولد مقاطعة للإرسال التالي."
-    },
-    {
-        category: "Lecture 06",
-        text: "Which of the following is NOT an SCON register bit?",
-        options: ["TF1", "SM0", "REN", "RB8"],
-        correctIndex: 0,
-        explanation: "مسجل التحكم التسلسلي SCON مخصص حصرياً لبتات واجهة UART مثل SM0 (Serial Mode 0)، REN (Receive Enable)، و RB8 (Receive Bit 8). البت TF1 (Timer 1 Flag) هو علامة الانتهاء الخاصة بالمؤقت 1، وهو فيزيائياً جزء من مسجل التحكم الخاص بالمؤقتات TCON (Timer Control Register)، وليس مسجل الاتصال التسلسلي."
-    },
-    {
-        category: "Lecture 06",
-        text: "If TH1 is loaded with -6 (FA Hex), what will be the baud rate assuming an 11.0592 MHz crystal?",
-        options: ["4800", "9600", "2400", "1200"],
-        correctIndex: 0,
-        explanation: "في التردد المرجعي للكريستالة 11.0592 MHz، يكون تردد ساعة UART (بعد تقسيمها على 12 ثم 32) هو 28800 هرتز. القيمة المحملة في TH1 تحدد معدل الفيضان (Overflow Rate)، وهو يُحسب كقيمة تكميلية للعدد المستهدف. إذا كانت TH1 = -6 (وهي FA في النظام الست عشري)، فهذا يعني أن المؤقت يحتاج إلى 6 نبضات ليفيض. وبتقسيم التردد الأساسي: 28800 / 6 = 4800 باود."
-    },
-    {
-        category: "Lecture 06",
-        text: "When establishing a serial connection using a USB to Serial UART module, the TXD pin of the module should be connected to the ........ pin of the microcontroller.",
-        options: ["RxD", "TxD", "GND", "VCC"],
-        correctIndex: 0,
-        explanation: "الاتصال التسلسلي (UART) مبني على مسارات بيانات متقاطعة (Cross-coupled Data Lines). لضمان التبادل الصحيح للبيانات بين طرفين مرسل ومستقبل، يجب أن يتم توصيل الدبوس الذي يقوم ببث البيانات (TXD - Transmit) في الجهاز الأول إلى الدبوس المخصص للاستماع واستقبال البيانات (RXD - Receive) في الجهاز الثاني، والعكس صحيح، لتشكيل حلقة الاتصال المنطقية."
-    },
-    {
-        category: "Lecture 06",
-        text: "In C programming for 8051, the instruction `while(TI==0);` is used to ........",
-        options: ["Wait until the stop bit is transmitted", "Clear the TI flag", "Start the timer", "Wait until a character is received"],
-        correctIndex: 0,
-        explanation: "هذه التعليمة تُنفذ تقنية الاستقصاء المستمر (Polling Mechanism). تظل وحدة المعالجة المركزية (CPU) محصورة في دورة فارغة طالما أن البت TI يُساوي 0 (ما يعني أن عملية إزاحة البتات لا تزال جارية في مسجل الإرسال). بمجرد انتهاء إرسال الإطار كاملاً (بما في ذلك بت التوقف)، يقوم الهاردوير بتعيين TI=1، مما يكسر شرط الحلقة ويسمح للبرنامج بالانتقال للخطوة التالية، كإرسال الحرف القادم أو مسح البت."
-    },
-    {
-        category: "Lecture 06",
-        text: "True or False: The RI flag is set by hardware at the beginning of the start bit in mode 1.",
-        options: ["True", "False"],
-        correctIndex: 1,
-        explanation: "في هندسة 8051، تم تصميم آليات رفع إعلامات المقاطعة للعمل عند اكتمال العمليات لتجنب قراءة بيانات غير مكتملة. بالتالي، يُرفع إعلام الاستقبال RI (Receive Interrupt) عتادياً بشكل صارم في منتصف أو نهاية بت التوقف (Stop Bit) الخاص بالإطار المستلم في النمط 1، وذلك لتأكيد أن حزمة الـ 8 بتات بأكملها قد نُقلت بنجاح إلى مسجل SBUF وأصبحت جاهزة وتامة للقراءة."
-    },
-    {
-        category: "Lecture 06",
-        text: "Which pin corresponds to the RxD function in the 8051 microcontroller?",
-        options: ["P3.0", "P3.1", "P2.0", "P2.1"],
-        correctIndex: 0,
-        explanation: "في المعمارية القياسية للأطراف (Pin-out Architecture) في معالجات 8051، يحتوي المنفذ P3 على وظائف متطورة متعددة (Multiplexed Alternate Functions). يتم فيزيائياً ربط الدبوس P3.0 بوحدة الاستقبال للاتصال التسلسلي (RxD)، بينما يُربط الدبوس P3.1 بوحدة الإرسال التسلسلي (TxD). التوجيه بين وظيفة الدبوس كمدخل عام أو خط UART يتم التحكم به تلقائياً عبر التهيئة الداخلية."
-    },
-    {
-        category: "Lecture 06",
-        text: "True or False: SBUF is a 16-bit register used solely for serial communication.",
-        options: ["True", "False"],
-        correctIndex: 1,
-        explanation: "معمارية 8051 مبنية بالكامل على مسارات بيانات وبنية معالجة بعرض 8 بتات (8-bit Architecture). لذا، فإن مسجل SBUF (Serial Data Buffer) مصمم فيزيائياً ليكون مسجلاً بسعة 8 بتات قادراً على احتجاز بايت واحد فقط من البيانات في كل لحظة، سواء كان ذلك لغرض التحميل تمهيداً للإرسال عبر خط TxD أو لتخزين البيانات المستخلصة عبر خط RxD."
-    },
-    {
-        category: "Lecture 06",
-        text: "........ data transfers use the synchronous method.",
-        options: ["Block-oriented", "Character-oriented", "Byte-oriented", "Bit-oriented"],
-        correctIndex: 0,
-        explanation: "في الاتصالات المتزامنة (Synchronous Communication)، يتم نقل إشارة الساعة (Clock Signal) كخط منفصل لضمان التزامن الدقيق بين المرسل والمستقبل. بفضل هذا التزامن العتادي المستمر، ينتفي الاحتياج لإضافة بتات بداية وتوقف لكل بايت منفرد، مما يتيح نقل كتل كبيرة من البيانات (Block-oriented Data Transfers) المتتالية بسرعة عالية وموثوقية فائقة وعرض نطاق ترددي (Bandwidth) أمثل."
-    },
-    {
-        category: "Lecture 06",
-        text: "The crystal frequency commonly used to generate standard baud rates with the 8051 without error is ........ MHz.",
-        options: ["11.0592", "12.0000", "16.0000", "8.0000"],
-        correctIndex: 0,
-        explanation: "اختيار التردد 11.0592 MHz يمثل تصميماً هندسياً دقيقاً في دوائر الاتصال التسلسلي (UART Engineering). هذا الرقم المميز يقبل القسمة التامة والمنتظمة من خلال دوائر قسمة التردد في الـ 8051 (القسمة على 12 ثم على 32 أو 16) لإنتاج مضاعفات عددية صحيحة (Integer Multiples) تتطابق تماماً مع معدلات الباود القياسية للحواسيب الشخصية (مثل 9600، 4800، 19200) بدون أي نسبة خطأ تراكمية في التزامن الزمنـي (0% Timing Error)."
-    },
-    {
-        category: "Lecture 06",
-        text: "To clear the Transmit Interrupt flag in C, which instruction is used?",
-        options: ["TI = 0;", "TI == 0;", "clear(TI);", "TI = 1;"],
-        correctIndex: 0,
-        explanation: "إعلام الإرسال TI (Transmit Interrupt) مدمج كبت فردي قابل للعنونة (Bit-addressable) في مسجل SCON. في لغة C الخاصة بالأنظمة المدمجة، لإعادة تعيين (Reset) حالة هذا البت برمجياً، نستخدم عامل الإسناد المباشر (=). التعليمة 'TI = 0;' توجه المعالج لإرسال أمر مباشر لتصفير القلاب (Flip-Flop) الخاص بهذا البت في الهاردوير، لتمكينه من رصد إشارة انتهاء بايت جديد."
-    }
+  {
+    category: "Lecture 06",
+    text: "In serial communication, how many data lines are minimally required to transmit an 8-bit byte from one device to another?",
+    options: ["1 line", "8 lines", "9 lines", "16 lines"],
+    correctIndex: 0,
+    explanation: "الاتصال التسلسلي (Serial) يرسل البيانات بت وراء الآخر عبر خط واحد للبيانات (Tx)، بخلاف التوازي (Parallel) الذي يحتاج خطاً لكل بت."
+  },
+  {
+    category: "Lecture 06",
+    text: "Parallel communication is generally faster than serial communication over very short distances, but it is impractical for long distances due to the large number of wires required.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "التوازي أسرع لأنه ينقل كل البتات في نفس الوقت، لكنه مكلف جداً للمسافات الطويلة لكثرة الأسلاك."
+  },
+  {
+    category: "Lecture 06",
+    text: "The acronym UART stands for ........",
+    options: ["Universal Asynchronous Receiver-Transmitter", "Universal Audio Receiver-Transmitter", "United Advanced Radio Transceiver", "Universal Asynchronous Router-Topology"],
+    correctIndex: 0,
+    explanation: "الـ UART هي الدائرة أو البروتوكول المسؤول عن إرسال واستقبال البيانات التسلسلية غير المتزامنة."
+  },
+  {
+    category: "Lecture 06",
+    text: "What is the fundamental difference between Synchronous and Asynchronous serial communication?",
+    options: ["Asynchronous communication is much faster", "Synchronous communication shares a common clock signal between sender and receiver, while asynchronous does not", "Synchronous uses 1 wire, asynchronous uses 8 wires", "Asynchronous can only receive data"],
+    correctIndex: 1,
+    explanation: "في الـ Synchronous (مثل SPI و I2C) يوجد خط خاص للـ Clock لضبط التزامن. أما الـ Asynchronous (مثل UART) فلا يوجد خط كلوك بينهما، ويعتمدان على الاتفاق المسبق على سرعة النقل (Baud Rate)."
+  },
+  {
+    category: "Lecture 06",
+    text: "Which communication type is widely used for character-oriented data transfers (e.g., sending ASCII characters one by one)?",
+    options: ["Synchronous", "Asynchronous", "Parallel", "DMA"],
+    correctIndex: 1,
+    explanation: "الـ Asynchronous (UART) مثالي لإرسال الأحرف المتقطعة، كل حرف يُغلف بمفرده."
+  },
+  {
+    category: "Lecture 06",
+    text: "A USART chip can perform both synchronous and asynchronous communication.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "حرف S في USART يشير إلى Synchronous، وحرف A يشير إلى Asynchronous، فهو يدعم النظامين."
+  },
+  {
+    category: "Lecture 06",
+    text: "The simplest full-duplex serial connection between a PC and an 8051 microcontroller requires a minimum of how many pins?",
+    options: ["2 (TxD, RxD)", "3 (TxD, RxD, Ground)", "4 (TxD, RxD, VCC, Ground)", "9 (DB9 connector)"],
+    correctIndex: 1,
+    explanation: "للاتصال المزدوج الكامل نحتاج خط إرسال Tx، خط استقبال Rx، وطرف أرضي مشترك Ground لتوحيد الجهد."
+  },
+  {
+    category: "Lecture 06",
+    text: "In the 8051 microcontroller, which pins of Port 3 are dedicated to UART serial communication?",
+    options: ["P3.0 (RxD) and P3.1 (TxD)", "P3.4 (T0) and P3.5 (T1)", "P3.2 (INT0) and P3.3 (INT1)", "P3.6 (WR) and P3.7 (RD)"],
+    correctIndex: 0,
+    explanation: "P3.0 هو طرف الاستقبال RxD، و P3.1 هو طرف الإرسال TxD."
+  },
+  {
+    category: "Lecture 06",
+    text: "When connecting a USB-to-Serial module to the 8051, the TxD pin of the module must be connected to the ........ pin of the 8051.",
+    options: ["TxD", "RxD", "VCC", "Reset"],
+    correctIndex: 1,
+    explanation: "إرسال الطرف الأول يجب أن يقابله استقبال في الطرف الثاني (Tx to Rx) والعكس."
+  },
+  {
+    category: "Lecture 06",
+    text: "In serial data communication, the term 'Baud Rate' refers to ........",
+    options: ["The voltage level of the signal", "The number of start bits used", "The rate of data transfer in bits per second (bps)", "The frequency of the crystal oscillator"],
+    correctIndex: 2,
+    explanation: "الـ Baud Rate هو سرعة نقل البيانات وتقاس بالبت في الثانية (Bits per second)."
+  },
+  {
+    category: "Lecture 06",
+    text: "In asynchronous transmission, 'Framing' refers to placing the actual 8-bit data character between ........",
+    options: ["Two parity bits", "A Start bit and a Stop bit(s)", "A Clock pulse and a Reset pulse", "0xFF and 0x00"],
+    correctIndex: 1,
+    explanation: "التغليف (Framing) يتم بوضع بت بداية (Start) قبل الداتا وبت نهاية (Stop) بعدها لكي يتعرف المستقبل على حدود الحرف."
+  },
+  {
+    category: "Lecture 06",
+    text: "In standard UART framing, the Start bit is always a ........ and the Stop bit is always a ........",
+    options: ["1 (High), 0 (Low)", "0 (Low), 1 (High)", "1 (High), 1 (High)", "0 (Low), 0 (Low)"],
+    correctIndex: 1,
+    explanation: "بت البداية دائماً 0 (لأن الخط في حالة الراحة يكون 1)، وبت النهاية دائماً 1 ليعيد الخط لحالة الراحة."
+  },
+  {
+    category: "Lecture 06",
+    text: "When there is no data being transmitted, the serial communication line is held in a Logic 1 state. This state is known as ........",
+    options: ["Space", "Mark", "Idle zero", "Start condition"],
+    correctIndex: 1,
+    explanation: "في علم الاتصالات، حالة الراحة التي يكون فيها الخط High (1) تسمى Mark، وحالة الـ 0 تسمى Space."
+  },
+  {
+    category: "Lecture 06",
+    text: "If you transmit the ASCII character 'A' (which is 0x41 or 01000001 in binary) over UART with 1 stop bit, how many bits are physically transmitted over the wire?",
+    options: ["8 bits", "9 bits", "10 bits", "11 bits"],
+    correctIndex: 2,
+    explanation: "1 بت بداية + 8 بت داتا + 1 بت نهاية = 10 بت لكل حرف."
+  },
+  {
+    category: "Lecture 06",
+    text: "The UART receiver uses the Stop bit(s) to verify that the frame was received without errors and to prepare for the next Start bit.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "بت النهاية يضمن عودة الخط لحالة High (Mark) حتى يتمكن المستقبل من اكتشاف انتقال الـ High to Low الذي يمثل بت البداية القادم."
+  },
+  {
+    category: "Lecture 06",
+    text: "Which of the following crystal oscillator frequencies is STRICTLY RECOMMENDED by Dr. Emad for standard 8051 serial communication?",
+    options: ["12.0000 MHz", "8.0000 MHz", "11.0592 MHz", "16.0000 MHz"],
+    correctIndex: 2,
+    explanation: "هذا التردد العجيب (11.0592 MHz) عند قسمته يعطي أرقاماً صحيحة لتوليد سرعات الـ Baud Rate القياسية (مثل 9600) بدون أي نسبة خطأ."
+  },
+  {
+    category: "Lecture 06",
+    text: "If a 12 MHz crystal is used instead of an 11.0592 MHz crystal for serial communication, what is the most likely result?",
+    options: ["Communication will be exactly 10% faster", "The microcontroller will not boot up", "The baud rate will have a fractional error, leading to reception of 'garbage' data", "Timer 1 will stop working entirely"],
+    correctIndex: 2,
+    explanation: "استخدام 12 MHz لا يعطي أرقاماً صحيحة عند القسمة، مما ينتج عنه عدم تطابق في التوقيتات (Error)، فيقرأ المستقبل حروفاً مشوهة (Garbage)."
+  },
+  {
+    category: "Lecture 06",
+    text: "In the 8051, the internal UART circuitry further divides the Machine Cycle frequency by ........ to calculate the final baud rate.",
+    options: ["12", "32", "256", "2"],
+    correctIndex: 1,
+    explanation: "قانون حساب البود ريت في المايكروكنترولر: Baud Rate = (Machine Cycle Frequency) / 32 / (256 - TH1)."
+  },
+  {
+    category: "Lecture 06",
+    text: "Assuming an 11.0592 MHz crystal, the machine cycle frequency is 921.6 kHz. After dividing by 32 for the UART, what is the base frequency used to determine TH1?",
+    options: ["9600 Hz", "28800 Hz", "115200 Hz", "1000 Hz"],
+    correctIndex: 1,
+    explanation: "921600 / 32 = 28800 هرتز. هذا هو الرقم السحري الذي نقسمه على الـ Baud Rate المطلوب لنعرف قيمة شحن التايمر."
+  },
+  {
+    category: "Lecture 06",
+    text: "To generate a standard Baud Rate of 9600 using an 11.0592 MHz crystal, the required reload value for TH1 is ........",
+    options: ["-3 (FD Hex)", "-6 (FA Hex)", "-12 (F4 Hex)", "-24 (E8 Hex)"],
+    correctIndex: 0,
+    explanation: "نقسم (28800 / 9600) = 3. وبما أن التايمر يعد تصاعدياً نضع القيمة بالسالب TH1 = -3."
+  },
+  {
+    category: "Lecture 06",
+    text: "If you want a Baud Rate of 4800 (which is exactly half of 9600), what value should you load into TH1?",
+    options: ["-3", "-6 (FA Hex)", "-1.5", "0"],
+    correctIndex: 1,
+    explanation: "28800 / 4800 = 6. إذن TH1 = -6."
+  },
+  {
+    category: "Lecture 06",
+    text: "Which timer MUST be used to generate the Baud Rate for 8051 serial communication in Mode 1?",
+    options: ["Timer 0", "Timer 1", "Either Timer 0 or Timer 1", "The Watchdog Timer"],
+    correctIndex: 1,
+    explanation: "هاردوير الـ 8051 مصمم ليربط اليو ارت (UART Mode 1 & 3) بـ Timer 1 فقط لتوليد البود ريت."
+  },
+  {
+    category: "Lecture 06",
+    text: "When using Timer 1 for baud rate generation, which mode MUST it be configured in?",
+    options: ["Mode 0 (13-bit)", "Mode 1 (16-bit)", "Mode 2 (8-bit auto-reload)", "Mode 3 (Split timer)"],
+    correctIndex: 2,
+    explanation: "يجب استخدام Mode 2 (Auto-reload) لضمان ثبات البود ريت واستمراريته أوتوماتيكياً دون تدخل السوفتوير لتجنب أي أخطاء في التوقيت."
+  },
+  {
+    category: "Lecture 06",
+    text: "Based on the previous questions, what is the mandatory value to load into the TMOD register for standard serial communication?",
+    options: ["0x02", "0x20", "0x50", "0x11"],
+    correctIndex: 1,
+    explanation: "0x20 بالثنائي (0010 0000) تضبط Timer 1 على المود 2، وتترك Timer 0 مُطفأ. وهذا هو الإعداد القياسي للبود ريت."
+  },
+  {
+    category: "Lecture 06",
+    text: "Which 8-bit register is used solely to hold the data byte being transmitted or the data byte just received?",
+    options: ["SCON", "TMOD", "PCON", "SBUF"],
+    correctIndex: 3,
+    explanation: "الـ SBUF (Serial Buffer) هو صندوق البريد. تضع فيه الداتا للإرسال، وتقرأ منه الداتا المستلمة."
+  },
+  {
+    category: "Lecture 06",
+    text: "Writing a byte to the SBUF register automatically triggers the 8051 hardware to start transmitting it serially over the TxD pin.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "مجرد كتابة السطر `SBUF = 'A';` تعطي أمراً فورياً للهاردوير ببدء التغليف (Start/Stop) والإرسال."
+  },
+  {
+    category: "Lecture 06",
+    text: "Physically, SBUF consists of two separate registers (one write-only for transmit, one read-only for receive) that share the same address.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "برغم أننا نستخدم اسم SBUF في الحالتين، إلا أن الهاردوير الداخلي يوجه عملية الكتابة لمسجل الإرسال، وعملية القراءة لمسجل الاستقبال منعاً للتصادم."
+  },
+  {
+    category: "Lecture 06",
+    text: "The register used to configure the UART mode (e.g., 8-bit UART) and enable reception is the ........ register.",
+    options: ["TMOD", "IE", "SCON", "SBUF"],
+    correctIndex: 2,
+    explanation: "الـ SCON (Serial Control) يحتوي على بتات التحكم مثل SM0, SM1, REN, TI, RI."
+  },
+  {
+    category: "Lecture 06",
+    text: "To configure the 8051 for 8-bit UART variable baud rate (Serial Mode 1) and to enable the receiver (REN=1), what Hex value is loaded into SCON?",
+    options: ["0x20", "0x50", "0x90", "0xFF"],
+    correctIndex: 1,
+    explanation: "0x50 بالثنائي (0101 0000). البت رقم 6 هو SM1=1 (لضبط المود 1)، والبت رقم 4 هو REN=1 (لتفعيل الاستقبال)."
+  },
+  {
+    category: "Lecture 06",
+    text: "The TI (Transmit Interrupt) flag is set to 1 by ........ when the last bit (stop bit) of a byte is successfully transmitted.",
+    options: ["The programmer", "The hardware", "The Putty software", "Timer 0"],
+    correctIndex: 1,
+    explanation: "الهاردوير يرفع الفلاج TI لـ 1 تلقائياً ليعلمك أن الصندوق (SBUF) أصبح فارغاً وجاهزاً لإرسال بايت جديد."
+  },
+  {
+    category: "Lecture 06",
+    text: "After the TI flag is set to 1 by the hardware, the hardware will automatically clear it back to 0 for the next transmission.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "هذه قاعدة ذهبية: الهاردوير يرفع الفلاج (TI أو RI) فقط، ولكن السوفتوير (المبرمج) هو المسؤول عن إعادته للصفر (`TI = 0;`)."
+  },
+  {
+    category: "Lecture 06",
+    text: "The RI (Receive Interrupt) flag is set to 1 by the hardware when ........",
+    options: ["SBUF is written to", "A complete frame (including stop bit) has been successfully received", "The start bit is detected", "Timer 1 overflows"],
+    correctIndex: 1,
+    explanation: "الهاردوير يرفع RI لـ 1 ليقول لك 'يوجد رسالة جديدة كاملة في SBUF، يرجى قراءتها'."
+  },
+  {
+    category: "Lecture 06",
+    text: "If the REN (Receive Enable) bit in SCON is set to 0, the 8051 will ........",
+    options: ["Be able to receive data normally", "Ignore any incoming data on the RxD pin", "Stop transmitting data", "Change the baud rate"],
+    correctIndex: 1,
+    explanation: "بت الـ REN هو المفتاح الرئيسي للاستقبال. إذا كان 0، فكأنك أغلقت أذن المايكروكنترولر."
+  },
+  {
+    category: "Lecture 06",
+    text: "In the C code line 'while(TI == 0);', the microcontroller is ........",
+    options: ["Generating a delay", "Waiting for the current byte in SBUF to be fully transmitted", "Waiting to receive a new byte", "Halting the program forever"],
+    correctIndex: 1,
+    explanation: "هذه الحلقة تجمد المعالج مؤقتاً حتى ينتهي إرسال الحرف بالكامل (يصبح TI=1) لضمان عدم الكتابة فوقه بحرف جديد."
+  },
+  {
+    category: "Lecture 06",
+    text: "What is the correct sequence to initialize the 8051 for Serial Transmission at 9600 baud?",
+    options: ["TMOD=0x20; TH1=-3; SCON=0x50; TR1=1;", "SCON=0x50; TMOD=0x01; TR0=1;", "TH1=253; TMOD=0x50; SCON=0x20; TR1=1;", "TR1=1; SCON=0x50; TMOD=0x20;"],
+    correctIndex: 0,
+    explanation: "هذا هو التسلسل القياسي: ضبط المود (TMOD)، شحن البود ريت (TH1)، ضبط السيريال وتفعيل الاستقبال (SCON)، ثم تشغيل التايمر (TR1)."
+  },
+  {
+    category: "Lecture 06",
+    text: "Before writing a new character to SBUF inside a transmission loop, what MUST the programmer do to the TI flag?",
+    options: ["Set TI = 1", "Clear TI = 0", "Read TI into a variable", "Ignore it"],
+    correctIndex: 1,
+    explanation: "بمجرد خروجك من حلقة `while(TI==0)` يجب أن تمسح الفلاج `TI = 0;` لتهيئته للحرف القادم."
+  },
+  {
+    category: "Lecture 06",
+    text: "To read a byte received by the 8051 over UART, the correct C code structure is:",
+    options: ["while(TI==0); char x = SBUF; TI=0;", "while(RI==0); char x = SBUF; RI=0;", "SBUF = 'x'; while(RI==0);", "char x = P3;"],
+    correctIndex: 1,
+    explanation: "للاستقبال ننتظر الـ RI (RI==0)، ثم نقرأ الـ SBUF، ثم نمسح الـ RI للصفر."
+  },
+  {
+    category: "Lecture 06",
+    text: "In a complete program that transmits a string, why do we pass the string as a pointer (e.g., 'void Transmit_String(char *str)')?",
+    options: ["Because SBUF can only hold pointers", "Because a string is an array of characters, and we need to loop through and transmit them one by one until reaching the Null terminator '\u0000'", "To increase the baud rate", "To encrypt the data"],
+    correctIndex: 1,
+    explanation: "الـ UART يرسل حرفاً واحداً فقط 8-bit كل مرة. لإرسال جملة (String)، نمرر مؤشراً ونعمل Loop ترسل حرفاً بحرف حتى نصل لنهاية الجملة (Null)."
+  },
+  {
+    category: "Lecture 06",
+    text: "Inside a string transmission function, the condition 'while(*str != 0)' or 'while(*str != '\u0000')' ensures that ........",
+    options: ["The baud rate is zero", "The timer has not overflowed", "The loop stops when the end of the string is reached", "The TI flag is zero"],
+    correctIndex: 2,
+    explanation: "لغة الـ C تنهي أي String بحرف Null (قيمته 0). الشرط يضمن إرسال كل الحروف والتوقف عند الـ Null."
+  },
+  {
+    category: "Lecture 06",
+    text: "If your C program contains the line 'if (x == '1') { LED = 0; }', where 'x' is received from UART, it checks if ........",
+    options: ["The binary value 1 was received", "The ASCII character '1' (Hex 31) was received from the PC keyboard", "The first pin is High", "SBUF is empty"],
+    correctIndex: 1,
+    explanation: "عندما تكتب '1' على الـ Putty في الكمبيوتر، يتم إرسال كود الـ ASCII الخاص به وهو 0x31. لذلك نقارن بحرف '1' بين علامتي تنصيص مفردة وليس القيمة 1."
+  },
+  {
+    category: "Lecture 06",
+    text: "You cannot use both Transmit (TxD) and Receive (RxD) functions simultaneously in the 8051 (Full Duplex).",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "الـ UART في 8051 هو Full Duplex بالكامل، يمكنك الإرسال والاستقبال في نفس الوقت لأن لكل منهما مساره الخاص (TxD و RxD) ومسجل SBUF خاص."
+  },
+  {
+    category: "Lecture 06",
+    text: "If a student forgets to write 'TI = 0;' after sending a character in a loop, what will happen to the next character?",
+    options: ["It will be sent perfectly", "The `while(TI==0);` loop will instantly break, causing characters to overwrite each other in SBUF before being sent, leading to data loss.", "The microcontroller will reset", "The baud rate will double"],
+    correctIndex: 1,
+    explanation: "إذا لم تمسح الـ TI، سيظن المعالج دائماً أن الإرسال السابق انتهى، فيكتب الحرف الجديد فوق القديم فوراً، فتضيع البيانات."
+  },
+  {
+    category: "Lecture 06",
+    text: "Which PC software is commonly used as a Serial Terminal to communicate with the microcontroller via USB-to-TTL?",
+    options: ["Microsoft Word", "Putty", "Keil uVision", "Proteus"],
+    correctIndex: 1,
+    explanation: "برنامج Putty (وأيضاً Tera Term) هي البرامج القياسية لفتح قناة اتصال (COM Port) مع المايكروكنترولر ورؤية الـ Serial Data."
+  },
+  {
+    category: "Lecture 06",
+    text: "In the Putty configuration window, the baud rate entered must exactly match the baud rate programmed into the 8051.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "في الاتصال الـ Asynchronous لا يوجد خط كلوك، لذلك يجب أن يكون الطرفان متفقين تماماً على نفس السرعة (مثلاً 9600) ليفهموا بعضهم."
+  },
+  {
+    category: "Lecture 06",
+    text: "To send a 'New Line' character over UART so the Putty terminal jumps to the next line, you send ........",
+    options: ["'\t'", "'\r\n' (Carriage Return + Line Feed)", "'\u0000'", "'\b'"],
+    correctIndex: 1,
+    explanation: "لعمل سطر جديد بشكل صحيح في برامج التيرمينال يجب إرسال Carriage Return (\r) لعودة المؤشر لأول السطر، ثم Line Feed (\n) للنزول لسطر جديد."
+  },
+  {
+    category: "Lecture 06",
+    text: "If you want to configure Timer 1 Mode 2 and Timer 0 Mode 1 simultaneously, what value should you load into TMOD?",
+    options: ["0x21", "0x12", "0x20", "0x01"],
+    correctIndex: 0,
+    explanation: "بالثنائي: نصف Timer 1 هو 0010 (Mode 2)، ونصف Timer 0 هو 0001 (Mode 1). المحصلة 0010 0001 = 0x21."
+  },
+  {
+    category: "Lecture 06",
+    text: "It is impossible to use an Arduino board as a USB-to-TTL converter for the 8051.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "كما ذكر الطالب في المحاضرة، يمكن استخدام الـ Arduino كـ USB-to-Serial converter عن طريق تفريغ المايكروكنترولر الخاص به (أو عمل Reset دائم له) واستخدام أطراف Rx و Tx الخاصة به للتواصل مع 8051."
+  },
+  {
+    category: "Lecture 06",
+    text: "The SM2 bit in the SCON register is used primarily for ........",
+    options: ["Setting the baud rate", "Multiprocessor communication (networking multiple 8051s)", "Enabling the receiver", "Generating parity bits"],
+    correctIndex: 1,
+    explanation: "بت الـ SM2 يُستخدم في بيئات الـ Multiprocessor للسماح لمايكروكنترولر واحد بمخاطبة عدة أجهزة مايكروكنترولر أخرى على نفس الخط."
+  },
+  {
+    category: "Lecture 06",
+    text: "During initialization of UART in C, it is a good practice to explicitly clear both TI and RI to 0 before starting the main loop.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "نعم، مسح الأعلام (Flags) في الـ Initialization يضمن عدم وجود أي Interrupts وهمية عالقة من بقايا تشغيل سابق."
+  },
+  {
+    category: "Lecture 06",
+    text: "When Dr. Emad says 'Microcontrollers usually Sink current rather than Source it', he means it's safer for the microcontroller pin to provide VCC (5V) to the load than to connect the load to Ground.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "العكس تماماً. Sink تعني أن المايكرو يعمل كأرضي (Ground/0V) ليسحب التيار من الحمل المتصل بالـ VCC. وهذا هو الوضع الآمن (Sinking) مقارنة بالـ Sourcing."
+  }
 ];

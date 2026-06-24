@@ -1,286 +1,352 @@
 const lec04Data = [
   {
     category: "Lecture 04",
-    text: "........ configuration of BJT is predominantly utilized in computer logic and switching circuits rather than audio amplification.",
-    options: [
-      "Common Emitter",
-      "Common Collector",
-      "Common Base",
-      "Common Gate"
-    ],
-    correctIndex: 0,
-    explanation: "In discrete electronics, the Common Emitter (CE) topology provides substantial voltage and current gain simultaneously. By heavily driving the base current, the BJT shifts from cutoff (logic HIGH/OFF) deeply into the saturation region (logic LOW/ON), making it the optimal configuration for binary digital switching. وضع الباعث المشترك (Common Emitter) هو الأنسب لدوائر المفاتيح الإلكترونية لتوفيره أقصى تكبير للجهد والتيار معاً."
+    text: "A Bipolar Junction Transistor (BJT) consists of three layers and three terminals named: Base, Collector, and ........",
+    options: ["Gate", "Drain", "Emitter", "Source"],
+    correctIndex: 2,
+    explanation: "أطراف الترانزستور BJT هي القاعدة (Base)، المجمع (Collector)، والمشع (Emitter)."
   },
   {
     category: "Lecture 04",
-    text: "When verifying BJT connections using a multimeter, the ........ setting is used to determine the Beta value, which typically falls between ........ for valid configurations.",
-    options: [
-      "hFE, 100 and 200",
-      "hIE, 50 and 80",
-      "hOE, 10 and 20",
-      "hRE, 200 and 300"
-    ],
-    correctIndex: 0,
-    explanation: "The Hybrid-Pi parameter `hFE` (Forward Current Transfer Ratio in Common-Emitter mode) quantitatively defines the static DC current gain (`Beta = Ic / Ib`). Standard silicon NPN switching transistors exhibit standard `hFE` values optimally ranging from 100 to 200 during saturation characterization. معامل `hFE` يُعبر عن مقدار التكبير للتيار المستمر للترانزستور، وتتراوح قيمته الطبيعية للترانزستورات الشائعة بين 100 و 200."
-  },
-  {
-    category: "Lecture 04",
-    text: "True/False: An optocoupler strictly functions by using an external electrical current applied directly to the base of its internal phototransistor to suppress interference and isolate circuits.",
-    options: [
-      "True",
-      "False"
-    ],
+    text: "The BC547 and 2N2222 are popular examples of PNP transistors.",
+    options: ["True", "False"],
     correctIndex: 1,
-    explanation: "An optocoupler ensures absolute galvanic isolation by eradicating any conductive path between the input and output stages. The input signal drives an infrared LED (GaAs emitting at ~900nm), whose photonic flux strikes the depleted base region of the integrated phototransistor, instigating electron-hole pair generation to activate collector current without direct electrical base contact. الأوبتوكبلر يعتمد كلياً على النقل الضوئي للإشارة وليس التوصيل الكهربائي لقاعدة الترانزستور، مما يضمن العزل الكهربائي الكامل."
+    explanation: "هذه الأرقام (BC547, 2N2222) هي أشهر أنواع الترانزستورات من النوع NPN وليس PNP."
   },
   {
     category: "Lecture 04",
-    text: "The famous optocoupler IC frequently used in mobile chargers and interface circuits is the ........ , which typically comes in a ........ -pin package.",
-    options: [
-      "PC817, 4",
-      "LM358, 8",
-      "NE555, 8",
-      "ULN2003, 16"
-    ],
-    correctIndex: 0,
-    explanation: "The `PC817` is a ubiquitous industry-standard linear optical isolator embedded in a compact 4-pin Dual In-line Package (DIP). Pins 1 and 2 service the internal IR diode (Anode/Cathode), while pins 3 and 4 access the intrinsic phototransistor (Emitter/Collector) for output feedback loop control. الآي سي PC817 هي المكون الأشهر للعزل الضوئي في دوائر التغذية وتحتوي على 4 أطراف فقط."
-  },
-  {
-    category: "Lecture 04",
-    text: "True/False: While relays provide mechanical isolation and are faster than optocouplers, they handle significantly lower voltages and currents, making them suitable only for micro-level switching.",
-    options: [
-      "True",
-      "False"
-    ],
+    text: "In an NPN transistor, a small current applied to the Base controls a much larger current flowing from the ........ to the ........",
+    options: ["Emitter, Collector", "Collector, Emitter", "Base, Emitter", "Collector, Base"],
     correctIndex: 1,
-    explanation: "Electromechanical relays exhibit intrinsic physical latency (measured in milliseconds) due to armature inertia, rendering them orders of magnitude slower than solid-state optocouplers (microseconds). However, their metallic alloy contact pads natively sustain macroscopic voltage potentials (e.g., 220V AC) and massive currents far exceeding micro-level limits. الريلاي ميكانيكي وبالتالي فهو أبطأ بكثير من الأوبتوكبلر، ولكنه يتميز بقدرته الفائقة على تحمل جهود وتيارات كهربائية عالية جداً."
+    explanation: "في الـ NPN، التيار الرئيسي يسري من المجمع (Collector) إلى المشع (Emitter) ويتم التحكم فيه عن طريق تيار القاعدة."
   },
   {
     category: "Lecture 04",
-    text: "A standard electromagnetic Relay typically contains ........ pins in total, precisely divided into ........ for the coil (input) and ........ for the contacts (output).",
-    options: [
-      "5, 2, 3",
-      "5, 3, 2",
-      "6, 2, 4",
-      "4, 2, 2"
-    ],
+    text: "Which BJT configuration is the most commonly used in electronic control circuits and switching applications?",
+    options: ["Common Base", "Common Collector", "Common Emitter", "Common Gate"],
+    correctIndex: 2,
+    explanation: "دائرتا الباعث المشترك (Common Emitter) هما الأكثر استخداماً في دوائر التكبير والتحكم (Switching)."
+  },
+  {
+    category: "Lecture 04",
+    text: "You can use the hFE measurement function on a digital multimeter to determine the correct pinout of a BJT.",
+    options: ["True", "False"],
     correctIndex: 0,
-    explanation: "A standard SPDT (Single Pole Double Throw) relay mechanically asserts a 5-pin topography: 2 primary pins are structurally wired to the copper induction coil (electromagnetic input excitation), and 3 secondary pins frame the high-power output nexus encompassing COM (Common), NO (Normally Open), and NC (Normally Closed). التكوين القياسي للريلاي يتكون من 5 أطراف: اثنان لتشغيل الملف الكهرومغناطيسي، وثلاثة تمثل مفاتيح الخرج للتحكم بالدائرة."
+    explanation: "نعم، المالتيميتر يوفر خاصية قياس الـ hFE (معامل التكبير Beta)، وإذا أعطى قراءة منطقية (مثلاً 100-200) فهذا يؤكد صحة تحديد الأطراف."
   },
   {
     category: "Lecture 04",
-    text: "In a relay's unenergized (default) state, the ........ pin is directly connected to the ........ pin, allowing current to flow if a circuit is attached.",
-    options: [
-      "Common, Normally Closed",
-      "Common, Normally Open",
-      "Coil, Normally Closed",
-      "Armature, Normally Open"
-    ],
-    correctIndex: 0,
-    explanation: "In a quiescent (zero-excitation) state, mechanical spring tension physically biases the movable armature (COM - Common) against the static NC (Normally Closed) contact pad, establishing immediate electrical continuity without external power. في الوضع الافتراضي (بدون تيار)، تقوم السوستة الميكانيكية بجعل الطرف المشترك في حالة اتصال دائم مع الطرف المغلق."
-  },
-  {
-    category: "Lecture 04",
-    text: "To successfully interface a Relay with an 8051 microcontroller, a ........ is strictly required because the microcontroller's output current is generally too weak to energize the relay coil directly.",
-    options: [
-      "Transistor driver",
-      "Voltage regulator",
-      "Transformer driver",
-      "Operational amplifier"
-    ],
-    correctIndex: 0,
-    explanation: "The typical generic output pin of an 8051 microcontroller can safely source merely ~1-2 mA, catastrophically insufficient to trigger a 50-100 mA relay induction coil. Implementing an intermediary BJT (Transistor driver) acting as a saturated switch amplifies this marginal control current to an adequate sink drive. ميكروكنترولر 8051 لا يمكنه إعطاء تيار كافٍ لتشغيل ملف الريلاي مباشرة، لذا يُعد استخدام ترانزستور مكبر كعنصر وسيط أمراً حتمياً."
-  },
-  {
-    category: "Lecture 04",
-    text: "True/False: In 8051 C programming for practical exams, it is absolutely mandatory to write the full definition body of the Delay function before the main() function to avoid syntax compilation errors.",
-    options: [
-      "True",
-      "False"
-    ],
+    text: "In digital embedded systems, transistors are usually operated in the active region to act as an amplifier rather than a switch.",
+    options: ["True", "False"],
     correctIndex: 1,
-    explanation: "In standard C parsing, establishing a forward function prototype (e.g., `void delay(unsigned int);`) above `main()` is fully sufficient to resolve compiler symbol linkage. The full operational definition body can logically reside at the end of the file, satisfying linker requirements cleanly. بلغة الـ C، يكفي كتابة التصريح للدالة قبل دالة `main` ليتعرف عليها المترجم، ولا يشترط كتابة بنية الدالة بالكامل أعلى الكود."
+    explanation: "في الأنظمة المدمجة (Embedded)، يُستخدم الترانزستور كـ 'مفتاح' (Switch) في منطقتي الـ Saturation والـ Cut-off، وليس كمكبر في منطقة Active."
   },
   {
     category: "Lecture 04",
-    text: "In order to configure an 8051 microcontroller pin strictly as an INPUT to read a push button, the pin MUST first be initialized with a logic ........ .",
-    options: [
-      "1",
-      "0",
-      "0xFF",
-      "High-Z"
-    ],
-    correctIndex: 0,
-    explanation: "Due to the quasi-bidirectional CMOS latches of the 8051 architecture, writing a logic `1` forcibly deactivates the internal strong pull-down N-channel MOSFET. This places the pin in a floating, high-impedance (High-Z) receiver state, safely awaiting external signal assertion without inducing hardware short circuits. لتهيئة المنفذ كمدخل، يجب أولاً كتابة `1` على البت لإيقاف ترانزستور الإخراج، مما يسمح باستقبال الإشارة الخارجية دون تداخل."
-  },
-  {
-    category: "Lecture 04",
-    text: "Conversely, to initialize an 8051 microcontroller pin strictly as an OUTPUT (e.g., to drive an LED), it is standard practice to initialize the pin with a logic ........ .",
-    options: [
-      "0",
-      "1",
-      "0x00",
-      "Low-Z"
-    ],
-    correctIndex: 0,
-    explanation: "Initializing a target pin to logical `0` actively triggers the N-channel pull-down transistor into saturation, linking the peripheral output heavily to system Ground (GND). This guarantees an initial deactivated (OFF) state for Active-Low components systematically avoiding spurious startup glitches. لتهيئة الطرف كمخرج بصورة آمنة وتجنب التشغيل العشوائي عند بدء تشغيل الدائرة، يتم تهيئته منطقياً بـ `0`."
-  },
-  {
-    category: "Lecture 04",
-    text: "True/False: When interfacing the 8051 microcontroller with external components like LEDs or Optocouplers, it is strongly recommended to configure the microcontroller as a 'source' rather than a 'sink' to avoid interface problems.",
-    options: [
-      "True",
-      "False"
-    ],
+    text: "For an NPN transistor to turn ON and act as a closed switch, the voltage at the Base must be ........ than the voltage at the Emitter.",
+    options: ["Lower", "Higher", "Equal", "Negative"],
     correctIndex: 1,
-    explanation: "The 8051 I/O internal topology natively possesses a highly resistive internal pull-up network, resulting in exceedingly anemic current sourcing capabilities (~1mA). Conversely, the hardware sink capacity (driving to Ground) is robustly handled by dedicated MOSFETs capable of absorbing up to 15mA. Therefore, components must invariably be connected in an Active-Low, Current Sink orientation. تصميم منافذ 8051 يجعلها ضعيفة جداً في إعطاء تيار لكنها ممتازة في سحب التيار، لذلك يُفضل دائماً توصيل الأحمال بطريقة السحب لضمان التشغيل المستقر."
+    explanation: "لتشغيل ترانزستور NPN، يجب أن يكون جهد القاعدة (Base) أعلى من جهد المشع (Emitter) بمقدار 0.7 فولت تقريباً."
   },
   {
     category: "Lecture 04",
-    text: "In a standard ........ circuit configuration, the default logic state read by the microcontroller when the push button is NOT pressed is ........ .",
-    options: [
-      "Pull-up, 1",
-      "Pull-down, 1",
-      "Pull-up, 0",
-      "Pull-down, High-Z"
-    ],
-    correctIndex: 0,
-    explanation: "A Pull-Up resistor topology inherently anchors the input line to the +Vcc rail through a fixed impedance (e.g., 10kΩ). In a nominal unpressed state, the MCU natively reads a quiescent Logic 1 (+5V). Actuation of the switch shunts this line directly to Ground, registering a dynamic Logic 0. دائرة الـ Pull-Up تضمن أن الجهد الافتراضي على المنفذ هو 5 فولت طالما أن المفتاح غير مضغوط."
-  },
-  {
-    category: "Lecture 04",
-    text: "The precise syntax ........ is used in Keil C to declare and access a single bit of a Special Function Register (SFR), such as an individual port pin.",
-    options: [
-      "sbit",
-      "sfr",
-      "bit",
-      "pin"
-    ],
-    correctIndex: 0,
-    explanation: "Within the Keil C51 extension specifications, the keyword `sbit` is an absolute addressing directive instructing the compiler to evaluate and isolate a discrete boolean flag within the specialized SFR bit-addressable memory hierarchy (`80H-FFH`). الكلمة المفتاحية `sbit` تستخدم حصرياً في بيئة Keil للوصول إلى بت واحد محدد من مسجلات النظام أو أطراف الميكروكنترولر."
-  },
-  {
-    category: "Lecture 04",
-    text: "True/False: If an external pull-down resistor circuit is connected to an 8051 input pin, pressing the connected push button will force a logic 0 into the microcontroller.",
-    options: [
-      "True",
-      "False"
-    ],
+    text: "A Common Collector configuration is heavily used in audio amplification due to its high voltage gain.",
+    options: ["True", "False"],
     correctIndex: 1,
-    explanation: "A Pull-Down resistor effectively ties the input gate to GND (Logic 0) in rest mode. Depressing the tactile switch bridges the input node directly to the Vcc rail, thereby overwriting the resistor and forcibly injecting a solid Logic 1 into the MCU logic gate. في دائرة السحب لأسفل، الضغط على المفتاح يوصل الطرف بجهد المصدر، مما يدخل إشارة منطقية 1 وليس 0."
+    explanation: "الـ Common Collector لا يكبر الجهد (Voltage Gain = 1)، بل يكبر التيار. ولذلك لا يستخدم كمكبر صوتي مباشر."
   },
   {
     category: "Lecture 04",
-    text: "The commonly used general-purpose NPN transistors mentioned in the lecture for switching and driving applications are ........ and ........ .",
-    options: [
-      "BC547, 2N2222",
-      "TIP120, IRFZ44N",
-      "LM317, 7805",
-      "NE555, LM358"
-    ],
-    correctIndex: 0,
-    explanation: "The `BC547` (low-power, max 100mA) and the `2N2222` (medium-power, max 800mA) represent prototypical TO-92 packaged NPN silicon epitaxial planar transistors. Their rapid dynamic saturation responses make them textbook choices for general MCU logic interfacing and relay switching grids. الترانزستورات BC547 و 2N2222 هي الأجزاء النمطية المستخدمة عالمياً للمفاتيح الإلكترونية."
+    text: "In the symbol of a BJT transistor, the arrow is always placed on the ........ terminal.",
+    options: ["Base", "Collector", "Emitter", "Gate"],
+    correctIndex: 2,
+    explanation: "السهم في رمز الترانزستور يُرسم دائماً على طرف المشع (Emitter) ليدل على اتجاه التيار."
   },
   {
     category: "Lecture 04",
-    text: "In an optocoupler structure, the internal components consist of an LED optically coupled with a ........ or a ........ inside a single package.",
-    options: [
-      "Photodiode, Phototransistor",
-      "Photodiode, Photoresistor",
-      "Phototransistor, Photothyristor",
-      "Photodiode, Photothyristor"
-    ],
-    correctIndex: 0,
-    explanation: "To attain absolute optical transmission, internal encapsulations utilize a Gallium Arsenide (GaAs) emitter facing either a silicon PIN Photodiode for extreme high-frequency switching, or an NPN Phototransistor optimized for substantial current transfer ratios (CTR) and standard signal routing. المكونات الداخلية للأوبتوكبلر عبارة عن دايود ضوئي يرسل فوتونات تستقبلها قاعدة لترانزستور ضوئي أو دايود ضوئي حساس للإشعاع."
-  },
-  {
-    category: "Lecture 04",
-    text: "True/False: When an optocoupler's LED cathode is connected to an 8051 pin (sink configuration), outputting a logic 1 from the microcontroller turns ON the internal LED.",
-    options: [
-      "True",
-      "False"
-    ],
+    text: "In an NPN transistor symbol, the arrow on the emitter points ........ the base.",
+    options: ["Towards", "Away from", "Parallel to", "None of the above"],
     correctIndex: 1,
-    explanation: "In a Current Sink topology, the LED Anode is statically maintained at +Vcc. Outputting a Logic 1 (+Vcc) from the MCU to the LED Cathode eliminates the potential differential (Vcc - Vcc = 0V). No forward current propagates, resulting in a deactivated (OFF) LED state. Logic 0 (Ground) is strictly required to induce forward-bias conduction. عند توصيل الكاثود بالميكروكنترولر، إخراج 1 منطقي يعني 5 فولت، وبما أن الأنود متصل أيضاً بـ 5 فولت، فلن يمر تيار ولن يضيء الدايود."
+    explanation: "في الـ NPN، السهم يشير 'للخارج' (Away from the base)، بينما في الـ PNP يشير 'للداخل'."
   },
   {
     category: "Lecture 04",
-    text: "To correctly assign the name 'IN' to the first bit of Port 0 and 'OUT' to the last bit of Port 2 in Keil C, one MUST write: ........ .",
-    options: [
-      "sbit IN=P0^0; sbit OUT=P2^7;",
-      "sbit IN=P0^1; sbit OUT=P2^8;",
-      "sbit IN=P0.0; sbit OUT=P2.7;",
-      "sfr IN=0x80; sfr OUT=0xA0;"
-    ],
-    correctIndex: 0,
-    explanation: "Registers array mathematically from Bit 0 up to Bit 7. The 8051 syntax strictly mandates the circumflex `^` binary operator to delineate bitwise addressing. Thus, `P0^0` addresses the LSB of Port 0, and `P2^7` targets the terminal MSB of Port 2 securely. لتعريف بت معين في بيئة Keil، الترقيم يبدأ من 0 للبت الأول، و 7 للبت الأخير، ويتم استخدام الرمز ^ لتمييزه."
+    text: "An optocoupler is primarily used in electronic circuits to ........",
+    options: ["Amplify high-frequency audio signals", "Generate clock pulses for microcontrollers", "Provide electrical isolation between input and output circuits", "Store data during power failures"],
+    correctIndex: 2,
+    explanation: "وظيفة الأوبتوكابلر الأساسية هي العزل الكهربائي التام (Isolation) بين دائرتين (مثل المايكرو ودوائر الجهد العالي) لحماية المتحكم."
   },
   {
     category: "Lecture 04",
-    text: "An optocoupler is extensively used in electronic circuits primarily for ........ in data communication and for high voltage separation.",
-    options: [
-      "Suppressing interference",
-      "Amplifying signals",
-      "Generating oscillations",
-      "Regulating voltage"
-    ],
-    correctIndex: 0,
-    explanation: "By decoupling disparate ground references via photonic data transfer, optocouplers inherently reject massive Ground Loop noise potentials and transient Electromagnetic Interference (EMI), thereby acting as a pristine logic isolator ensuring microcontroller survival against catastrophic peripheral spikes. الأوبتوكبلر يُستخدم بشكل رئيسي في الدوائر لعزل التشويش الكهربائي ومنع التداخل بين دوائر التحكم الدقيقة ودوائر القدرة العالية."
-  },
-  {
-    category: "Lecture 04",
-    text: "True/False: The 'Normally Open' (NO) pin of a relay is physically connected to the 'Normally Closed' (NC) pin when a sufficient magnetic field is generated by the relay coil.",
-    options: [
-      "True",
-      "False"
-    ],
+    text: "An optocoupler package typically contains an LED and a ........",
+    options: ["Relay coil", "Phototransistor", "Variable resistor", "Magnetic switch"],
     correctIndex: 1,
-    explanation: "The mechanical contact pins 'NO' and 'NC' act as entirely discrete, mutually exclusive electrical terminals. Magnetic excitation structurally translates the central 'Common' (COM) armature lever from the 'NC' rest position directly to the 'NO' contact. The NO and NC pins themselves NEVER short-circuit together. أطراف الـ NO والـ NC ثابتة ولا تتصل ببعضها أبداً. بل يتحرك الطرف المشترك (COM) ليتصل بالـ NO عند توليد المجال المغناطيسي."
+    explanation: "يتكون داخلياً من دايود مشع للضوء (LED) يقابله ترانزستور ضوئي (Phototransistor) يستجيب للضوء بدلاً من تيار القاعدة."
   },
   {
     category: "Lecture 04",
-    text: "In the context of a relay module driven by a BJT, placing a ........ in parallel with the relay coil is crucial to protect the transistor from back EMF.",
-    options: [
-      "Diode",
-      "Resistor",
-      "Capacitor",
-      "Inductor"
-    ],
+    text: "In a phototransistor, the base current is replaced by ........",
+    options: ["Sound waves", "Magnetic fields", "Light intensity", "Heat"],
+    correctIndex: 2,
+    explanation: "الضوء المنبعث من الـ LED هو الذي يقوم بتحفيز القاعدة (Base) وجعل الترانزستور الضوئي يمرر التيار."
+  },
+  {
+    category: "Lecture 04",
+    text: "A very popular 4-pin optocoupler IC used in many electronic devices and chargers is the ........",
+    options: ["PC817", "BC547", "2N2222", "AT89S52"],
     correctIndex: 0,
-    explanation: "An induction coil stores energy dynamically within a pervasive magnetic field. De-energizing abruptly collapses this field, inciting a transient Reverse Electromotive Force (Back EMF) dictated by `-L(di/dt)`. A reverse-biased Freewheeling Diode clamps this lethal reverse voltage spike safely back through the coil, shielding the BJT collector. الدايود العكسي يوضع على التوازي مع الملف الكهرومغناطيسي لامتصاص الجهد العكسي المرتفع الناتج عن تفريغ الطاقة."
+    explanation: "الـ PC817 هو أشهر نوع Optocoupler تجاري بأربعة أطراف (DIP/SMD)."
   },
   {
     category: "Lecture 04",
-    text: "True/False: According to the lecture, the most famous optocoupler (PC817) exclusively comes in a 6-pin Dual-in-line package for maximum isolation.",
-    options: [
-      "True",
-      "False"
-    ],
+    text: "Optocouplers are generally much slower than electro-mechanical relays in switching applications.",
+    options: ["True", "False"],
     correctIndex: 1,
-    explanation: "The architectural topology of the `PC817` restricts its silicon footprint strictly to a 4-pin Dual In-line format (Anode, Cathode, Emitter, Collector). Larger 6-pin isolator counterparts (like `4N25`) exist primarily to route the internal transistor's raw Base pin externally for customized biasing networks. عائلة الـ PC817 تُصنع دائماً في حزمة ذات 4 أطراف فقط. الآيسيهات ذات الـ 6 أطراف تنتمي لعائلات أخرى."
+    explanation: "العكس تماماً. الأوبتوكابلر يعتمد على الضوء والإلكترونيات (Solid-state) فهو أسرع بكثير جداً من الريلاي الميكانيكي البطيء."
   },
   {
     category: "Lecture 04",
-    text: "A Bipolar Junction Transistor (BJT) is a semiconductor device that consists of ........ alternating layers of P-type and N-type materials.",
-    options: [
-      "3",
-      "2",
-      "4",
-      "5"
-    ],
-    correctIndex: 0,
-    explanation: "Fundamental semiconductor physics dictates the BJT comprises exactly three sequentially doped solid-state junctions forming either an `N-P-N` or `P-N-P` layered sandwich. These three regions mechanically correspond to the Emitter, Base, and Collector terminals respectively. البنية الأساسية للترانزستور ثنائي القطب تتكون من 3 طبقات شبه موصلة متتالية، إما NPN أو PNP."
+    text: "Optocouplers can ONLY be used at the output stage of a microcontroller, not at the input stage.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "يمكن استخدامه في الإدخال (Input) لعزل إشارة قادمة من حساس خارجي، وفي الإخراج (Output) لعزل موتور أو ريلاي."
   },
   {
     category: "Lecture 04",
-    text: "In a typical Relay structure, when current flows through the insulated coil, the generated magnetic field specifically attracts the metal ........ to mechanically switch the contact point.",
-    options: [
-      "Armature",
-      "Stator",
-      "Core",
-      "Commutator"
-    ],
+    text: "If an optocoupler's LED anode is connected to VCC, and its cathode is connected to a microcontroller pin, the LED will turn ON when the pin outputs a Logic ........",
+    options: ["1 (High)", "0 (Low)", "High-Z", "Floating"],
+    correctIndex: 1,
+    explanation: "إذا كان الموجب واصلاً بـ VCC، فلابد أن يعطي المايكرو (0 فولت) للكاثود لكي تكتمل الدائرة (طريقة Sink)."
+  },
+  {
+    category: "Lecture 04",
+    text: "Microcontrollers are generally better at 'sinking' current than 'sourcing' current.",
+    options: ["True", "False"],
     correctIndex: 0,
-    explanation: "Saturating the induction coil magnetizes the fixed ferrous Core, subsequently generating a high-density magnetic flux. This flux exerts a dynamic pull on the kinetic metallic lever mechanism known as the Armature, overpowering its spring retention to bridge the target contacts. المجال المغناطيسي يجذب القطعة المعدنية المتحركة والتي تُعرف علمياً باسم (Armature) لتغيير مسار التوصيل الكهربائي."
+    explanation: "المايكروكنترولر يُفضل دائماً أن يمتص التيار (Sink) لـ Ground بدلاً من إخراجه (Source) من VCC لتجنب حرق أطرافه."
+  },
+  {
+    category: "Lecture 04",
+    text: "The direct electrical connection between the input and output sides of an optocoupler makes it vulnerable to voltage spikes.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "لا يوجد أي اتصال كهربائي (Direct connection) بين الدخل والخرج في الأوبتوكابلر! الاتصال ضوئي فقط (Optical coupling)."
+  },
+  {
+    category: "Lecture 04",
+    text: "In an optocoupler (e.g., PC817), Pin 1 and Pin 2 are connected to the internal Phototransistor.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "الأطراف 1 و 2 متصلة بالـ LED الداخلي، بينما 3 و 4 متصلة بالترانزستور الضوئي (Emitter و Collector)."
+  },
+  {
+    category: "Lecture 04",
+    text: "A relay is an electro-mechanical switch that works based on the principle of ........",
+    options: ["Capacitance", "Electromagnetism", "Piezoelectricity", "Optics"],
+    correctIndex: 1,
+    explanation: "الريلاي يعمل بالمغناطيسية الكهرومغناطيسية. عند مرور تيار في الملف، يتولد مجال مغناطيسي يجذب المفتاح الميكانيكي."
+  },
+  {
+    category: "Lecture 04",
+    text: "The most common standard Relay has exactly ........ pins.",
+    options: ["3", "4", "5", "8"],
+    correctIndex: 2,
+    explanation: "الريلاي القياسي (SPDT) يمتلك 5 أطراف: 2 للملف (Coil) و 3 للمفتاح (Common, NO, NC)."
+  },
+  {
+    category: "Lecture 04",
+    text: "In a relay, the terminal that is connected to the Common terminal when the relay coil is NOT energized is called ........",
+    options: ["Normally Open (NO)", "Normally Closed (NC)", "Coil 1", "Emitter"],
+    correctIndex: 1,
+    explanation: "الـ Normally Closed (NC) هو الطرف الذي يكون متصلاً بالـ Common افتراضياً أثناء راحة الريلاي (دون تيار)."
+  },
+  {
+    category: "Lecture 04",
+    text: "When a voltage is applied to the relay coil, the armature moves and connects the Common terminal to the ........ terminal.",
+    options: ["Normally Closed (NC)", "Normally Open (NO)", "Ground", "Coil 2"],
+    correctIndex: 1,
+    explanation: "عند إثارة الملف (Energized)، تنجذب الإبرة وتفصل عن الـ NC وتتصل بالـ Normally Open (NO)."
+  },
+  {
+    category: "Lecture 04",
+    text: "A major advantage of using a mechanical relay over an optocoupler is that the relay ........",
+    options: ["Switches much faster", "Consumes less power", "Can handle much higher load currents and AC voltages", "Does not suffer from mechanical wear"],
+    correctIndex: 2,
+    explanation: "ميزة الريلاي الميكانيكي أنه يستطيع تشغيل أحمال ثقيلة جداً (مثل مواتير AC وتكييفات) بعكس الأوبتوكابلر الذي يتحمل تيارات ضعيفة."
+  },
+  {
+    category: "Lecture 04",
+    text: "You can safely connect the coil of a 5V relay directly to an output pin of the 8051 microcontroller.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "مستحيل! الـ 8051 يخرج تياراً ضعيفاً جداً (بالملي أمبير) لا يكفي لتشغيل ملف الريلاي، وسيحترق طرف المايكرو. لابد من استخدام ترانزستور (Driver)."
+  },
+  {
+    category: "Lecture 04",
+    text: "One disadvantage of mechanical relays is that they are prone to mechanical wear and tear over time.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "نظراً لوجود أجزاء متحركة داخله (إبرة وسوستة)، فإن عمره الافتراضي أقل ويتلف مع كثرة الاستخدام."
+  },
+  {
+    category: "Lecture 04",
+    text: "If you want a connected lamp to turn ON only when the relay is energized, you should connect it between the power source and the ........ terminal of the relay.",
+    options: ["NC", "NO", "Coil", "VCC"],
+    correctIndex: 1,
+    explanation: "الطرف الـ NO (Normally Open) يكون مفصولاً في البداية، ولا يمرر الكهرباء للمبة إلا عند تفعيل الريلاي."
+  },
+  {
+    category: "Lecture 04",
+    text: "Relays can only be used to switch DC loads, not AC loads.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "الريلاي معزول تماماً من الداخل، ويمكنه تشغيل أحمال دي سي (DC) أو إي سي (AC) مثل لمبات المنازل."
+  },
+  {
+    category: "Lecture 04",
+    text: "The 'Common' terminal in a relay is an input solely meant to power the relay's internal electromagnet.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "المغناطيس يعمل عن طريق طرفي 'الكويل' (Coil). الـ Common هو جزء من المفتاح الميكانيكي ولا علاقة له بتشغيل المغناطيس."
+  },
+  {
+    category: "Lecture 04",
+    text: "To drive a relay using an 8051 microcontroller, a ........ is typically used as a switch to provide the necessary current.",
+    options: ["Resistor", "Capacitor", "Transistor", "Crystal Oscillator"],
+    correctIndex: 2,
+    explanation: "نستخدم ترانزستور (Driver) كعضلة لتكبير تيار المايكرو الضعيف وتشغيل الريلاي."
+  },
+  {
+    category: "Lecture 04",
+    text: "In a transistor-relay driving circuit, a diode is usually placed in parallel with the relay coil. What is the purpose of this diode?",
+    options: ["To convert AC to DC", "To protect the microcontroller from short circuits", "To protect the transistor from the high-voltage back EMF generated by the coil", "To increase the relay switching speed"],
+    correctIndex: 2,
+    explanation: "يسمى هذا الدايود (Freewheeling diode أو Flyback diode). وظيفته حماية الترانزستور من الجهد العكسي المدمر الذي يتولد عند إطفاء الملف."
+  },
+  {
+    category: "Lecture 04",
+    text: "The flyback diode across a relay coil is connected in a ........ biased configuration with respect to the normal power supply.",
+    options: ["Forward", "Reverse", "Zener", "Series"],
+    correctIndex: 1,
+    explanation: "الدايود يُوصل في وضعية الانحياز العكسي (Reverse biased) حتى لا يمرر التيار في الحالة العادية، ويعمل فقط كمسار للتفريغ عند فصل الكهرباء عن الملف."
+  },
+  {
+    category: "Lecture 04",
+    text: "Combining both an Optocoupler and a Relay in the same output circuit is completely redundant and never used.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "دمجهم معاً يوفر أقصى درجات الحماية (Double Isolation). الأوبتوكابلر يعزل المايكرو عن الترانزستور، والريلاي يعزل الدائرة عن جهد الـ 220V."
+  },
+  {
+    category: "Lecture 04",
+    text: "If an optocoupler's phototransistor is used to drive a high-current load directly without a secondary BJT transistor, it may burn out.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "الترانزستور الضوئي داخل الأوبتوكابلر لا يتحمل تيارات عالية. يجب أن يوصل بترانزستور خارجي أكبر لتشغيل أحمال كالريلاي."
+  },
+  {
+    category: "Lecture 04",
+    text: "When an NPN transistor is used to drive a relay, the relay coil is typically connected between the VCC and the ........ of the transistor.",
+    options: ["Base", "Collector", "Emitter", "Ground"],
+    correctIndex: 1,
+    explanation: "في دائرة درايفر الريلاي المعتادة (Common Emitter)، يتم توصيل الحمل (الريلاي) بين الـ VCC والـ Collector."
+  },
+  {
+    category: "Lecture 04",
+    text: "To turn ON a relay driven by an NPN transistor, the 8051 output pin connected to the transistor's base must be driven to Logic 0.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "ترانزستور الـ NPN يحتاج لجهد موجب (Logic 1) على القاعدة (Base) لكي يعمل ويمرر التيار لتشغيل الريلاي."
+  },
+  {
+    category: "Lecture 04",
+    text: "In practical circuits, a resistor is placed between the 8051 pin and the Base of the transistor to ........",
+    options: ["Limit the base current and protect both the MCU and the transistor", "Increase the voltage sent to the transistor", "Act as a pull-down resistor", "Generate a time delay"],
+    correctIndex: 0,
+    explanation: "مقاومة القاعدة (Base Resistor) ضرورية جداً لحماية طرف المايكروكنترولر من سحب تيار عالي، ولحماية الترانزستور من التلف."
+  },
+  {
+    category: "Lecture 04",
+    text: "The 'Relay Module' available in the market usually has the driving transistor and flyback diode built-in.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "الموديول الجاهز يريح المبرمج، حيث يحتوي على الترانزستور، الدايود، وحتى أوبتوكابلر أحياناً، وكل ما تحتاجه هو توصيل إشارة المايكرو مباشرة."
+  },
+  {
+    category: "Lecture 04",
+    text: "Why does Dr. Emad suggest using the 'Sink' configuration (Logic 0 to turn ON) over 'Source' configuration for the optocoupler's LED?",
+    options: ["It creates a brighter light", "The 8051 can sink more current than it can source, making it safer and more stable", "Sinking current is faster", "Sourcing current damages the ROM"],
+    correctIndex: 1,
+    explanation: "بنية أطراف المايكروكنترولر (وخاصة Port 0 الذي هو Open Drain) تجعله قادراً على امتصاص تيار (Sinking) بأمان أكبر من قدرته على إعطاء تيار (Sourcing)."
+  },
+  {
+    category: "Lecture 04",
+    text: "A Push Button configured with a 'Pull-up' resistor will send a Logic ........ to the microcontroller when it is NOT pressed.",
+    options: ["0", "1", "High-Z", "Undefined"],
+    correctIndex: 1,
+    explanation: "دائرة الـ Pull-up تسحب الجهد دائماً للـ VCC (1). وعند ضغط المفتاح يتصل بالأرضي وتصبح الإشارة (0)."
+  },
+  {
+    category: "Lecture 04",
+    text: "In a 'Pull-down' resistor configuration, pressing the button sends a Logic 0 to the microcontroller.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "في دائرة הـ Pull-down العكس هو الصحيح. الجهد الافتراضي هو 0، وعند الضغط تتصل الدائرة بالـ VCC وتُرسل Logic 1."
+  },
+  {
+    category: "Lecture 04",
+    text: "If a switch is connected to P0.0 using a Pull-up configuration, which of the following C conditions checks if the switch is PRESSED?",
+    options: ["if (P0^0 == 1)", "if (P0^0 == 0)", "if (P0^0 == 0xFF)", "if (P0^0 == 0x00)"],
+    correctIndex: 1,
+    explanation: "طالما هي دائرة Pull-up (Active Low)، فإن الضغط على المفتاح سيعطي 0."
+  },
+  {
+    category: "Lecture 04",
+    text: "Before reading the status of an input button connected to a port pin, the programmer MUST initialize that specific pin with a Logic ........",
+    options: ["0", "1", "-1", "Z"],
+    correctIndex: 1,
+    explanation: "تهيئة منفذ الإدخال بـ 1 هو شرط أساسي في 8051 لكي يستطيع قراءة الإشارات الخارجية بشكل صحيح."
+  },
+  {
+    category: "Lecture 04",
+    text: "The 'sbit' declaration is commonly used in C to assign a meaningful name to a specific pin, such as 'sbit RELAY = P2^0;'.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "استخدام الـ sbit يجعل الكود أسهل في القراءة (Readability) بحيث نستخدم اسم المكون بدلاً من رقم البن."
+  },
+  {
+    category: "Lecture 04",
+    text: "If 'sbit LED = P2^7;' and the LED is connected with its Anode to VCC and Cathode to P2.7, writing 'LED = 1;' will turn the LED ON.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "بما أن الأنود متصل بالـ VCC، فيجب أن يكون الكاثود (البن P2.7) مساوياً لـ 0 (Low) لكي تكتمل الدائرة وينير الليد. (طريقة Sink)."
+  },
+  {
+    category: "Lecture 04",
+    text: "In a complete C code to monitor a switch, the 'if' condition checking the switch state is usually placed inside a(n) ........",
+    options: ["Empty for loop", "Infinite while(1) loop", "Interrupt vector", "One-time execution block"],
+    correctIndex: 1,
+    explanation: "يجب وضع فحص الزر داخل حلقة لا نهائية (while(1)) لكي يستمر المايكرو في مراقبة الزر طوال فترة التشغيل."
+  },
+  {
+    category: "Lecture 04",
+    text: "If you want to use Port 0 as an input to read multiple buttons, you must connect external pull-up resistors to it.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "Port 0 من النوع (Open Drain) ولا يحتوي على مقاومات رفع داخلية، لذلك يجب وضعها خارجياً لكي يعمل بشكل سليم."
+  },
+  {
+    category: "Lecture 04",
+    text: "Why do we usually add a 'delay' after toggling a relay state in C code?",
+    options: ["To prevent the microcontroller from crashing", "To allow the mechanical contacts of the relay enough time to physically move and settle", "To save power consumption", "To increase the baud rate"],
+    correctIndex: 1,
+    explanation: "الريلاي الميكانيكي بطيء نسبياً (يستغرق ملي ثواني للحركة)، لذلك التأخير الزمني يضمن استقرار التلامس الميكانيكي قبل اتخاذ أي قرار آخر."
+  },
+  {
+    category: "Lecture 04",
+    text: "When writing C code to interface with hardware components like relays or LEDs, the 'main' function ends with a 'return 0;' to properly close the hardware circuits.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "كما ذكرنا سابقاً، برنامج المايكروكنترولر لا ينتهي أبداً (يدور في while(1))، ولا يوجد عائد لنظام تشغيل لكي نكتب return 0."
   }
 ];

@@ -1,177 +1,352 @@
 const lec03Data = [
   {
     category: "Lecture 03",
-    text: "........ is the default data type used by 8051 C compilers when no keyword is specified.",
-    options: ["unsigned char", "signed char", "signed int", "unsigned int"],
-    correctIndex: 1,
-    explanation: "In C compilers targeting the 8051 architecture, the default 8-bit integer type is `signed char` when the sign qualifier is omitted. This utilizes Two's Complement representation, allocating 1 bit for the sign and 7 bits for the magnitude. في المترجمات المخصصة للأنظمة المدمجة، يتم افتراض الإشارة (signed) كقيمة افتراضية لمتغيرات الحجم الصغير (8-bit) ما لم يُنص صراحة على `unsigned`."
-  },
-  {
-    category: "Lecture 03",
-    text: "True or False: Writing programs in C is generally more time consuming than writing in Assembly, but results in a smaller hex file size.",
+    text: "Writing programs in C for the 8051 is generally more time-consuming than writing in Assembly.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "High-level languages like C abstract the underlying hardware architecture, significantly accelerating the development cycle (Less time-consuming) due to modularity and standard libraries. However, compiled C code yields a larger memory footprint (Hex file size) compared to manually optimized Assembly code, due to the overhead introduced by compiler branching and variable management. تتميز لغة C بسرعة التطوير على حساب حجم الكود النهائي مقارنة بـ Assembly."
+    explanation: "لغة الـ C أسهل وأسرع بكثير في الكتابة من لغة الـ Assembly (Less time consuming)."
   },
   {
     category: "Lecture 03",
-    text: "The ........ data type allows access to single bits of bit-addressable RAM memory spaces, whereas `sbit` is used strictly for SFR registers.",
-    options: ["sbit", "bit", "sfr", "char"],
+    text: "One disadvantage of using C programming over Assembly is that C produces a ........",
+    options: ["Slower CPU clock speed", "Larger hex file size", "Smaller hex file size", "Non-portable code"],
     correctIndex: 1,
-    explanation: "The 8051 architecture utilizes a partitioned memory map where the bit-addressable RAM resides in the region `20H - 2FH`. The `bit` data type allocates a single boolean bit in this specific RAM space. Conversely, `sbit` is mapped directly to the Special Function Register (SFR) space, allowing hardware-level pin manipulation. يوفر `bit` مساحة تخزينية في الذاكرة العشوائية للبتات، بينما `sbit` يتعامل مباشرة مع مسجلات النظام."
+    explanation: "من أهم عيوب لغة الـ C أن حجم ملف الـ Hex الناتج يكون أكبر وأقل تحسيناً مقارنة بالكتابة المباشرة بالـ Assembly."
   },
   {
     category: "Lecture 03",
-    text: "For the 8051 microcontroller, the `sfr` data type represents 8-bit RAM addresses strictly in the range of ........",
-    options: ["00 - 7FH", "80 - FFH", "20 - 2FH", "00 - FFH"],
-    correctIndex: 1,
-    explanation: "In the 8051 memory hierarchy, the upper 128 bytes of the internal RAM address space (`80H` to `FFH`) are exclusively reserved for Special Function Registers (SFRs), such as Acc, B, PSW, and I/O port latches. The `sfr` data type acts as an absolute pointer to these hardware registers. مساحات الـ SFR تبدأ من 80H حتى FFH وتستخدم للتحكم المباشر في الطرفيات."
-  },
-  {
-    category: "Lecture 03",
-    text: "The size of an `unsigned int` in 8051 C is 16 bits, which allows it to take a value from 0 to ........",
-    options: ["65536", "32767", "65535", "32768"],
-    correctIndex: 2,
-    explanation: "An `unsigned int` allocates 16 contiguous bits (2 bytes) in memory. The maximum absolute scalar value it can store is calculated by the exponential formula 2^n - 1, where n = 16. Thus, 2^16 - 1 = 65,535. This spans the complete 16-bit computational range without dedicating the MSB to a sign flag. بحساب المعادلة الرياضية للقيم غير المؤشرة، القيمة القصوى هي 65535 وليست 65536."
-  },
-  {
-    category: "Lecture 03",
-    text: "Which of the following is the correct syntax trap to include the 8051 header file in a C program?",
-    options: ["#include <8051.h>", "#include <reg51.h>", "#include <mcu51.h>", "#include <at89c51.h>"],
-    correctIndex: 1,
-    explanation: "The standard Keil/C51 directive requires `#include <reg51.h>` to link the pre-defined macro definitions of all native 8051 Special Function Registers. This header exposes the address mappings of hardware interfaces like `P0`, `TMOD`, and `SCON` to the C compiler space. هذا الملف ضروري لتعريف العناوين الفيزيائية لمسجلات الميكروكنترولر الأساسية 8051."
-  },
-  {
-    category: "Lecture 03",
-    text: "True or False: The `sbit` keyword allows access to the single bits of the bit-addressable RAM memory spaces 20 – 2FH.",
+    text: "C code written for the 8051 is completely non-portable to other microcontrollers.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "The keyword `sbit` is intrinsically bound to the Special Function Registers (SFRs) region (addresses `80H - FFH`), not the internal bit-addressable general-purpose RAM (`20H - 2FH`). To allocate a Boolean flag in the RAM bit-addressable sector, the standard `bit` keyword must be implemented instead. الكلمة المحجوزة `sbit` مصممة حصريًا لمسجلات النظام، في حين تستخدم `bit` للذاكرة العشوائية."
+    explanation: "ميزة لغة الـ C هي الـ Portability، حيث يمكن نقل الكود لمتحكم آخر بتعديلات بسيطة جداً أو بدون تعديل."
   },
   {
     category: "Lecture 03",
-    text: "The MSB ........ is used to represent the sign (- or +) in an 8-bit signed char data type.",
-    options: ["D0", "D7", "D8", "D15"],
+    text: "In Keil C compiler for 8051, what is the default behavior if you define a variable simply as 'char' without specifying signed or unsigned?",
+    options: ["It defaults to unsigned char", "It defaults to signed char", "It causes a compilation error", "It defaults to int"],
     correctIndex: 1,
-    explanation: "In an 8-bit structural array representing a `signed char`, the bits are indexed from `D0` (Least Significant Bit, LSB) to `D7` (Most Significant Bit, MSB). In Two's Complement architecture, the `D7` bit serves dual functionality: strictly representing the sign (0 for positive, 1 for negative) and contributing to the signed magnitude calculation. البت الأخير (D7) في بنية الـ 8 بت هو المسؤول عن إشارة الرقم."
+    explanation: "تريكة امتحانات! المترجم (Compiler) يعتبر الـ char تلقائياً signed (موجب وسالب) إذا لم تكتب كلمة unsigned صراحة."
   },
   {
     category: "Lecture 03",
-    text: "In 8051 C, the `signed int` uses exactly ........ bits for the magnitude of the number, excluding the sign bit.",
-    options: ["16", "15", "8", "7"],
+    text: "The 'unsigned char' data type is an 8-bit variable that can hold values from ........",
+    options: ["-128 to +127", "0 to 255", "0 to 65535", "-32768 to +32767"],
     correctIndex: 1,
-    explanation: "A standard `signed int` in 8051 compiling requires 16 bits. According to Two's Complement logic, the MSB (`D15`) acts as the sign determinant, leaving precisely 15 bits for evaluating the absolute numerical magnitude. This bounds the variable range precisely to [-32768, +32767]. يتم تخصيص 15 بت فقط لتمثيل قيمة الرقم، بينما يُحجز البت الأخير للإشارة."
+    explanation: "الـ unsigned (بدون إشارة) يحمل أرقاماً موجبة فقط. لـ 8 بت، المدى من 0 إلى 255."
   },
   {
     category: "Lecture 03",
-    text: "True or False: Ports P0 – P3 are bit-accessible but they are never byte-accessible.",
+    text: "The 'signed char' data type uses the ........ to represent the sign of the number (- or +).",
+    options: ["LSB D0", "MSB D7", "MSB D15", "Carry Flag"],
+    correctIndex: 1,
+    explanation: "في المتغير 8-bit، البت الأخير من اليسار (D7) يُحجز كإشارة (Sign bit)."
+  },
+  {
+    category: "Lecture 03",
+    text: "The 'unsigned int' data type is a 16-bit variable that takes a value in the range of 0 to 65535.",
     options: ["True", "False"],
-    correctIndex: 1,
-    explanation: "The 8051 General Purpose I/O architecture defines Ports P0 through P3 as both bit-addressable AND byte-addressable. By referencing `P0`, one can synchronously write to all 8 hardware latches concurrently. Referencing an independent bit (e.g., `P0^0`) isolates single-pin operations. المسجلات الخاصة بالمنافذ تدعم القراءة والكتابة على مستوى البت (Bit) ومستوى البايت (Byte) معاً."
-  },
-  {
-    category: "Lecture 03",
-    text: "When burning code into the 8052 microcontroller, the ........ file must be uploaded to the programmer.",
-    options: ["C source code", "Executable image", "HEX file", "Disassembled Code"],
-    correctIndex: 2,
-    explanation: "Microcontrollers execute machine-level instruction sets. The Intel HEX file is an industry-standard ASCII format containing the absolute hexadecimal machine codes and mapping addresses required by the ROM programmer to burn the binary states into the microcontroller's Non-Volatile Flash memory. المبرمجة تتطلب ملف الـ HEX لأنه يحتوي على تعليمات الآلة مرتبة مع عناوين الذاكرة."
-  },
-  {
-    category: "Lecture 03",
-    text: "During the code building process, which tool specifically takes Object files (.o) and a Linker script (.ld) to produce an Executable image file?",
-    options: ["gcc compiler", "as (assembler)", "ld (linker)", "objcopy utility"],
-    correctIndex: 2,
-    explanation: "The linking stage involves the `ld` (linker) resolving internal and external symbol references across multiple compiled Relocatable Object modules (`.o`). Utilizing a linker script (`.ld`), it maps text, data, and bss sections into an absolute Executable Linkable Format (ELF) or image file. الرابط (Linker) هو المسؤول عن دمج ملفات الكائنات وحل العناوين لإنشاء الملف التنفيذي."
-  },
-  {
-    category: "Lecture 03",
-    text: "The numerical value range for a `(signed) char` in 8051 C programming is from ........",
-    options: ["-128 to +127", "-127 to +128", "0 to 255", "-32768 to +32767"],
     correctIndex: 0,
-    explanation: "In an 8-bit Two's Complement numerical space, the absolute span is computed as [-2^(n-1), +2^(n-1) - 1]. For n=8, this definitively maps to the asymmetric range of -128 up to +127. The asymmetry originates because zero is universally registered with a positive sign flag. بسبب وجود الصفر كقيمة موجبة، النطاق يكون غير متماثل وينتهي عند +127."
+    explanation: "الـ unsigned int حجمه 16 بت، وبالتالي 2 أس 16 = 65,536 (من 0 لـ 65535)."
   },
   {
     category: "Lecture 03",
-    text: "To declare a single bit of Port 1 (P1.0) in C, which of the following is the exact syntax used?",
-    options: ["sfr MYBIT = 0x90;", "bit MYBIT = P1_0;", "sbit MYBIT = P1^0;", "#define MYBIT P1.0"],
-    correctIndex: 2,
-    explanation: "The Keil C51 dialect strictly dictates the `sbit` construct coupled with the XOR-like caret symbol (`^`) to mask and reference a distinct pin on an SFR. The declaration `sbit MYBIT = P1^0;` calculates the absolute bit address internally by displacing 0 bits from the base byte address of `P1`. الصيغة القياسية في مترجم Keil تتطلب استخدام `^` للوصول إلى البت المطلوب."
-  },
-  {
-    category: "Lecture 03",
-    text: "True or False: The gcc compiler performs ONLY the link stage to output an Executable image file.",
-    options: ["True", "False"],
-    correctIndex: 1,
-    explanation: "The `gcc` (GNU Compiler Collection) driver acts as an orchestration toolchain manager. It sequentially invokes the preprocessor (`cpp`), compiler (`cc1`), assembler (`as`), and finally the linker (`ld`). Therefore, it handles the complete translation pipeline, not solely the final linking stage. المترجم GCC عبارة عن سلسلة أدوات تقوم بجميع مراحل الترجمة والربط."
-  },
-  {
-    category: "Lecture 03",
-    text: "In a C program, writing `P0=0xFF;` configures Port 0 to act as a(n) ........ port.",
-    options: ["Output", "Input", "Bidirectional", "Analog"],
-    correctIndex: 1,
-    explanation: "In the pseudo-bidirectional 8051 I/O architecture, driving a logic HIGH (`0xFF`) into the internal D-latch deactivates the strong pull-down MOSFETs. This floating state allows external peripheral signals to cleanly drive the pin, logically configuring it as a high-impedance generic Input. لكتابة 1 (High) على أطراف المنفذ يتم إيقاف ترانزستور الإخراج الداخلي، مما يهيئ المنفذ ليكون مدخلاً."
-  },
-  {
-    category: "Lecture 03",
-    text: "To represent the sign in a 16-bit `signed int`, the MSB ........ is utilized.",
-    options: ["D7", "D8", "D15", "D16"],
-    correctIndex: 2,
-    explanation: "A 16-bit variable spans memory elements indexed linearly from `D0` (zeroth bit) up to `D15`. The terminal bit, `D15`, is dedicated as the Most Significant Bit (MSB), dictating the two's complement sign matrix. Index `D16` represents a non-existent 17th bit in this fixed data width. الفهرسة تبدأ من الصفر (D0)، ولذلك يكون البت الأخير في نظام 16-بت هو D15."
-  },
-  {
-    category: "Lecture 03",
-    text: "True or False: A major disadvantage of C code is that it is highly non-portable to other microcontrollers.",
-    options: ["True", "False"],
-    correctIndex: 1,
-    explanation: "A fundamental tenet of standard ANSI C is hardware abstraction. While direct SFR mappings are architecture-dependent, the vast algorithmic logic, control flows, and standard libraries can be seamlessly cross-compiled across radically distinct processor ISAs with minimal porting effort. لغة C تتميز بقابلية النقل العالية (High Portability) بين المعالجات المختلفة مقارنة بلغة التجميع."
-  },
-  {
-    category: "Lecture 03",
-    text: "The array declaration `char mynum[]={+1,-1,+2,-2};` implicitly allocates an array of type ........",
+    text: "If you need a loop counter to count exactly 50,000 times, which data type is the most memory-efficient choice that will work correctly?",
     options: ["unsigned char", "signed char", "unsigned int", "signed int"],
-    correctIndex: 1,
-    explanation: "By ANSI C compiler heuristics for the 8051 architecture, a basic `char` type is implicitly processed as `signed char`. Given the negative integer literals in the initialization list, allocating `signed char` safely encodes the required two's complement payloads in individual 8-bit memory cells. بدون استخدام الكلمة `unsigned`، يفترض المترجم بشكل افتراضي أن المتغير هو `signed char`."
-  },
-  {
-    category: "Lecture 03",
-    text: "During the firmware building process, the tool ........ produces the Disassembled Code (.lst) from the Executable image file.",
-    options: ["objcopy", "gcc", "objdump", "ld"],
     correctIndex: 2,
-    explanation: "The `objdump` utility systematically parses the finalized Executable Linkable Format (ELF) file, decoding the machine-level opcodes back into human-readable mnemonic instructions. This reverse-engineering process yields the `.lst` (Disassembled Code), vital for profiling instruction timings and deep hardware-level debugging. أداة `objdump` تقوم بعملية الهندسة العكسية لتحويل الملف التنفيذي إلى كود مقروء."
+    explanation: "الـ char آخره 255 ولا يصلح. الـ signed int آخره 32767. الـ unsigned int يصل إلى 65535 وهو الوحيد المناسب لـ 50,000."
   },
   {
     category: "Lecture 03",
-    text: "What is the primary function of `objcopy` during the code building process?",
-    options: ["It links Object files", "It produces the Binary program file", "It compiles C files", "It assembles ASM files"],
+    text: "The data type used to access a single bit inside the bit-addressable RAM (20H-2FH) or SFRs is called ........",
+    options: ["bit", "sbit", "sfr", "Both a and b"],
+    correctIndex: 3,
+    explanation: "يُمكن استخدام 'bit' للمتغيرات العادية في الذاكرة، و 'sbit' للإشارة لأطراف معينة كبتات (مثل P1^0)."
+  },
+  {
+    category: "Lecture 03",
+    text: "The 'sfr' data type is used to access byte-size special function registers (like P1, P2, TMOD).",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "الكلمة المحجوزة sfr تُستخدم لتعريف عنوان مسجل كامل (بايت 8 بت) ضمن مساحة الـ SFRs (من 80H لـ FFH)."
+  },
+  {
+    category: "Lecture 03",
+    text: "To avoid writing the memory addresses of standard SFRs manually, you should include the header file ........ at the beginning of your C code.",
+    options: ["", "", "", ""],
+    correctIndex: 2,
+    explanation: "ملف  أو  يحتوي على تعريفات جميع المسجلات الأساسية للـ 8051."
+  },
+  {
+    category: "Lecture 03",
+    text: "In Keil C compiler, how do you correctly assign a specific pin like Pin 2 of Port 1 to a variable named 'LED'?",
+    options: ["sbit LED = P1.2;", "sbit LED = P1^2;", "sfr LED = P1[2];", "bit LED = P1-2;"],
     correctIndex: 1,
-    explanation: "The `objcopy` utility translates and extracts the precise raw code execution payloads from a complex ELF image, stripping out extensive debug symbols and linker metadata. It produces the minimalist flat Binary (`.bin`) or Intel HEX `.hex` files necessary for Flash memory programming. الأداة `objcopy` مسؤولة عن استخراج الكود الثنائي (Binary) النقي الذي سيتم حرقه مباشرة على الرقاقة."
+    explanation: "تريكة قوية نبه عليها الدكتور! في لغة الـ C لا نستخدم النقطة (P1.2)، بل نستخدم رمز الـ XOR (^)، فتُكتب P1^2."
   },
   {
     category: "Lecture 03",
-    text: "True or False: The `bit` data type can be freely used to access the byte-size SFR registers.",
+    text: "In 8051, if you want to use a port (e.g., Port 1) as an INPUT port, you should initialize it by writing ........ to it.",
+    options: ["0x00", "0xFF", "0x55", "0xAA"],
+    correctIndex: 1,
+    explanation: "لجعل البورت يعمل كـ Input ليستقبل إشارات، يجب تهيئته بكتابة وحايد (Logic 1) على أطرافه."
+  },
+  {
+    category: "Lecture 03",
+    text: "Initializing an output port with 0xFF is a standard practice before sending data to it.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "The `bit` type allocates exactly one binary state within the Internal RAM space (`20H-2FH`). It lacks the pointer magnitude to map byte-wide absolute addresses in the hardware-dependent `80H-FFH` memory domain. Hardware byte-size registers universally mandate the `sfr` keyword for proper compiler addressing. الكلمة المحجوزة `bit` تتعامل مع الذاكرة العشوائية فقط ولا تستطيع قراءة مسجلات الـ SFR."
+    explanation: "بورت الإخراج (Output) نُهيئه بـ 0x00 في البداية حتى لا يعمل الليد أو الجهاز الموصل عليه عشوائياً."
   },
   {
     category: "Lecture 03",
-    text: "In the Keil IDE, when configuring the output for an 8051 project, the exact HEX Format selected to create the hex file is ........",
-    options: ["HEX-80", "HEX-86", "HEX-386", "HEX-51"],
+    text: "A simple way to create a software delay in C is to use an empty ........ loop.",
+    options: ["if", "switch", "for", "return"],
+    correctIndex: 2,
+    explanation: "وضع حلقة for فارغة بدون تعليمات بداخلها يؤدي إلى تضييع دورات المعالج لخلق تأخير زمني."
+  },
+  {
+    category: "Lecture 03",
+    text: "If you want to toggle a bit named 'LED' continuously, the correct C expression inside a while(1) loop is ........",
+    options: ["LED = 1;", "LED = 0;", "LED = ~LED;", "LED = LED + 1;"],
+    correctIndex: 2,
+    explanation: "علامة الـ Tilde (~) تعكس قيمة البت (من 1 إلى 0 والعكس)."
+  },
+  {
+    category: "Lecture 03",
+    text: "When defining an array in C for the 8051, if the data is constant (e.g., a lookup table) and won't change during runtime, it is better to store it in ........ to save RAM.",
+    options: ["R0-R7", "ROM", "Accumulator", "Stack"],
+    correctIndex: 1,
+    explanation: "الثوابت يجب أن توضع في الـ ROM (أو Code memory) لأن الـ RAM صغيرة جداً (128 بايت فقط)."
+  },
+  {
+    category: "Lecture 03",
+    text: "In the software building process, which tool is responsible for translating Assembly language code into an Object file?",
+    options: ["Compiler", "Assembler", "Linker", "Programmer"],
+    correctIndex: 1,
+    explanation: "الأسمبلر (Assembler) هو المترجم المخصص لتحويل لغة التجميع إلى لغة الآلة (Object file)."
+  },
+  {
+    category: "Lecture 03",
+    text: "The Compiler is a tool that takes C source code and produces an Object file (sometimes via an assembly file first).",
+    options: ["True", "False"],
     correctIndex: 0,
-    explanation: "For standard legacy 8051 derivatives, Keil enforces the 'HEX-80' formatting standard in the Output target configuration. This dictates the 16-bit address offsets and structured checksum validations specific to the Intel Hex-80 layout optimized for 8-bit firmware addressing sizes. الصيغة المحددة في إعدادات Keil لإنشاء ملفات معالجات 8051 هي HEX-80 لضمان توافق العناوين."
+    explanation: "المترجم (Compiler) يأخذ الـ High-level code ويحوله إلى مستوى أدنى حتى يصل لـ Object file."
   },
   {
     category: "Lecture 03",
-    text: "........ is the specific Xtal (MHz) value correctly configured in the Keil project options for the AT89S52 microcontroller example.",
-    options: ["11.0592", "12.0000", "16.0000", "8.0000"],
+    text: "The tool that collects multiple Object files and library files together and assigns absolute memory addresses to them is called the ........",
+    options: ["Compiler", "Assembler", "Linker", "Simulator"],
+    correctIndex: 2,
+    explanation: "اللينكر (Linker) هو الذي يجمع كل الملفات والمكتبات ويربطها معاً لينتج ملفاً نهائياً قابلاً للتنفيذ (Executable)."
+  },
+  {
+    category: "Lecture 03",
+    text: "A Linker Script (.ld or .sct) is used to tell the Linker about the boundaries and layout of the microcontroller's Memory (RAM and ROM).",
+    options: ["True", "False"],
     correctIndex: 0,
-    explanation: "The 11.0592 MHz crystal oscillator provides a precise divisor metric essential for generating standard serial UART baud rates (e.g., 9600 bps) without clock skew. 11.0592 divides evenly into standard UART timing multiples, avoiding synchronization errors present when using round numbers like 12.0000 MHz. قيمة 11.0592 ميجاهرتز تُعد مثالية لتقسيم التردد وتوليد معدلات نقل البيانات بدقة."
+    explanation: "سكريبت اللينكر هو الذي يُفهم اللينكر أين يضع الكود (ROM) وأين يضع المتغيرات (RAM) بناءً على مساحات الذاكرة."
   },
   {
     category: "Lecture 03",
-    text: "True or False: The Hex File is transferred directly from the Text Editor to the Monitor ROM via a Serial Cable.",
+    text: "The term 'Load View' refers to how the data and code are distributed in the ........ before the program runs.",
+    options: ["RAM", "Cache", "CPU Registers", "ROM (Flash)"],
+    correctIndex: 3,
+    explanation: "الـ Load View (شكل التحميل) يعبر عن الكود وهو محروق في الـ ROM. بينما الـ Run View يظهر عندما تُنسخ المتغيرات للـ RAM أثناء التشغيل."
+  },
+  {
+    category: "Lecture 03",
+    text: "Variables that can change during program execution are typically stored in the ROM to save space.",
     options: ["True", "False"],
     correctIndex: 1,
-    explanation: "A raw Text Editor provides only ASCII character manipulation. The translation of human-readable C code into an Intel Hex machine file necessitates the Compiler and Linker toolchain. Furthermore, transferring the HEX file requires specialized burning software interfacing with a Hardware Programmer or Terminal Emulator to flash the target memory. الكود المصدري يمر بعدة مراحل قبل أن يصل إلى مرحلة الحرق باستخدام مبرمجة خارجية."
+    explanation: "المتغيرات التي تتغير قيمتها (Variables) يجب أن تُحمل للـ RAM (Run View) أثناء التشغيل، لأن الـ ROM للقراءة فقط."
+  },
+  {
+    category: "Lecture 03",
+    text: "Which tool converts the Absolute Object File into the final HEX file that will be burned into the microcontroller?",
+    options: ["Linker", "Object to Hex Converter (e.g. OH51)", "Assembler", "Simulator"],
+    correctIndex: 1,
+    explanation: "بعد الانتهاء من دور اللينكر، نحتاج لبرنامج يحول صيغة الـ Object إلى صيغة Intel HEX القياسية للحرق."
+  },
+  {
+    category: "Lecture 03",
+    text: "The '.lst' (List) file generated during the build process is primarily used for ........",
+    options: ["Burning to the microcontroller", "Linking libraries", "Defining memory boundaries", "Debugging by showing C code alongside the generated Assembly code"],
+    correctIndex: 3,
+    explanation: "ملف الـ List لا يُحرق، بل يستخدمه المبرمج للمراجعة والـ Debugging ليرى كيف تم ترجمة الكود الخاص به لـ Assembly."
+  },
+  {
+    category: "Lecture 03",
+    text: "To program (burn) the hex file into an AT89S52 microcontroller, you need both Software (like an uploader program) and Hardware (a Programmer/Burner).",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "عملية الحرق (Burn/Download) تتطلب برنامجاً على الكمبيوتر (السوفتوير) ودائرة هاردوير تنقل البيانات للمتحكم."
+  },
+  {
+    category: "Lecture 03",
+    text: "In the part number AT89S52, the letter 'S' indicates that the microcontroller ........",
+    options: ["Is extremely Small", "Supports SPI Serial downloading (In-System Programming)", "Is completely Static", "Has a Secure memory module"],
+    correctIndex: 1,
+    explanation: "حرف S يرمز لدعم الشريحة لبرمجتها عبر الـ Serial (SPI) مباشرة دون الحاجة لفكها ووضعها في مبرمجة توازي (Parallel Programmer)."
+  },
+  {
+    category: "Lecture 03",
+    text: "An Arduino board can be used as an SPI hardware programmer to burn hex files into the AT89S52 microcontroller.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "نعم، لامتلاك الأردوينو لأطراف الـ SPI (MOSI, MISO, SCK)، يمكن استخدامه كمبرمجة لنقل ملف الـ Hex."
+  },
+  {
+    category: "Lecture 03",
+    text: "In Keil software, to ensure a HEX file is generated upon compiling, you must enable the 'Create HEX File' option in the ........ tab of the Options for Target menu.",
+    options: ["Target", "Output", "C51", "Debug"],
+    correctIndex: 1,
+    explanation: "خيار (Create HEX File) يتواجد تحديداً في شريط الـ Output."
+  },
+  {
+    category: "Lecture 03",
+    text: "In Keil software, the operating frequency of the microcontroller (Crystal oscillator) is specified in the ........ tab.",
+    options: ["Target", "Output", "C51", "Listing"],
+    correctIndex: 0,
+    explanation: "تردد الكريستالة (Xtal) يُكتب في شريط الـ Target (مثلاً 11.0592 أو 12 MHz)."
+  },
+  {
+    category: "Lecture 03",
+    text: "Pressing 'Build Target' (or F7) in Keil will only check for syntax errors and will never generate the hex file even if configured.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "أمر Build Target يقوم بالترجمة، والربط، وتوليد ملف الـ Hex إذا كان خيار 'Create HEX File' مفعلاً."
+  },
+  {
+    category: "Lecture 03",
+    text: "A syntax error, such as a missing semicolon (;) in a C program, will be detected by the ........",
+    options: ["Linker", "Object to Hex converter", "Compiler", "Programmer hardware"],
+    correctIndex: 2,
+    explanation: "المترجم (Compiler) هو الذي يحلل قواعد اللغة (Syntax) ويرفض إكمال العملية إذا وجد خطأ."
+  },
+  {
+    category: "Lecture 03",
+    text: "In C, prefixing a number with '0x' indicates that the number is in ........ format.",
+    options: ["Binary", "Decimal", "Hexadecimal", "Octal"],
+    correctIndex: 2,
+    explanation: "0x تستخدم لتعريف الأرقام بالنظام السداسي عشر (Hexadecimal)، مثال: 0xFF."
+  },
+  {
+    category: "Lecture 03",
+    text: "If you write 'P1 = 0xAA;', what is the binary equivalent pattern that will appear on the pins of Port 1?",
+    options: ["00000000", "11111111", "10101010", "01010101"],
+    correctIndex: 2,
+    explanation: "الحرف A في السداسي عشر يساوي 10 (أي 1010 ثنائي)، وبالتالي AA تساوي 10101010."
+  },
+  {
+    category: "Lecture 03",
+    text: "A logic '1' applied to an I/O pin corresponds to 0V, and a logic '0' corresponds to +5V.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "منطق 1 يعني 5 فولت (High)، ومنطق 0 يعني 0 فولت (Low)."
+  },
+  {
+    category: "Lecture 03",
+    text: "If a program requires defining a bit variable to store the state of a push-button (0 or 1), the most efficient data type in Keil is 'unsigned char'.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "الـ unsigned char يحجز بايت كامل (8 بت)، بينما استخدام 'bit' أو 'sbit' يحجز (1 بت) فقط وهو الأوفر والأصح للمفتاح."
+  },
+  {
+    category: "Lecture 03",
+    text: "Which of the following commands correctly turns OFF the LED connected to Pin 0 of Port 2 (assuming the LED turns ON with Logic 1)?",
+    options: ["P2^0 = 1;", "P2^0 = 0;", "P2.0 = 0;", "P2 = 0x01;"],
+    correctIndex: 1,
+    explanation: "نعطي البت P2^0 منطق 0 (Low) ليتم إطفاؤه. (P2.0 خاطئة برمجياً في Keil)."
+  },
+  {
+    category: "Lecture 03",
+    text: "The standard 8051 allows you to declare exactly 256 individual 'bit' variables in its bit-addressable memory space.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "تريكة أرقام! مساحة الـ Bit-addressable هي 16 بايت، 16 × 8 = 128 بت فقط. وليس 256."
+  },
+  {
+    category: "Lecture 03",
+    text: "Why do we often use 'unsigned' data types in microcontroller programming instead of 'signed' ones when reading from sensors or ports?",
+    options: ["It makes the code execute faster", "Because real-world analog readings and digital port statuses are never negative", "It saves RAM space", "Signed numbers cannot be handled by the 8051"],
+    correctIndex: 1,
+    explanation: "قراءات البورتات (مثلاً بورت 8 بت قيمته بين 0 و 255) لا تحتمل أرقاماً سالبة، استخدام الـ signed سيقسم المدى من -128 إلى 127 وهو غير مناسب لقراءة بورت."
+  },
+  {
+    category: "Lecture 03",
+    text: "Writing 'P3 = P1;' in C will read the data from Port 1 and output it directly to Port 3.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "هذه عملية نسخ بسيطة وفعالة جداً؛ المترجم سيحولها إلى تعليمة نقل مباشرة تقرأ من P1 وتكتب في P3."
+  },
+  {
+    category: "Lecture 03",
+    text: "In C, the condition 'if (P1 == 0x00)' means ........",
+    options: ["Check if all pins of Port 1 are High", "Assign the value 0x00 to Port 1", "Check if all pins of Port 1 are Low", "Check if any single pin of Port 1 is Low"],
+    correctIndex: 2,
+    explanation: "علامة الـ == هي عملية مقارنة منطقية تتحقق مما إذا كانت قيمة بورت 1 بالكامل تساوي صفراً (All Low)."
+  },
+  {
+    category: "Lecture 03",
+    text: "The code 'while (1) { P0 = ~P0; }' will continuously toggle all pins of Port 0 at maximum speed.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "نعم، while(1) تجعل الحلقة لا نهائية، و ~P0 تعكس جميع البتات بأقصى سرعة يسمح بها المعالج."
+  },
+  {
+    category: "Lecture 03",
+    text: "During the execution of a typical C program on an 8051, the Linker resolves unresolved external references between multiple C files.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "هذه هي وظيفة اللينكر الأساسية؛ ربط الفايلات ببعضها ومعرفة عناوين الدوال المشتركة بينها."
+  },
+  {
+    category: "Lecture 03",
+    text: "In C programming for microcontrollers, the 'main()' function must eventually return a value of 0 to exit back to the operating system.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "في أنظمة المتحكمات الدقيقة (Embedded Systems) لا يوجد 'نظام تشغيل' نعود إليه! الميكروكنترولر يعمل في حلقة لا نهائية (while(1)) ولا يتوقف أبداً، ودالة main لا تـُنهي عملها."
+  },
+  {
+    category: "Lecture 03",
+    text: "To include a user-defined header file in C (instead of a standard library file), you should enclose the filename in ........",
+    options: ["Angle brackets < >", "Curly braces { }", "Double quotes \" \"", "Parentheses ( )"],
+    correctIndex: 2,
+    explanation: "الملفات القياسية مثل  تكتب بين أقواس الزاوية، أما ملفاتك الشخصية مثل \"my_delay.h\" تكتب بين علامتي تنصيص."
+  },
+  {
+    category: "Lecture 03",
+    text: "If you compile a C code for the 8051 and the generated Hex file is exactly 5 KB, you can successfully burn and run it on a standard AT89C51.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "تريكة قوية! الـ AT89C51 يمتلك 4KB من الـ ROM فقط. 5KB تعني أنك تجاوزت الذاكرة المتاحة ولن يقبله."
+  },
+  {
+    category: "Lecture 03",
+    text: "The 'sbit' declaration cannot be used to declare a variable inside a local function; it must be global.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "في لغة C للمتحكمات، تعريفات الأطراف باستخدام sbit تُكتب في أعلى البرنامج (Global) ولا تُعرّف كمتغيرات محلية داخل الدوال."
+  },
+  {
+    category: "Lecture 03",
+    text: "The Hex file (.hex) generated by Keil is basically a plain text file containing hexadecimal characters.",
+    options: ["True", "False"],
+    correctIndex: 0,
+    explanation: "نعم، ملف الـ Hex (Intel HEX) هو ملف نصي عادي (Text file) يمكنك فتحه بالـ Notepad، وكل سطر فيه يحتوي على عناوين وبيانات مكتوبة بأحرف سداسية عشرية."
+  },
+  {
+    category: "Lecture 03",
+    text: "Which C operator is used for 'bit-wise AND' operation, which is very useful for masking specific bits in a port?",
+    options: ["&&", "&", "|", "%"],
+    correctIndex: 1,
+    explanation: "الـ Single ampersand (&) هي دالة الـ Bit-wise AND. أما (&&) فهي اللوجيك (Logical AND)."
+  },
+  {
+    category: "Lecture 03",
+    text: "If the reset capacitor in the microcontroller's hardware circuit is missing, the software generated by Keil will fail to compile.",
+    options: ["True", "False"],
+    correctIndex: 1,
+    explanation: "الكومبايلر (السوفتوير) لا علاقة له إطلاقاً بالهاردوير الخارجي أثناء الترجمة! سيتم التجميع بنجاح، لكن الدائرة لن تعمل عملياً لغياب الريسيت."
   }
 ];
