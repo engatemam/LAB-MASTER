@@ -32,3 +32,4 @@ const notesLec06 = [
     "conceptOverview": "<div style=\"background-color: #331515; border-right: 5px solid #cf6679; padding: 20px; margin: 20px 0; border-radius: 8px;\">\n    <strong style=\"color: #cf6679; display: block; margin-bottom: 10px;\">تنبيه هام:</strong>\n    <ul style=\"margin: 0;\">\n        <li><strong>فخ الـ Start / Stop bits:</strong> الـ Start bit دائمًا <strong>Low (0)</strong> والـ Stop bit دائمًا <strong>High (1)</strong>. يكثر عكسهما في أسئلة الصح والخطأ.</li>\n        <li><strong>مسح الأعلام (Flags):</strong> الميكروكنترولر 8051 <strong>لا يصفر أعلام TI و RI تلقائياً</strong>. يجب على المبرمج تصفيرهم في الكود (وهو سؤال شائع عن الـ Hardware vs Software clearing).</li>\n    </ul>\n</div>"
   }
 ];
+

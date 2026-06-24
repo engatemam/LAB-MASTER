@@ -45,7 +45,8 @@ const notesLec01 = [
     "mermaidCode": "graph LR;\n  A[\"SN74LS00 Part Number Structure\"] --> B[\"SN: Manufacturer\"];\n  A --> C[\"74: Logic Family\"];\n  A --> D[\"LS: Technology (Low-power Schottky)\"];\n  A --> E[\"00: Specific Logic Function (NAND)\"];\n  E --> F[\"Final Digits denote the exact gate type\"];"
   },
   {
-    "title": "🧠 من عقل الدكتور عماد (Professor's Perspective)"
+    "title": "🧠 من عقل الدكتور عماد (Professor's Perspective)",
+    "conceptOverview": "<p>من خلال تحليلنا لمحاضرات الدكتور المعملية، يركز في هذه المحاضرة على الآتي:</p>\n<ul>\n    <li><strong>التفريق بين عالمين:</strong> العالم الحقيقي تناظري (Analog) والمعالجات رقمية (Digital)، لذلك يعتبر التحدي الأكبر للمهندس هو تصميم الواجهات (Interfaces) والتغلب على الضوضاء الكهربية.</li>\n    <li><strong>فخ التصميم (Front-end vs Back-end):</strong> رسم الدائرة Schematic لا يعني أنك انتهيت. خطأ واحد في الـ Back-end (مثل تحديد بصمة Footprint خاطئة) سيكلفك إعادة تصنيع اللوحة بأكملها.</li>\n    <li><strong>العين الهندسية (الأوسيلوسكوب):</strong> لا يمكنك تصميم أو برمجة أنظمة مدمجة دون الأوسيلوسكوب، فهو عين المهندس التي تكشف التداخلات المخفية.</li>\n    <li><strong>المزج بين التقنيات:</strong> رغم تفوق الـ SMT، يجب استخدام المكونات المخترقة للوحة (THT) في المنافذ الخارجية (Connectors) لتحمل الشد والجذب دون أن تنكسر اللوحة.</li>\n    <li><strong>كابوس المهندسين (الضرر الكامن Latent Damage):</strong> إهمال تفريغ الكهرباء الساكنة (ESD) لن يدمر الدائرة فوراً، بل سيعمل المايكروكنترولر جيداً في المعمل ثم يتعطل فجأة بعد تسليمه للعميل. استخدام رباط المعصم (Wrist strap) أمر حتمي.</li>\n    <li><strong>أرقام بوابات الـ 7400:</strong> لا تنخدع بالأرقام الأولى، وظيفة الأي سي الحقيقية تكمن في الرقمين الأخيرين (مثل 00 للـ NAND). يجب قراءة الرقم كاملاً بدقة لاستكشاف الأخطاء.</li>\n</ul>"
   },
   {
     "title": "⚠️ تريكات وأفخاخ شائعة (Tricks & Pitfalls)",

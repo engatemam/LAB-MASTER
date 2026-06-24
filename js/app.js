@@ -1037,6 +1037,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'notesLec04': return typeof notesLec04 !== 'undefined' ? notesLec04 : null;
             case 'notesLec05': return typeof notesLec05 !== 'undefined' ? notesLec05 : null;
             case 'notesLec06': return typeof notesLec06 !== 'undefined' ? notesLec06 : null;
+            case 'notesProf': return typeof notesProf !== 'undefined' ? notesProf : null;
             default: return null;
         }
     };
