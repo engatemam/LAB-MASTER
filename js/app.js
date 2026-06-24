@@ -107,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="font-size: 0.9rem; color: var(--text-secondary); display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
                         <div>• Correct Answer: <b>+5</b></div>
                         <div>• Mistake Fix: <b>+15</b></div>
-                        <div>• Flashcard: <b>+2</b></div>
                         <div>• Survival Combo: <b>+50</b></div>
                     </div>
                 </div>
@@ -421,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeQuestions = rawQuestions.filter(q => selectedCats.includes(q.category));
         
         if (isUserTriggered) {
-            if (screens && (screens.study.classList.contains('active') || screens.flashcard.classList.contains('active') || screens.examConfig.classList.contains('active'))) {
+            if (screens && (screens.study.classList.contains('active') || screens.examConfig.classList.contains('active'))) {
                 modeRadios.forEach(r => r.checked = false);
                 switchScreen('welcome');
             }
@@ -511,10 +510,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 switchScreen('study');
                 studyCurrentPage = 1;
                 renderStudyPage();
-            } else if (mode === 'flashcard') {
-                switchScreen('flashcard');
-                fcCurrentIndex = 0;
-                renderFlashcard();
             } else if (mode === 'survival') {
                 switchScreen('survival');
                 startSurvivalMode();
@@ -555,7 +550,6 @@ document.addEventListener('DOMContentLoaded', () => {
         study: document.getElementById('study-screen'),
         examConfig: document.getElementById('exam-config-screen'),
         exam: document.getElementById('exam-screen'),
-        flashcard: document.getElementById('flashcard-screen'),
         results: document.getElementById('results-screen'),
         notes: document.getElementById('notes-content-screen'),
         dashboard: document.getElementById('dashboard-screen'),
@@ -807,60 +801,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- FLASHCARD MODE LOGIC ---
-    let fcCurrentIndex = 0;
-    
-    function renderFlashcard() {
-        if (activeQuestions.length === 0) return;
-        
-        const q = activeQuestions[fcCurrentIndex];
-        document.getElementById('fc-current').textContent = fcCurrentIndex + 1;
-        document.getElementById('fc-total').textContent = activeQuestions.length;
-        
-        const front = document.getElementById('fc-front');
-        const back = document.getElementById('fc-back');
-        const card = document.getElementById('flashcard');
-        
-        card.classList.remove('flipped');
-        
-        front.innerHTML = `<h3 style="font-size: 1.4rem; text-align: center; line-height: 1.5;">${q.text}</h3>
-                           <p style="margin-top: 30px; color: var(--text-secondary);"><i class="fas fa-hand-pointer"></i> Click to flip</p>`;
-                           
-        back.innerHTML = `<h3>Correct Answer:</h3>
-                          <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fff;">${q.answer}</p>
-                          <h4 style="color: var(--text-secondary); margin-bottom: 5px;">Explanation:</h4>
-                          <div style="font-size: 0.95rem; line-height: 1.6;">${formatExplanation(q.explanation)}</div>
-                          <button class="tts-btn btn-small" style="background: var(--accent-cyan); color: white; margin-top: 20px;">🔊 Read Aloud</button>`;
-                          
-        back.querySelector('.tts-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            speakText(q.explanation);
-        });
-    }
-    
-    document.getElementById('flashcard')?.addEventListener('click', () => {
-        document.getElementById('flashcard').classList.toggle('flipped');
-    });
-    
-    document.getElementById('fc-flip-btn')?.addEventListener('click', () => {
-        document.getElementById('flashcard').classList.toggle('flipped');
-    });
-    
-    document.getElementById('fc-next')?.addEventListener('click', () => {
-        if (fcCurrentIndex < activeQuestions.length - 1) {
-            stopSpeaking();
-            fcCurrentIndex++;
-            renderFlashcard();
-        }
-    });
-    
-    document.getElementById('fc-prev')?.addEventListener('click', () => {
-        if (fcCurrentIndex > 0) {
-            stopSpeaking();
-            fcCurrentIndex--;
-            renderFlashcard();
-        }
-    });
 
     // --- EXAM MODE LOGIC ---
     let examQuestions = [];
@@ -1329,7 +1269,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- NATIVE KEYBOARD SHORTCUTS ---
         const studyScreen = document.getElementById('study-screen');
         const examScreen = document.getElementById('exam-screen');
-        const flashcardScreen = document.getElementById('flashcard-screen'); // for future feature
         
         if (studyScreen && studyScreen.classList.contains('active')) {
             if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('study-next')?.click(); }
@@ -1352,65 +1291,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if ((e.key === '4' || e.key === 'd' || e.key === 'D') && options[3]) options[3].click();
         }
         
-        if (flashcardScreen && flashcardScreen.classList.contains('active')) {
-            if (e.key === 'ArrowRight') { 
-                e.preventDefault(); 
-                tinderSwipe('right');
-            }
-            if (e.key === 'ArrowLeft') { 
-                e.preventDefault(); 
-                tinderSwipe('left');
-            }
-            if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); document.getElementById('fc-flip-btn')?.click(); }
-        }
+
     });
 
-    // --- TINDER-STYLE FLASHCARD SWIPE ---
-    function tinderSwipe(direction) {
-        const fc = document.getElementById('flashcard');
-        if (!fc) return;
-        const currentQText = activeQuestions[fcCurrentIndex].text;
-        
-        if (direction === 'left') {
-            fc.style.transition = 'transform 0.3s, box-shadow 0.3s';
-            fc.style.boxShadow = '-20px 0 30px rgba(244, 63, 94, 0.5)';
-            fc.style.transform = 'translateX(-50px) rotate(-5deg)';
-            audioEngine.playBuzz();
-            
-            if (!labMistakes.includes(currentQText)) {
-                labMistakes.push(currentQText);
-            }
-            labTotalQ++;
-            labFcReviewedCount++;
-            saveStats();
-        } else {
-            fc.style.transition = 'transform 0.3s, box-shadow 0.3s';
-            fc.style.boxShadow = '20px 0 30px rgba(16, 185, 129, 0.5)';
-            fc.style.transform = 'translateX(50px) rotate(5deg)';
-            audioEngine.playDing();
-            
-            if (labMistakes.includes(currentQText)) {
-                labMistakes = labMistakes.filter(t => t !== currentQText);
-            }
-            labTotalQ++;
-            labCorrectQ++;
-            labFcReviewedCount++;
-            saveStats();
-        }
-        
-        setTimeout(() => {
-            fc.style.boxShadow = 'none';
-            fc.style.transform = 'none';
-            if (fcCurrentIndex < activeQuestions.length - 1) {
-                stopSpeaking();
-                fcCurrentIndex++;
-                renderFlashcard();
-            } else {
-                customAlert("Flashcards completed! 🎉");
-                switchScreen('welcome');
-            }
-        }, 300);
-    }
+
 
     // --- POMODORO TIMER LOGIC ---
     let pomoInterval;
@@ -1549,8 +1433,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!labAchievements.includes('combomaster') && maxSurvivalCombo >= 10) newlyUnlocked.push('combomaster');
         if (!labAchievements.includes('survivorgod') && maxSurvivalCombo >= 20) newlyUnlocked.push('survivorgod');
         if (!labAchievements.includes('unbreakable') && typeof survivalScore !== 'undefined' && survivalScore >= 10000) newlyUnlocked.push('unbreakable');
-        if (!labAchievements.includes('flashcardking') && labFcReviewedCount >= 50) newlyUnlocked.push('flashcardking');
-        if (!labAchievements.includes('scholar') && labFcReviewedCount >= 100) newlyUnlocked.push('scholar');
+
         if (!labAchievements.includes('comebackkid') && labReviewMistakesCount >= 10) newlyUnlocked.push('comebackkid');
         if (!labAchievements.includes('flawless') && labMistakes.length === 0 && labTotalQ >= 50) newlyUnlocked.push('flawless');
         if (!labAchievements.includes('explorer') && activeQuestions.length >= rawQuestions.length && rawQuestions.length > 0) newlyUnlocked.push('explorer');
@@ -1572,8 +1455,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'combomaster', icon: '🔥', title: 'Combo Master', desc: 'Reached a 10x Combo in Survival' },
         { id: 'survivorgod', icon: '⚡', title: 'Survival God', desc: 'Reached a 20x Combo in Survival' },
         { id: 'unbreakable', icon: '🛡️', title: 'Unbreakable', desc: 'Reached 10,000+ Score in Survival' },
-        { id: 'flashcardking', icon: '🗂️', title: 'Flashcard King', desc: 'Reviewed 50+ Flashcards' },
-        { id: 'scholar', icon: '🎓', title: 'The Scholar', desc: 'Reviewed 100+ Flashcards' },
+
         { id: 'comebackkid', icon: '🔄', title: 'Comeback Kid', desc: 'Fixed 10 mistakes in Review Mode' },
         { id: 'flawless', icon: '✨', title: 'Flawless Mind', desc: 'Cleared all mistakes after 50+ Qs' },
         { id: 'explorer', icon: '🧭', title: 'The Explorer', desc: 'Selected all categories at once' },
